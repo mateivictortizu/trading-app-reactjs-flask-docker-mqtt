@@ -8,3 +8,11 @@ register_schema = {
         'country': {'type': 'string'}
     }
 }
+
+login_schema = {
+    'required': ['identifier', 'password'],
+    'properties': {
+        'identifier': {'type': 'string'},
+        'password': {'type': 'string'}
+    }
+}

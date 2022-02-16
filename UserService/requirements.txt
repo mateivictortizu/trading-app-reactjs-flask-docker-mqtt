@@ -4,3 +4,4 @@ flask_bcrypt
 flask_script
 flask_migrate
 flask_json_schema
+flask_mail
