@@ -1,14 +1,17 @@
+from urllib.parse import urlparse
+
 from flask import Blueprint
 from datetime import datetime
 
 import flask
 from flask import request, jsonify, current_app
 from app import db, schema, mail
-from app.database.models import User, Token, OTP
+from app.database.models import User, Token, OTP, BlacklistToken
 from app.json_schema import register_schema, login_schema
 from flask_json_schema import JsonValidationError
 from flask_mail import Message
 from app.myjwt import encode_auth_token
+from app.myconfirmation import generate_confirmation_token
 
 userBP = Blueprint('userBlueprint', __name__)
 
@@ -18,7 +21,7 @@ def validator_error(e):
     return jsonify({'error': e.message, 'errors': [validation_error.message for validation_error in e.errors]}), 400
 
 
-@userBP.route("/register", methods=["POST"])
+@userBP.route('/register', methods=['POST'])
 @schema.validate(register_schema)
 def register():
     username = request.json['username']
@@ -38,7 +41,9 @@ def register():
         try:
             msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
             # TODO Add random code in link to activate account
-            msg.html = "<h3> Your activation link is <h3>" + request.base_url
+            msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
+                       generate_confirmation_token(email=email, secret=current_app.config['JWT_SECRET_KEY'],
+                                                   security_pass=current_app.config['JWT_SECRET_KEY'])
             mail.send(msg)
             return jsonify({'message': 'User registration completed'}), 201
         except Exception as e:
@@ -48,7 +53,7 @@ def register():
         return jsonify({'error': 'Database error', 'errors': [e]}), 400
 
 
-@userBP.route("/login", methods=["POST"])
+@userBP.route('/login', methods=['POST'])
 @schema.validate(login_schema)
 def login():
     identifier = request.json['identifier']
@@ -85,4 +90,25 @@ def login():
         db.session.commit()
         response = flask.Response()
         response.headers["Authorization"] = jwt_token
-        return {"jwt": jwt_token}, 200
+        return jsonify({'message': 'Login successfully'}), 200
+
+
+@userBP.route('/validate-account/<validation_code>', methods=['GET'])
+def validate_account():
+    pass
+
+
+@userBP.route('/validate-otp', methods=['POST'])
+def validate_otp():
+    pass
+
+
+@userBP.route('/logout', methods=['DELETE'])
+def logout():
+    blacklist = BlacklistToken(token=request.headers['Authorization'])
+    try:
+        db.session.add(blacklist)
+        db.session.commit()
+        return {'message': 'Token was blacklisted!'}, 200
+    except Exception as e:
+        return jsonify({'error': 'Token blacklisting failed', 'errors': [e]}), 400

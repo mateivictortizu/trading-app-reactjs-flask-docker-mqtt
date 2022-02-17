@@ -12,18 +12,18 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     date_of_birth = db.Column(db.DateTime, nullable=False)
-    date_of_registration = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    date_of_registration = db.Column(db.DateTime, nullable=False)
     country = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="USER")
-    # modify later default = Flase
     confirmed = db.Column(db.Boolean, nullable=False, default=True)
-    twoFA = db.Column(db.Boolean, nullable=False, default=False)
+    twoFA = db.Column(db.Boolean, nullable=False, default=True)
 
     def __init__(self, username, password, email, date_of_birth, country, role="USER"):
         self.username = username
         self.password = bcrypt.generate_password_hash(password)
         self.email = email
         self.date_of_birth = date_of_birth
+        self.date_of_registration=datetime.utcnow()
         self.country = country
         self.role = role
 
@@ -108,10 +108,11 @@ class BlacklistToken(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     token = db.Column(db.String(500), unique=True, nullable=False)
-    blacklisted_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    blacklisted_on = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, token):
         self.token = token
+        self.blacklisted_on=datetime.utcnow()
 
     def __repr__(self):
         return '<id: token: {}'.format(self.token)
@@ -128,18 +129,20 @@ class BlacklistToken(db.Model):
 class OTP(db.Model):
     __tablename__ = 'otps'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    issue_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    issue_date = db.Column(db.DateTime, nullable=False)
     username = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False)
-    code = db.Column(db.Integer, nullable=False, default=random.choice(range(1000, 9999)))
+    code = db.Column(db.Integer, nullable=False)
 
     def __init__(self, username, email):
         self.username = username
         self.email = email
+        self.issue_date=datetime.utcnow()
+        self.code = random.choice(range(1000, 9999))
 
     @staticmethod
     def check_otp(username, code):
-        search_otp=OTP.query.filter_by(username=username, code=code).first()
+        search_otp = OTP.query.filter_by(username=username, code=code).first()
         if search_otp:
             return True
         else:

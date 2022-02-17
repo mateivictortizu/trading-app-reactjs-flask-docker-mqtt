@@ -1,4 +1,4 @@
-flask~=2.0.3
+flask
 flask_sqlalchemy
 flask_bcrypt
 flask_script
@@ -7,3 +7,6 @@ flask_json_schema
 flask_mail
 alembic
 jwt
+SQLAlchemy
+PyJWT
+itsdangerous

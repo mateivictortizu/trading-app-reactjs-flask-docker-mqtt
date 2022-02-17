@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
-#put this variable in a .env file
+# put this variable in a .env file
 
 app.config["JWT_SECRET_KEY"] = "Licenta2022"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -28,6 +28,7 @@ mail = Mail(app)
 jwt = JWTManager(app)
 
 from app.blueprints import userBlueprint
+
 app.register_blueprint(userBlueprint.userBP)
 
 from app.database import models
