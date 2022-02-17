@@ -8,7 +8,8 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "Licenta2022"
+#put this variable in a .env file
+
 app.config["JWT_SECRET_KEY"] = "Licenta2022"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///{}'.format('registration.db')
