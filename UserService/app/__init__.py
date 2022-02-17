@@ -27,4 +27,7 @@ schema = JsonSchema(app)
 mail = Mail(app)
 jwt = JWTManager(app)
 
-from app import routes, models
+from app.blueprints import userBlueprint
+app.register_blueprint(userBlueprint.userBP)
+
+from app.database import models
