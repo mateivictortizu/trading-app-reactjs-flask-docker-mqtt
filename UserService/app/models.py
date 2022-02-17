@@ -14,6 +14,8 @@ class User(db.Model):
     date_of_registration = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     country = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="USER")
+    confirmed = db.Column(db.Boolean, nullable=False, default=False)
+    twoFA = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, username, password, email, date_of_birth, country, role="USER"):
         self.username = username

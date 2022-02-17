@@ -24,13 +24,23 @@ def register():
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
     if User.check_if_username_exists(username):
-        return jsonify('User already exists'), 409
+        return jsonify({'error': 'User already exists'}), 409
     if User.check_if_email_exists(email):
-        return jsonify('Email already exists'), 409
+        return jsonify({'error': 'Email already exists'}), 409
     user = User(username=username, password=password, email=email, date_of_birth=date_of_birth, country=country)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify('User registration completed'), 201
+    try:
+        db.session.add(user)
+        db.session.commit()
+        try:
+            msg = Message('Hello', sender='tizu.licenta@gmail.com', recipients=[user.email])
+            msg.html = "<h3> Your activation link is <h3>" + request.base_url
+            mail.send(msg)
+            return jsonify({'message': 'User registration completed'}), 201
+        except Exception as e:
+            db.session.rollback()
+            return ({'error': 'Confirmation mail send failed', 'errors': [e]}), 400
+    except Exception as e:
+        return jsonify({'error': 'Database error', 'errors': [e]}), 400
 
 
 @app.route("/login", methods=["POST"])
@@ -44,7 +54,7 @@ def login():
     user = User.get_user_by_identifier(identifier)
     otp = OTP(destination=user.email)
     msg = Message('Hello', sender='tizu.licenta@gmail.com', recipients=['matteovkt@gmail.com'])
-    msg.html = "<h3>Your OTP is:</h3> <h1>"+str(otp.code)+"</h1>"
+    msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
     try:
         mail.send(msg)
         return jsonify({'message': 'OTP sent'}), 200
