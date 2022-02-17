@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 
 from app import db, bcrypt
@@ -14,7 +15,7 @@ class User(db.Model):
     date_of_registration = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     country = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="USER")
-    #modify later default = Flase
+    # modify later default = Flase
     confirmed = db.Column(db.Boolean, nullable=False, default=True)
     twoFA = db.Column(db.Boolean, nullable=False, default=False)
 
@@ -33,22 +34,24 @@ class User(db.Model):
     def check_user(password, identifier=None):
         if identifier is not None:
             search_user = User.query.filter_by(username=identifier).first()
+            search_email = User.query.filter_by(email=identifier).first()
             if search_user is None:
-                return False
-            pass_check = bcrypt.check_password_hash(search_user.password, password)
-            if pass_check is True:
-                return True
+                pass
             else:
-                return False
-        elif identifier is not None:
-            search_user = User.query.filter_by(email=identifier).first()
-            if search_user is None:
-                return False
-            pass_check = bcrypt.check_password_hash(search_user.password, password)
-            if pass_check is True:
-                return True
+                pass_check = bcrypt.check_password_hash(search_user.password, password)
+                if pass_check is True:
+                    return True
+                else:
+                    return False
+
+            if search_email is None:
+                pass
             else:
-                return False
+                pass_check = bcrypt.check_password_hash(search_email.password, password)
+                if pass_check is True:
+                    return True
+                else:
+                    return False
 
     @staticmethod
     def check_if_username_exists(username):
@@ -117,6 +120,27 @@ class BlacklistToken(db.Model):
     def check_blacklist(auth_token):
         res = BlacklistToken.query.filter_by(token=str(auth_token)).first()
         if res:
+            return True
+        else:
+            return False
+
+
+class OTP(db.Model):
+    __tablename__ = 'otps'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    issue_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    username = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    code = db.Column(db.Integer, nullable=False, default=random.choice(range(1000, 9999)))
+
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+
+    @staticmethod
+    def check_otp(username, code):
+        search_otp=OTP.query.filter_by(username=username, code=code).first()
+        if search_otp:
             return True
         else:
             return False

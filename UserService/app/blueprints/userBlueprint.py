@@ -4,7 +4,7 @@ from datetime import datetime
 import flask
 from flask import request, jsonify, current_app
 from app import db, schema, mail
-from app.database.models import User, Token
+from app.database.models import User, Token, OTP
 from app.json_schema import register_schema, login_schema
 from flask_json_schema import JsonValidationError
 from flask_mail import Message
@@ -62,13 +62,21 @@ def login():
     if user.confirmed is False:
         return jsonify({'error': 'Please validate your account'}), 400
     if user.twoFA is True:
-        msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=['matteovkt@gmail.com'])
-        # msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
+        otp = OTP(username=user.username, email=user.email)
         try:
-            mail.send(msg)
-            return jsonify({'message': 'OTP sent'}), 200
+            db.session.add(otp)
+            db.session.commit()
+            try:
+                msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
+                              recipients=[otp.email])
+                msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
+                mail.send(msg)
+                return jsonify({'message': 'OTP sent'}), 200
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({'error': 'OTP mail send failed', 'errors': [e]}), 400
         except Exception as e:
-            return jsonify({'error': e}), 400
+            return jsonify({'error': 'Database error', 'errors': [e]}), 400
     else:
         jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
                                       jwt_secret=current_app.config['JWT_SECRET_KEY'])
