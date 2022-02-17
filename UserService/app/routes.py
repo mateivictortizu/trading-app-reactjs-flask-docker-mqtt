@@ -1,12 +1,13 @@
 from datetime import datetime
+
+import flask
 from flask import request, jsonify
 from app import app, db, schema, mail
-from app.models import User
+from app.models import User, Token
 from app.json_schema import register_schema, login_schema
 from flask_json_schema import JsonValidationError
 from flask_mail import Message
-
-from app.otp import OTP
+from app.myjwt import encode_auth_token
 
 
 @app.errorhandler(JsonValidationError)
@@ -32,7 +33,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         try:
-            msg = Message('Hello', sender='tizu.licenta@gmail.com', recipients=[user.email])
+            msg = Message('Hello', sender=app.config['MAIL_USERNAME'], recipients=[user.email])
+            # TODO Add random code in link to activate account
             msg.html = "<h3> Your activation link is <h3>" + request.base_url
             mail.send(msg)
             return jsonify({'message': 'User registration completed'}), 201
@@ -52,11 +54,24 @@ def login():
     if user_checked is False or user_checked is None:
         return jsonify({'message': 'User or password is wrong!'}), 401
     user = User.get_user_by_identifier(identifier)
-    otp = OTP(destination=user.email)
-    msg = Message('Hello', sender='tizu.licenta@gmail.com', recipients=['matteovkt@gmail.com'])
-    msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
-    try:
-        mail.send(msg)
-        return jsonify({'message': 'OTP sent'}), 200
-    except Exception as e:
-        return jsonify({'error': e}), 400
+    if user is None:
+        return jsonify({'error': 'Unexpected error'}), 400
+    if user.confirmed is False:
+        return jsonify({'error': 'Please validate your account'}), 400
+    if user.twoFA is True:
+        msg = Message('Hello', sender=app.config['MAIL_USERNAME'], recipients=['matteovkt@gmail.com'])
+        # msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
+        try:
+            mail.send(msg)
+            return jsonify({'message': 'OTP sent'}), 200
+        except Exception as e:
+            return jsonify({'error': e}), 400
+    else:
+        jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
+                                      jwt_secret=app.config['JWT_SECRET_KEY'])
+        token = Token(token=jwt_token)
+        db.session.add(token)
+        db.session.commit()
+        response = flask.Response()
+        response.headers["Authorization"] = jwt_token
+        return {"jwt": jwt_token}, 200

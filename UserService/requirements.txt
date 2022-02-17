@@ -1,7 +1,9 @@
-flask
+flask~=2.0.3
 flask_sqlalchemy
 flask_bcrypt
 flask_script
 flask_migrate
 flask_json_schema
 flask_mail
+alembic
+jwt
