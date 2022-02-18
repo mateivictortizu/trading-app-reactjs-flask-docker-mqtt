@@ -140,7 +140,7 @@ class OTP(db.Model):
         self.username = username
         self.email = email
         self.issue_date = datetime.utcnow()
-        self.code = random.choice(range(2180, 2182))
+        self.code = random.choice(range(1000, 9999))
 
     @staticmethod
     def check_otp(identifier, code):
