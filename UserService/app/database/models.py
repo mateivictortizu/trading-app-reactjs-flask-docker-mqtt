@@ -24,7 +24,7 @@ class User(db.Model):
     role = db.Column(db.String(10), nullable=False, default="USER")
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     twoFA = db.Column(db.Boolean, nullable=False, default=True)
-    validated_by_admin = db.Column(db.Boolean,nullable=False, default=False)
+    validated_by_admin = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, username, password, email, name, surname, address, nationality, phone, date_of_birth, country,
                  role="USER"):
@@ -90,6 +90,16 @@ class User(db.Model):
         if search_user is not None:
             return search_user
         return None
+
+    @staticmethod
+    def change_pass(identifier, password, new_password):
+        check_user = User.check_user(password=password, identifier=identifier)
+        if check_user is False:
+            return False
+        search_user = User.get_user_by_identifier(identifier)
+        search_user.password = bcrypt.generate_password_hash(new_password)
+        db.session.commit()
+        return True
 
 
 class Token(db.Model):

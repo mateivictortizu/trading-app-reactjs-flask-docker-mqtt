@@ -230,4 +230,20 @@ def logout():
         db.session.commit()
         return jsonify({'message': 'Token was blacklisted!'}), 200
     except Exception:
-        return jsonify({'error': 'Token blacklisting failed'}), 400
+        return jsonify({'error': 'Database error'}), 500
+
+
+# TODO change pass schema
+@userBP.route('/change-password', methods=['PUT'])
+def change_password():
+    identifier = request.json['identifier']
+    password = request.json['password']
+    new_password = request.json['new_password']
+    try:
+        change_user_pass = User.change_pass(identifier=identifier, password=password, new_password=new_password)
+        if change_user_pass is False:
+            return jsonify({'error': 'Bad password'}), 400
+        elif change_user_pass is True:
+            return jsonify({'message': 'Password was changed'}), 200
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
