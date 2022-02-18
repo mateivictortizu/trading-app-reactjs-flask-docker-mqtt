@@ -107,6 +107,12 @@ class User(db.Model):
         search_user.validated_by_admin = True
         db.session.commit()
 
+    @staticmethod
+    def add_to_user(user):
+        db.session.add(user)
+        db.session.commit()
+
+
 
 class Token(db.Model):
     __tablename__ = 'tokens'
@@ -132,6 +138,11 @@ class Token(db.Model):
         else:
             return False
 
+    @staticmethod
+    def add_to_token(token):
+        db.session.add(token)
+        db.session.commit()
+
 
 class BlacklistToken(db.Model):
     __tablename__ = 'blacklist_tokens'
@@ -154,6 +165,11 @@ class BlacklistToken(db.Model):
             return True
         else:
             return False
+
+    @staticmethod
+    def add_to_blacklist(blacklist):
+        db.session.add(blacklist)
+        db.session.commit()
 
 
 class OTP(db.Model):
@@ -186,3 +202,8 @@ class OTP(db.Model):
             else:
                 return False
         return False
+
+    @staticmethod
+    def add_to_otp(otp):
+        db.session.add(otp)
+        db.session.commit()

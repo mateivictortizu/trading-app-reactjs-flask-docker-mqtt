@@ -20,8 +20,7 @@ def registerDAO(request, current_app, db, mail, username, password, email, name,
     user = User(username=username, password=password, email=email, name=name, surname=surname, address=address,
                 nationality=nationality, phone=phone, date_of_birth=date_of_birth, country=country)
 
-    db.session.add(user)
-    db.session.commit()
+    User.add_to_user(user)
     # TODO Use Flask-RQ2 to send mail in background
     try:
         msg = Message('Welcome {} {}'.format(user.name, user.surname), sender=current_app.config['MAIL_USERNAME'],
@@ -47,8 +46,7 @@ def loginDAO(current_app, db, mail, password, identifier):
         return jsonify({'error': 'Please validate your account'}), 400
     if user.twoFA is True:
         otp = OTP(username=user.username, email=user.email)
-        db.session.add(otp)
-        db.session.commit()
+        OTP.add_to_otp(otp)
         try:
             msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
                           recipients=[otp.email])
@@ -62,8 +60,7 @@ def loginDAO(current_app, db, mail, password, identifier):
         jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
                                       jwt_secret=current_app.config['JWT_SECRET_KEY'])
         token = Token(token=jwt_token)
-        db.session.add(token)
-        db.session.commit()
+        Token.add_to_token(token)
         response = flask.Response(content_type='application/json')
         response.data = json.dumps({'message': 'Login successfully'})
         response.headers["Authorization"] = jwt_token
@@ -87,7 +84,7 @@ def validate_accountDAO(current_app, db, validation_code):
     return jsonify({'message': 'Account was confirmed'}), 200
 
 
-def resend_validate_accountDAO(request, current_app, db, mail, identifier):
+def resend_validate_accountDAO(request, current_app, mail, identifier):
     user = User.get_user_by_identifier(identifier=identifier)
     if user is not None:
         if user.confirmed is False:
@@ -99,7 +96,6 @@ def resend_validate_accountDAO(request, current_app, db, mail, identifier):
                 mail.send(msg)
                 return jsonify({'message': 'User registration completed'}), 201
             except Exception:
-                db.session.rollback()
                 return jsonify({'error': 'Confirmation mail send failed'}), 500
         elif user.confirmed is True:
             return jsonify({'error': 'Account is already confirmed'}), 400
@@ -107,7 +103,7 @@ def resend_validate_accountDAO(request, current_app, db, mail, identifier):
         return jsonify({'error': 'Unexpected error'}), 500
 
 
-def validate_otpDAO(current_app, db, identifier, code):
+def validate_otpDAO(current_app, identifier, code):
     check_otp = OTP.check_otp(identifier=identifier, code=code)
     if check_otp is True:
         try:
@@ -115,8 +111,7 @@ def validate_otpDAO(current_app, db, identifier, code):
             jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
                                           jwt_secret=current_app.config['JWT_SECRET_KEY'])
             token = Token(token=jwt_token)
-            db.session.add(token)
-            db.session.commit()
+            Token.add_to_token(token)
             response = flask.Response(content_type='application/json')
             response.data = json.dumps({'message': 'Login successfully'})
             response.headers["Authorization"] = jwt_token
@@ -133,9 +128,7 @@ def resend_otpDAO(current_app, db, mail, identifier):
         return jsonify({'error': 'Please validate your account'}), 400
     if user.twoFA is True:
         otp = OTP(username=user.username, email=user.email)
-
-        db.session.add(otp)
-        db.session.commit()
+        OTP.add_to_otp(otp)
         try:
             msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
                           recipients=[otp.email])
@@ -145,15 +138,13 @@ def resend_otpDAO(current_app, db, mail, identifier):
         except Exception:
             db.session.rollback()
             return jsonify({'error': 'OTP mail send failed'}), 500
-
     elif user.twoFA is False:
         return jsonify({'error': 'Unexpected error'}), 500
 
 
-def logoutDAO(request, db):
+def logoutDAO(request):
     blacklist = BlacklistToken(token=request.headers['Authorization'])
-    db.session.add(blacklist)
-    db.session.commit()
+    BlacklistToken.add_to_blacklist(blacklist=blacklist)
     return jsonify({'message': 'Token was blacklisted!'}), 200
 
 

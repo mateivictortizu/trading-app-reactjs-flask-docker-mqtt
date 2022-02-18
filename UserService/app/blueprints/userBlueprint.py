@@ -60,7 +60,7 @@ def validate_account(validation_code):
 @schema.validate(resend_validate_schema)
 def resend_validate_account():
     identifier = request.json['identifier']
-    return resend_validate_accountDAO(request, current_app, db, mail, identifier)
+    return resend_validate_accountDAO(request, current_app, mail, identifier)
 
 
 @userBP.route('/validate-otp', methods=['POST'])
@@ -68,7 +68,7 @@ def resend_validate_account():
 def validate_otp():
     identifier = request.json['identifier']
     code = request.json['code']
-    return validate_otpDAO(current_app, db, identifier, code)
+    return validate_otpDAO(current_app, identifier, code)
 
 
 @userBP.route('/resend-otp', methods=['POST'])
@@ -80,7 +80,7 @@ def resend_otp():
 
 @userBP.route('/logout', methods=['DELETE'])
 def logout():
-    return logoutDAO(current_app, db)
+    return logoutDAO(request)
 
 
 # TODO change pass schema
