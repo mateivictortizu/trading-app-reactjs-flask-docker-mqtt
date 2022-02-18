@@ -30,10 +30,16 @@ def register():
     date_of_birth_str = request.json['date_of_birth']
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
-    if User.check_if_username_exists(username):
-        return jsonify({'error': 'User already exists'}), 409
-    if User.check_if_email_exists(email):
-        return jsonify({'error': 'Email already exists'}), 409
+    try:
+        if User.check_if_username_exists(username):
+            return jsonify({'error': 'User already exists'}), 409
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
+    try:
+        if User.check_if_email_exists(email):
+            return jsonify({'error': 'Email already exists'}), 409
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
     user = User(username=username, password=password, email=email, date_of_birth=date_of_birth, country=country)
     try:
         db.session.add(user)
@@ -45,11 +51,11 @@ def register():
                                                    security_pass=current_app.config['JWT_SECRET_KEY'])
             mail.send(msg)
             return jsonify({'message': 'User registration completed'}), 201
-        except Exception as e:
+        except Exception:
             db.session.rollback()
-            return ({'error': 'Confirmation mail send failed', 'errors': [e]}), 400
-    except Exception as e:
-        return jsonify({'error': 'Database error', 'errors': [e]}), 400
+            return ({'error': 'Confirmation mail send failed'}), 500
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
 
 
 @userBP.route('/login', methods=['POST'])
@@ -57,12 +63,18 @@ def register():
 def login():
     identifier = request.json['identifier']
     password = request.json['password']
-    user_checked = User.check_user(password, identifier)
+    try:
+        user_checked = User.check_user(password, identifier)
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
     if user_checked is False or user_checked is None:
         return jsonify({'message': 'User or password is wrong!'}), 401
-    user = User.get_user_by_identifier(identifier)
+    try:
+        user = User.get_user_by_identifier(identifier)
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
     if user is None:
-        return jsonify({'error': 'Unexpected error'}), 400
+        return jsonify({'error': 'Unexpected error'}), 500
     if user.confirmed is False:
         return jsonify({'error': 'Please validate your account'}), 400
     if user.twoFA is True:
@@ -76,12 +88,12 @@ def login():
                 msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
                 mail.send(msg)
                 return jsonify({'message': 'OTP sent'}), 200
-            except Exception as e:
+            except Exception:
                 db.session.rollback()
-                return jsonify({'error': 'OTP mail send failed', 'errors': [e]}), 400
-        except Exception as e:
-            return jsonify({'error': 'Database error', 'errors': [e]}), 400
-    else:
+                return jsonify({'error': 'OTP mail send failed'}), 500
+        except Exception:
+            return jsonify({'error': 'Database error'}), 500
+    elif user.twoFA is False:
         try:
             jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
                                           jwt_secret=current_app.config['JWT_SECRET_KEY'])
@@ -92,8 +104,8 @@ def login():
             response.data = json.dumps({'message': 'Login successfully'})
             response.headers["Authorization"] = jwt_token
             return response, 200
-        except Exception as e:
-            return jsonify({'error': 'Generate token failed', 'errors': [e]})
+        except Exception:
+            return jsonify({'error': 'Generate token failed'}), 500
 
 
 @userBP.route('/validate-account/<validation_code>', methods=['GET'])
@@ -102,17 +114,20 @@ def validate_account(validation_code):
                              security_pass=current_app.config['JWT_SECRET_KEY'])
     if validate is False:
         return jsonify({'error': 'Bad link!'}), 400
-    search_user = User.get_user_by_identifier(validate)
+    try:
+        search_user = User.get_user_by_identifier(validate)
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
     if search_user is None:
-        return jsonify({'error': 'Unexpected error'}), 400
+        return jsonify({'error': 'Unexpected error'}), 500
     if search_user.confirmed is True:
         return jsonify({'error': 'Account is already confirmed'}), 400
     search_user.confirmed = True
     try:
         db.session.commit()
         return jsonify({'message': 'Account was confirmed'}), 200
-    except Exception as e:
-        return jsonify({'error': 'Database error', 'errors': [e]})
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
 
 
 @userBP.route('/validate-otp', methods=['POST'])
@@ -120,9 +135,24 @@ def validate_account(validation_code):
 def validate_otp():
     identifier = request.json['identifier']
     code = request.json['code']
-    check_otp = OTP.check_otp(identifier=identifier, code=code)
+    try:
+        check_otp = OTP.check_otp(identifier=identifier, code=code)
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
     if check_otp is True:
-        return jsonify({'message': 'OTP OK'}), 200
+        try:
+            user = User.get_user_by_identifier(identifier)
+            jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
+                                          jwt_secret=current_app.config['JWT_SECRET_KEY'])
+            token = Token(token=jwt_token)
+            db.session.add(token)
+            db.session.commit()
+            response = flask.Response(content_type='application/json')
+            response.data = json.dumps({'message': 'Login successfully'})
+            response.headers["Authorization"] = jwt_token
+            return response, 200
+        except Exception:
+            return jsonify({'error': 'OTP OK. Generate token failed'}), 500
     elif check_otp is False:
         return jsonify({'error': 'OTP is not valid'}), 400
 
@@ -134,5 +164,5 @@ def logout():
         db.session.add(blacklist)
         db.session.commit()
         return {'message': 'Token was blacklisted!'}, 200
-    except Exception as e:
-        return jsonify({'error': 'Token blacklisting failed', 'errors': [e]}), 400
+    except Exception:
+        return jsonify({'error': 'Token blacklisting failed'}), 400

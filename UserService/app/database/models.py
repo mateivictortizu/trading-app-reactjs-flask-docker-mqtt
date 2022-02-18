@@ -1,6 +1,8 @@
 import random
 from datetime import datetime, timedelta
 
+from sqlalchemy import desc
+
 from app import db, bcrypt
 
 
@@ -16,7 +18,7 @@ class User(db.Model):
     country = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="USER")
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
-    twoFA = db.Column(db.Boolean, nullable=False, default=False)
+    twoFA = db.Column(db.Boolean, nullable=False, default=True)
 
     def __init__(self, username, password, email, date_of_birth, country, role="USER"):
         self.username = username
@@ -138,19 +140,18 @@ class OTP(db.Model):
         self.username = username
         self.email = email
         self.issue_date = datetime.utcnow()
-        self.code = random.choice(range(1000, 9999))
+        self.code = random.choice(range(2180, 2182))
 
     @staticmethod
     def check_otp(identifier, code):
-        # TODO check if it takes the most recent OTP code.
         date_now = datetime.utcnow() + timedelta(minutes=-10)
-        search_otp = OTP.query.filter_by(username=identifier, code=code).first()
+        search_otp = OTP.query.filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
         if search_otp:
-            if search_otp.issuse_date > date_now:
+            if search_otp.issue_date > date_now:
                 return True
             else:
                 return False
-        search_otp = OTP.query.filter_by(email=identifier, code=code).first()
+        search_otp = OTP.query.filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
         if search_otp:
             if search_otp.issuse_date > date_now:
                 return True
