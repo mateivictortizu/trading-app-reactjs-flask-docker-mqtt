@@ -44,6 +44,7 @@ def register():
     try:
         db.session.add(user)
         db.session.commit()
+        # TODO Use Flask-RQ2 to send mail in background
         try:
             msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
             msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
@@ -130,9 +131,10 @@ def validate_account(validation_code):
         return jsonify({'error': 'Database error'}), 500
 
 
+# TODO add schema there
 @userBP.route('/resend-validate-account', methods=['POST'])
 def resend_validate_account():
-    identifier = request.json['identfier']
+    identifier = request.json['identifier']
     try:
         user = User.get_user_by_identifier(identifier=identifier)
     except Exception:
@@ -180,6 +182,36 @@ def validate_otp():
             return jsonify({'error': 'OTP OK. Generate token failed'}), 500
     elif check_otp is False:
         return jsonify({'error': 'OTP is not valid'}), 400
+
+
+# TODO add validator schema there
+@userBP.route('/resend-otp', methods=['POST'])
+def resend_otp():
+    identifier = request.json['identifier']
+    try:
+        user = User.get_user_by_identifier(identifier=identifier)
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
+    if user.confirmed is False:
+        return jsonify({'error': 'Please validate your account'}), 400
+    if user.twoFA is True:
+        otp = OTP(username=user.username, email=user.email)
+        try:
+            db.session.add(otp)
+            db.session.commit()
+            try:
+                msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
+                              recipients=[otp.email])
+                msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
+                mail.send(msg)
+                return jsonify({'message': 'OTP sent'}), 200
+            except Exception:
+                db.session.rollback()
+                return jsonify({'error': 'OTP mail send failed'}), 500
+        except Exception:
+            return jsonify({'error': 'Database error'}), 500
+    elif user.twoFA is False:
+        return jsonify({'error': 'Unexpected error'}), 500
 
 
 @userBP.route('/logout', methods=['DELETE'])
