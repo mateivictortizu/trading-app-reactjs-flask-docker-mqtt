@@ -9,7 +9,7 @@ from app import db, schema, mail
 from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
     resend_otpDAO, logoutDAO, change_passwordDAO
 from app.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
-    resend_otp_schema
+    resend_otp_schema, change_password_schema
 
 userBP = Blueprint('userBlueprint', __name__)
 
@@ -83,7 +83,7 @@ def logout():
     return logoutDAO(request)
 
 
-# TODO change pass schema
+@schema.validate(change_password_schema)
 @userBP.route('/change-password', methods=['PUT'])
 def change_password():
     identifier = request.json['identifier']

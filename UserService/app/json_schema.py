@@ -44,3 +44,12 @@ resend_otp_schema = {
         'identifier': {'type': 'string'}
     }
 }
+
+change_password_schema = {
+    'required': ['identifier', 'password', 'new_password'],
+    'properties': {
+        'identifier': {'type': 'string'},
+        'password': {'type': 'string'},
+        'new_password': {'type': 'string'}
+    }
+}
