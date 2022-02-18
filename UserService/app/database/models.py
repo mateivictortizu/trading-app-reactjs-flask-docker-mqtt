@@ -1,5 +1,5 @@
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app import db, bcrypt
 
@@ -141,9 +141,19 @@ class OTP(db.Model):
         self.code = random.choice(range(1000, 9999))
 
     @staticmethod
-    def check_otp(username, code):
-        search_otp = OTP.query.filter_by(username=username, code=code).first()
+    def check_otp(identifier, code):
+        # TODO check if it takes the most recent OTP code.
+        date_now = datetime.utcnow() + timedelta(minutes=-10)
+        search_otp = OTP.query.filter_by(username=identifier, code=code).first()
         if search_otp:
-            return True
-        else:
-            return False
+            if search_otp.issuse_date > date_now:
+                return True
+            else:
+                return False
+        search_otp = OTP.query.filter_by(email=identifier, code=code).first()
+        if search_otp:
+            if search_otp.issuse_date > date_now:
+                return True
+            else:
+                return False
+        return False

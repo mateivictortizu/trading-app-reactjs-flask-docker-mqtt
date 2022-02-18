@@ -16,3 +16,11 @@ login_schema = {
         'password': {'type': 'string'}
     }
 }
+
+validate_otp_schema = {
+    'required': ['identifier', 'code'],
+    'properties': {
+        'identifier': {'type': 'string'},
+        'code': {'type': 'integer'}
+    }
+}

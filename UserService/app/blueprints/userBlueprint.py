@@ -1,5 +1,4 @@
 import json
-from urllib.parse import urlparse
 
 from flask import Blueprint
 from datetime import datetime
@@ -8,7 +7,7 @@ import flask
 from flask import request, jsonify, current_app
 from app import db, schema, mail
 from app.database.models import User, Token, OTP, BlacklistToken
-from app.json_schema import register_schema, login_schema
+from app.json_schema import register_schema, login_schema, validate_otp_schema
 from flask_json_schema import JsonValidationError
 from flask_mail import Message
 from app.myjwt import encode_auth_token
@@ -117,8 +116,15 @@ def validate_account(validation_code):
 
 
 @userBP.route('/validate-otp', methods=['POST'])
+@schema.validate(validate_otp_schema)
 def validate_otp():
-    pass
+    identifier = request.json['identifier']
+    code = request.json['code']
+    check_otp = OTP.check_otp(identifier=identifier, code=code)
+    if check_otp is True:
+        return jsonify({'message': 'OTP OK'}), 200
+    elif check_otp is False:
+        return jsonify({'error': 'OTP is not valid'}), 400
 
 
 @userBP.route('/logout', methods=['DELETE'])
