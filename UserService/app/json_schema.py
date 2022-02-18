@@ -24,3 +24,17 @@ validate_otp_schema = {
         'code': {'type': 'integer'}
     }
 }
+
+resend_validate_schema = {
+    'required': ['identifier'],
+    'properties': {
+        'identifier': {'type': 'string'}
+    }
+}
+
+resend_otp_schema = {
+    'required': ['identifier'],
+    'properties': {
+        'identifier': {'type': 'string'}
+    }
+}

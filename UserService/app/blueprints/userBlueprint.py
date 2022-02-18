@@ -7,7 +7,8 @@ import flask
 from flask import request, jsonify, current_app
 from app import db, schema, mail
 from app.database.models import User, Token, OTP, BlacklistToken
-from app.json_schema import register_schema, login_schema, validate_otp_schema
+from app.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
+    resend_otp_schema
 from flask_json_schema import JsonValidationError
 from flask_mail import Message
 from app.myjwt import encode_auth_token
@@ -131,8 +132,8 @@ def validate_account(validation_code):
         return jsonify({'error': 'Database error'}), 500
 
 
-# TODO add schema there
 @userBP.route('/resend-validate-account', methods=['POST'])
+@schema.validate(resend_validate_schema)
 def resend_validate_account():
     identifier = request.json['identifier']
     try:
@@ -184,8 +185,8 @@ def validate_otp():
         return jsonify({'error': 'OTP is not valid'}), 400
 
 
-# TODO add validator schema there
 @userBP.route('/resend-otp', methods=['POST'])
+@schema.validate(resend_otp_schema)
 def resend_otp():
     identifier = request.json['identifier']
     try:
