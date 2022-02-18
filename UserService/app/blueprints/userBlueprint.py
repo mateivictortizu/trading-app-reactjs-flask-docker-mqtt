@@ -47,13 +47,13 @@ def register():
         try:
             msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
             msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
-                       generate_confirmation_token(email=email, secret=current_app.config['JWT_SECRET_KEY'],
+                       generate_confirmation_token(email=user.email, secret=current_app.config['JWT_SECRET_KEY'],
                                                    security_pass=current_app.config['JWT_SECRET_KEY'])
             mail.send(msg)
             return jsonify({'message': 'User registration completed'}), 201
         except Exception:
             db.session.rollback()
-            return ({'error': 'Confirmation mail send failed'}), 500
+            return jsonify({'error': 'Confirmation mail send failed'}), 500
     except Exception:
         return jsonify({'error': 'Database error'}), 500
 
@@ -130,6 +130,31 @@ def validate_account(validation_code):
         return jsonify({'error': 'Database error'}), 500
 
 
+@userBP.route('/resend-validate-account', methods=['POST'])
+def resend_validate_account():
+    identifier = request.json['identfier']
+    try:
+        user = User.get_user_by_identifier(identifier=identifier)
+    except Exception:
+        return jsonify({'error': 'Database error'}), 500
+    if user is not None:
+        if user.confirmed is False:
+            try:
+                msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
+                msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
+                           generate_confirmation_token(email=user.email, secret=current_app.config['JWT_SECRET_KEY'],
+                                                       security_pass=current_app.config['JWT_SECRET_KEY'])
+                mail.send(msg)
+                return jsonify({'message': 'User registration completed'}), 201
+            except Exception:
+                db.session.rollback()
+                return jsonify({'error': 'Confirmation mail send failed'}), 500
+        elif user.confirmed is True:
+            return jsonify({'error': 'Account is already confirmed'}), 400
+    elif user is None:
+        return jsonify({'error': 'Unexpected error'}), 500
+
+
 @userBP.route('/validate-otp', methods=['POST'])
 @schema.validate(validate_otp_schema)
 def validate_otp():
@@ -163,6 +188,6 @@ def logout():
     try:
         db.session.add(blacklist)
         db.session.commit()
-        return {'message': 'Token was blacklisted!'}, 200
+        return jsonify({'message': 'Token was blacklisted!'}), 200
     except Exception:
         return jsonify({'error': 'Token blacklisting failed'}), 400
