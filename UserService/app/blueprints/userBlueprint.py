@@ -1,18 +1,15 @@
-import json
-
-from flask import Blueprint
 from datetime import datetime
 
-import flask
+from flask import Blueprint
 from flask import request, jsonify, current_app
+from flask_json_schema import JsonValidationError
+from sqlalchemy.exc import DatabaseError
+
 from app import db, schema, mail
-from app.database.models import User, Token, OTP, BlacklistToken
+from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
+    resend_otpDAO, logoutDAO, change_passwordDAO
 from app.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
     resend_otp_schema
-from flask_json_schema import JsonValidationError
-from flask_mail import Message
-from app.myjwt import encode_auth_token
-from app.myconfirmation import generate_confirmation_token, confirm_token
 
 userBP = Blueprint('userBlueprint', __name__)
 
@@ -20,6 +17,11 @@ userBP = Blueprint('userBlueprint', __name__)
 @userBP.errorhandler(JsonValidationError)
 def validator_error(e):
     return jsonify({'error': e.message, 'errors': [validation_error.message for validation_error in e.errors]}), 400
+
+
+@userBP.errorhandler(DatabaseError)
+def database_error(e):
+    return jsonify({'error': 'Database error'}), 500
 
 
 @userBP.route('/register', methods=['POST'])
@@ -36,35 +38,9 @@ def register():
     date_of_birth_str = request.json['date_of_birth']
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
-    try:
-        if User.check_if_username_exists(username):
-            return jsonify({'error': 'User already exists'}), 409
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    try:
-        if User.check_if_email_exists(email):
-            return jsonify({'error': 'Email already exists'}), 409
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    user = User(username=username, password=password, email=email, name=name, surname=surname, address=address,
-                nationality=nationality, phone=phone, date_of_birth=date_of_birth, country=country)
-    try:
-        db.session.add(user)
-        db.session.commit()
-        # TODO Use Flask-RQ2 to send mail in background
-        try:
-            msg = Message('Welcome {} {}'.format(user.name, user.surname), sender=current_app.config['MAIL_USERNAME'],
-                          recipients=[user.email])
-            msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
-                       generate_confirmation_token(email=user.email, secret=current_app.config['JWT_SECRET_KEY'],
-                                                   security_pass=current_app.config['JWT_SECRET_KEY'])
-            mail.send(msg)
-            return jsonify({'message': 'User registration completed'}), 201
-        except Exception:
-            db.session.rollback()
-            return jsonify({'error': 'Confirmation mail send failed'}), 500
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
+
+    return registerDAO(request, current_app, db, mail, username, password, email, name, surname, address, nationality,
+                       phone, date_of_birth, country)
 
 
 @userBP.route('/login', methods=['POST'])
@@ -72,97 +48,19 @@ def register():
 def login():
     identifier = request.json['identifier']
     password = request.json['password']
-    try:
-        user_checked = User.check_user(password, identifier)
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    if user_checked is False or user_checked is None:
-        return jsonify({'message': 'User or password is wrong!'}), 401
-    try:
-        user = User.get_user_by_identifier(identifier)
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    if user is None:
-        return jsonify({'error': 'Unexpected error'}), 500
-    if user.confirmed is False:
-        return jsonify({'error': 'Please validate your account'}), 400
-    if user.twoFA is True:
-        otp = OTP(username=user.username, email=user.email)
-        try:
-            db.session.add(otp)
-            db.session.commit()
-            try:
-                msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
-                              recipients=[otp.email])
-                msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
-                mail.send(msg)
-                return jsonify({'message': 'OTP sent'}), 200
-            except Exception:
-                db.session.rollback()
-                return jsonify({'error': 'OTP mail send failed'}), 500
-        except Exception:
-            return jsonify({'error': 'Database error'}), 500
-    elif user.twoFA is False:
-        try:
-            jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
-                                          jwt_secret=current_app.config['JWT_SECRET_KEY'])
-            token = Token(token=jwt_token)
-            db.session.add(token)
-            db.session.commit()
-            response = flask.Response(content_type='application/json')
-            response.data = json.dumps({'message': 'Login successfully'})
-            response.headers["Authorization"] = jwt_token
-            return response, 200
-        except Exception:
-            return jsonify({'error': 'Generate token failed'}), 500
+    return loginDAO(current_app, db, mail, password, identifier)
 
 
 @userBP.route('/validate-account/<validation_code>', methods=['GET'])
 def validate_account(validation_code):
-    validate = confirm_token(token=validation_code, secret=current_app.config['JWT_SECRET_KEY'],
-                             security_pass=current_app.config['JWT_SECRET_KEY'])
-    if validate is False:
-        return jsonify({'error': 'Bad link!'}), 400
-    try:
-        search_user = User.get_user_by_identifier(validate)
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    if search_user is None:
-        return jsonify({'error': 'Unexpected error'}), 500
-    if search_user.confirmed is True:
-        return jsonify({'error': 'Account is already confirmed'}), 400
-    search_user.confirmed = True
-    try:
-        db.session.commit()
-        return jsonify({'message': 'Account was confirmed'}), 200
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
+    return validate_accountDAO(current_app, db, validation_code)
 
 
 @userBP.route('/resend-validate-account', methods=['POST'])
 @schema.validate(resend_validate_schema)
 def resend_validate_account():
     identifier = request.json['identifier']
-    try:
-        user = User.get_user_by_identifier(identifier=identifier)
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    if user is not None:
-        if user.confirmed is False:
-            try:
-                msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
-                msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
-                           generate_confirmation_token(email=user.email, secret=current_app.config['JWT_SECRET_KEY'],
-                                                       security_pass=current_app.config['JWT_SECRET_KEY'])
-                mail.send(msg)
-                return jsonify({'message': 'User registration completed'}), 201
-            except Exception:
-                db.session.rollback()
-                return jsonify({'error': 'Confirmation mail send failed'}), 500
-        elif user.confirmed is True:
-            return jsonify({'error': 'Account is already confirmed'}), 400
-    elif user is None:
-        return jsonify({'error': 'Unexpected error'}), 500
+    return resend_validate_accountDAO(request, current_app, db, mail, identifier)
 
 
 @userBP.route('/validate-otp', methods=['POST'])
@@ -170,67 +68,19 @@ def resend_validate_account():
 def validate_otp():
     identifier = request.json['identifier']
     code = request.json['code']
-    try:
-        check_otp = OTP.check_otp(identifier=identifier, code=code)
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    if check_otp is True:
-        try:
-            user = User.get_user_by_identifier(identifier)
-            jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
-                                          jwt_secret=current_app.config['JWT_SECRET_KEY'])
-            token = Token(token=jwt_token)
-            db.session.add(token)
-            db.session.commit()
-            response = flask.Response(content_type='application/json')
-            response.data = json.dumps({'message': 'Login successfully'})
-            response.headers["Authorization"] = jwt_token
-            return response, 200
-        except Exception:
-            return jsonify({'error': 'OTP OK. Generate token failed'}), 500
-    elif check_otp is False:
-        return jsonify({'error': 'OTP is not valid'}), 400
+    return validate_otpDAO(current_app, db, identifier, code)
 
 
 @userBP.route('/resend-otp', methods=['POST'])
 @schema.validate(resend_otp_schema)
 def resend_otp():
     identifier = request.json['identifier']
-    try:
-        user = User.get_user_by_identifier(identifier=identifier)
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
-    if user.confirmed is False:
-        return jsonify({'error': 'Please validate your account'}), 400
-    if user.twoFA is True:
-        otp = OTP(username=user.username, email=user.email)
-        try:
-            db.session.add(otp)
-            db.session.commit()
-            try:
-                msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
-                              recipients=[otp.email])
-                msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
-                mail.send(msg)
-                return jsonify({'message': 'OTP sent'}), 200
-            except Exception:
-                db.session.rollback()
-                return jsonify({'error': 'OTP mail send failed'}), 500
-        except Exception:
-            return jsonify({'error': 'Database error'}), 500
-    elif user.twoFA is False:
-        return jsonify({'error': 'Unexpected error'}), 500
+    return resend_otpDAO(current_app, db, mail, identifier)
 
 
 @userBP.route('/logout', methods=['DELETE'])
 def logout():
-    blacklist = BlacklistToken(token=request.headers['Authorization'])
-    try:
-        db.session.add(blacklist)
-        db.session.commit()
-        return jsonify({'message': 'Token was blacklisted!'}), 200
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
+    return logoutDAO(current_app, db)
 
 
 # TODO change pass schema
@@ -239,11 +89,4 @@ def change_password():
     identifier = request.json['identifier']
     password = request.json['password']
     new_password = request.json['new_password']
-    try:
-        change_user_pass = User.change_pass(identifier=identifier, password=password, new_password=new_password)
-        if change_user_pass is False:
-            return jsonify({'error': 'Bad password'}), 400
-        elif change_user_pass is True:
-            return jsonify({'message': 'Password was changed'}), 200
-    except Exception:
-        return jsonify({'error': 'Database error'}), 500
+    return change_passwordDAO(identifier, password, new_password)

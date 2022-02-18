@@ -25,8 +25,9 @@ bcrypt = Bcrypt()
 schema = JsonSchema(app)
 mail = Mail(app)
 
-from app.blueprints import userBlueprint
+from app.blueprints import userBlueprint, agentBlueprint
 
 app.register_blueprint(userBlueprint.userBP)
+app.register_blueprint(agentBlueprint.agentBP)
 
 from app.database import models

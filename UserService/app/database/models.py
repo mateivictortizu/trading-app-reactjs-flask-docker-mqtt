@@ -101,6 +101,12 @@ class User(db.Model):
         db.session.commit()
         return True
 
+    @staticmethod
+    def verify_user(identifier):
+        search_user = User.get_user_by_identifier(identifier)
+        search_user.validated_by_admin = True
+        db.session.commit()
+
 
 class Token(db.Model):
     __tablename__ = 'tokens'
