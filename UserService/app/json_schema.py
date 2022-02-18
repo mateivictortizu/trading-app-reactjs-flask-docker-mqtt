@@ -1,11 +1,17 @@
 register_schema = {
-    'required': ['username', 'password', 'email', 'date_of_birth', 'country'],
+    'required': ['username', 'password', 'email', 'date_of_birth', 'country', 'name', 'surname', 'address',
+                 'nationality', 'phone'],
     'properties': {
         'username': {'type': 'string'},
         'password': {'type': 'string'},
         'email': {'type': 'string'},
         'date_of_birth': {'type': 'string'},
-        'country': {'type': 'string'}
+        'country': {'type': 'string'},
+        'name': {'type': 'string'},
+        'surname': {'type': 'string'},
+        'address': {'type': 'string'},
+        'nationality': {'type': 'string'},
+        'phone': {'type': 'string'}
     }
 }
 

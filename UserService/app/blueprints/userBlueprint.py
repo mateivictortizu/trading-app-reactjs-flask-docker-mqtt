@@ -28,6 +28,11 @@ def register():
     username = request.json['username']
     password = request.json['password']
     email = request.json['email']
+    name = request.json['name']
+    surname = request.json['surname']
+    address = request.json['address']
+    nationality = request.json['nationality']
+    phone = request.json['phone']
     date_of_birth_str = request.json['date_of_birth']
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
@@ -41,13 +46,15 @@ def register():
             return jsonify({'error': 'Email already exists'}), 409
     except Exception:
         return jsonify({'error': 'Database error'}), 500
-    user = User(username=username, password=password, email=email, date_of_birth=date_of_birth, country=country)
+    user = User(username=username, password=password, email=email, name=name, surname=surname, address=address,
+                nationality=nationality, phone=phone, date_of_birth=date_of_birth, country=country)
     try:
         db.session.add(user)
         db.session.commit()
         # TODO Use Flask-RQ2 to send mail in background
         try:
-            msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
+            msg = Message('Welcome {} {}'.format(user.name, user.surname), sender=current_app.config['MAIL_USERNAME'],
+                          recipients=[user.email])
             msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
                        generate_confirmation_token(email=user.email, secret=current_app.config['JWT_SECRET_KEY'],
                                                    security_pass=current_app.config['JWT_SECRET_KEY'])

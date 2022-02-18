@@ -13,17 +13,29 @@ class User(db.Model):
     username = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
+    name = db.Column(db.String(255), nullable=False)
+    surname = db.Column(db.String(255), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    nationality = db.Column(db.String(3), nullable=False)
+    phone = db.Column(db.String(15), nullable=False, unique=True)
     date_of_birth = db.Column(db.DateTime, nullable=False)
     date_of_registration = db.Column(db.DateTime, nullable=False)
     country = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="USER")
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     twoFA = db.Column(db.Boolean, nullable=False, default=True)
+    validated_by_admin = db.Column(db.Boolean,nullable=False, default=False)
 
-    def __init__(self, username, password, email, date_of_birth, country, role="USER"):
+    def __init__(self, username, password, email, name, surname, address, nationality, phone, date_of_birth, country,
+                 role="USER"):
         self.username = username
         self.password = bcrypt.generate_password_hash(password)
         self.email = email
+        self.name = name
+        self.surname = surname
+        self.address = address
+        self.nationality = nationality
+        self.phone = phone
         self.date_of_birth = date_of_birth
         self.date_of_registration = datetime.utcnow()
         self.country = country
