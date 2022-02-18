@@ -1,3 +1,4 @@
+import json
 from urllib.parse import urlparse
 
 from flask import Blueprint
@@ -11,7 +12,7 @@ from app.json_schema import register_schema, login_schema
 from flask_json_schema import JsonValidationError
 from flask_mail import Message
 from app.myjwt import encode_auth_token
-from app.myconfirmation import generate_confirmation_token
+from app.myconfirmation import generate_confirmation_token, confirm_token
 
 userBP = Blueprint('userBlueprint', __name__)
 
@@ -40,7 +41,6 @@ def register():
         db.session.commit()
         try:
             msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
-            # TODO Add random code in link to activate account
             msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
                        generate_confirmation_token(email=email, secret=current_app.config['JWT_SECRET_KEY'],
                                                    security_pass=current_app.config['JWT_SECRET_KEY'])
@@ -83,19 +83,37 @@ def login():
         except Exception as e:
             return jsonify({'error': 'Database error', 'errors': [e]}), 400
     else:
-        jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
-                                      jwt_secret=current_app.config['JWT_SECRET_KEY'])
-        token = Token(token=jwt_token)
-        db.session.add(token)
-        db.session.commit()
-        response = flask.Response()
-        response.headers["Authorization"] = jwt_token
-        return jsonify({'message': 'Login successfully'}), 200
+        try:
+            jwt_token = encode_auth_token(user_id=user.id, username=user.username, email=user.email, role=user.role,
+                                          jwt_secret=current_app.config['JWT_SECRET_KEY'])
+            token = Token(token=jwt_token)
+            db.session.add(token)
+            db.session.commit()
+            response = flask.Response(content_type='application/json')
+            response.data = json.dumps({'message': 'Login successfully'})
+            response.headers["Authorization"] = jwt_token
+            return response, 200
+        except Exception as e:
+            return jsonify({'error': 'Generate token failed', 'errors': [e]})
 
 
 @userBP.route('/validate-account/<validation_code>', methods=['GET'])
-def validate_account():
-    pass
+def validate_account(validation_code):
+    validate = confirm_token(token=validation_code, secret=current_app.config['JWT_SECRET_KEY'],
+                             security_pass=current_app.config['JWT_SECRET_KEY'])
+    if validate is False:
+        return jsonify({'error': 'Bad link!'}), 400
+    search_user = User.get_user_by_identifier(validate)
+    if search_user is None:
+        return jsonify({'error': 'Unexpected error'}), 400
+    if search_user.confirmed is True:
+        return jsonify({'error': 'Account is already confirmed'}), 400
+    search_user.confirmed = True
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Account was confirmed'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Database error', 'errors': [e]})
 
 
 @userBP.route('/validate-otp', methods=['POST'])

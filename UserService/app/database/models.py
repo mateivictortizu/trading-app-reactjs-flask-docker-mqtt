@@ -15,15 +15,15 @@ class User(db.Model):
     date_of_registration = db.Column(db.DateTime, nullable=False)
     country = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="USER")
-    confirmed = db.Column(db.Boolean, nullable=False, default=True)
-    twoFA = db.Column(db.Boolean, nullable=False, default=True)
+    confirmed = db.Column(db.Boolean, nullable=False, default=False)
+    twoFA = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, username, password, email, date_of_birth, country, role="USER"):
         self.username = username
         self.password = bcrypt.generate_password_hash(password)
         self.email = email
         self.date_of_birth = date_of_birth
-        self.date_of_registration=datetime.utcnow()
+        self.date_of_registration = datetime.utcnow()
         self.country = country
         self.role = role
 
@@ -112,7 +112,7 @@ class BlacklistToken(db.Model):
 
     def __init__(self, token):
         self.token = token
-        self.blacklisted_on=datetime.utcnow()
+        self.blacklisted_on = datetime.utcnow()
 
     def __repr__(self):
         return '<id: token: {}'.format(self.token)
@@ -137,7 +137,7 @@ class OTP(db.Model):
     def __init__(self, username, email):
         self.username = username
         self.email = email
-        self.issue_date=datetime.utcnow()
+        self.issue_date = datetime.utcnow()
         self.code = random.choice(range(1000, 9999))
 
     @staticmethod

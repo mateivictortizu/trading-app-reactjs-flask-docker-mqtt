@@ -4,7 +4,6 @@ from flask_json_schema import JsonSchema
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
@@ -25,7 +24,6 @@ migrate = Migrate(app, db, 'app/database/migrations')
 bcrypt = Bcrypt()
 schema = JsonSchema(app)
 mail = Mail(app)
-jwt = JWTManager(app)
 
 from app.blueprints import userBlueprint
 
