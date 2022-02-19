@@ -176,7 +176,7 @@ class OTP(db.Model):
             if search_otp.issue_date > date_now:
                 return True
             else:
-                db.session.remove(search_otp)
+                db.session.delete(search_otp)
                 db.session.commit()
                 return False
         search_otp = OTP.query.filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
@@ -184,7 +184,7 @@ class OTP(db.Model):
             if search_otp.issue_date > date_now:
                 return True
             else:
-                db.session.remove(search_otp)
+                db.session.delete(search_otp)
                 db.session.commit()
                 return False
         return False
@@ -248,5 +248,6 @@ class OTPToken(db.Model):
 
     @staticmethod
     def blacklist_otp_token(token):
-        token.blacklisted = True
+        res = OTPToken.query.filter_by(token=str(token)).first()
+        res.blacklisted = True
         db.session.commit()

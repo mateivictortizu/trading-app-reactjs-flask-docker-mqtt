@@ -1,5 +1,4 @@
 import json
-from threading import Thread
 
 import flask
 from flask import jsonify
@@ -17,7 +16,8 @@ def send_email(current_app, mail, to, subject, message_html):
     mail.send(msg)
 
 
-def registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address, nationality,
+def registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address,
+                nationality,
                 phone, date_of_birth, country):
     email = email.lower()
     username = username.lower()
@@ -46,13 +46,13 @@ def registerDAO(executor, request, current_app, db, mail, username, password, em
                 nationality=nationality, phone=phone, date_of_birth=date_of_birth, country=country)
 
     User.add_to_user(user)
-    # TODO Use Flask-RQ2 to send mail in background
     try:
         message_html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
-                   MyConfirmation.generate_confirmation_token(email=user.email,
-                                                              secret=current_app.config['JWT_SECRET_KEY'],
-                                                              security_pass=current_app.config['JWT_SECRET_KEY'])
-        executor.submit(send_email, current_app, mail, [user.email], 'Welcome {} {}'.format(user.name, user.surname), message_html)
+                       MyConfirmation.generate_confirmation_token(email=user.email,
+                                                                  secret=current_app.config['JWT_SECRET_KEY'],
+                                                                  security_pass=current_app.config['JWT_SECRET_KEY'])
+        executor.submit(send_email, current_app, mail, [user.email], 'Welcome {} {}'.format(user.name, user.surname),
+                        message_html)
         return jsonify({'message': 'User registration completed'}), 201
     except Exception:
         db.session.rollback()
@@ -60,7 +60,7 @@ def registerDAO(executor, request, current_app, db, mail, username, password, em
 
 
 # TODO check if password is expired
-def loginDAO(current_app, db, mail, password, identifier):
+def loginDAO(executor, current_app, db, mail, password, identifier):
     identifier = identifier.lower()
     user_checked = User.check_user(password, identifier)
     if user_checked is False or user_checked is None:
@@ -74,11 +74,9 @@ def loginDAO(current_app, db, mail, password, identifier):
         otp = OTP(username=user.username, email=user.email)
         OTP.add_to_otp(otp)
         try:
-            msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
-                          recipients=[otp.email])
-            msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
-            mail.send(msg)
-
+            message_html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
+            executor.submit(send_email, current_app, mail, [otp.email],
+                            'Hello {}'.format(otp.username), message_html)
             otp_token = MyJWT.encode_OTP_token(username=otp.username, jwt_secret=current_app.config['JWT_SECRET_KEY'])
             token = OTPToken(token=otp_token)
             OTPToken.add_to_token(token)
@@ -118,19 +116,19 @@ def validate_accountDAO(current_app, db, validation_code):
     return jsonify({'message': 'Account was confirmed'}), 200
 
 
-def resend_validate_accountDAO(request, current_app, mail, identifier):
+def resend_validate_accountDAO(executor, request, current_app, mail, identifier):
     identifier = identifier.lower()
     user = User.get_user_by_identifier(identifier=identifier)
     if user is not None:
         if user.confirmed is False:
             try:
-                msg = Message('Hello', sender=current_app.config['MAIL_USERNAME'], recipients=[user.email])
-                msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
-                           MyConfirmation.generate_confirmation_token(email=user.email,
-                                                                      secret=current_app.config['JWT_SECRET_KEY'],
-                                                                      security_pass=current_app.config[
-                                                                          'JWT_SECRET_KEY'])
-                mail.send(msg)
+                message_html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
+                               MyConfirmation.generate_confirmation_token(email=user.email,
+                                                                          secret=current_app.config['JWT_SECRET_KEY'],
+                                                                          security_pass=current_app.config[
+                                                                              'JWT_SECRET_KEY'])
+                executor.submit(send_email, current_app, mail, [user.email],
+                                'Hello {} {}'.format(user.name, user.surname), message_html)
                 return jsonify({'message': 'User registration completed'}), 201
             except Exception:
                 return jsonify({'error': 'Confirmation mail send failed'}), 500
@@ -170,7 +168,7 @@ def validate_otpDAO(current_app, otp_jwt, code):
         return jsonify({'error': 'OTP is not valid'}), 400
 
 
-def resend_otpDAO(current_app, db, mail, otp_jwt):
+def resend_otpDAO(executor, current_app, db, mail, otp_jwt):
     if OTPToken.check_token(otp_jwt) is False:
         return jsonify({'error': 'Invalid token'}), 403
     decoded_otp_jwt = MyJWT.decode_OTP_token(auth_token=otp_jwt, jwt_secret=current_app.config['JWT_SECRET_KEY'])
@@ -185,10 +183,8 @@ def resend_otpDAO(current_app, db, mail, otp_jwt):
         otp = OTP(username=user.username, email=user.email)
         OTP.add_to_otp(otp)
         try:
-            msg = Message('Hello {}'.format(otp.username), sender=current_app.config['MAIL_USERNAME'],
-                          recipients=[otp.email])
-            msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
-            mail.send(msg)
+            message_html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
+            executor.submit(send_email, current_app, mail, [otp.email], 'Hello {}'.format(otp.username), message_html)
             return jsonify({'message': 'OTP sent'}), 200
         except Exception:
             db.session.rollback()

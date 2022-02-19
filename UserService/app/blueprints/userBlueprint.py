@@ -39,7 +39,8 @@ def register():
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
 
-    return registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address, nationality,
+    return registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address,
+                       nationality,
                        phone, date_of_birth, country)
 
 
@@ -48,7 +49,7 @@ def register():
 def login():
     identifier = request.json['identifier']
     password = request.json['password']
-    return loginDAO(current_app, db, mail, password, identifier)
+    return loginDAO(executor, current_app, db, mail, password, identifier)
 
 
 @userBP.route('/validate-account/<validation_code>', methods=['GET'])
@@ -60,7 +61,7 @@ def validate_account(validation_code):
 @schema.validate(resend_validate_schema)
 def resend_validate_account():
     identifier = request.json['identifier']
-    return resend_validate_accountDAO(request, current_app, mail, identifier)
+    return resend_validate_accountDAO(executor, request, current_app, mail, identifier)
 
 
 @userBP.route('/validate-otp', methods=['POST'])
@@ -74,7 +75,7 @@ def validate_otp():
 @userBP.route('/resend-otp', methods=['POST'])
 def resend_otp():
     otp_jwt = request.headers.get('Authorization')
-    return resend_otpDAO(current_app, db, mail, otp_jwt)
+    return resend_otpDAO(executor, current_app, db, mail, otp_jwt)
 
 
 @userBP.route('/logout', methods=['DELETE'])
