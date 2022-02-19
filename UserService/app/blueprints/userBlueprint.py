@@ -20,7 +20,7 @@ def validator_error(e):
 
 
 @userBP.errorhandler(DatabaseError)
-def database_error(e):
+def database_error():
     return jsonify({'error': 'Database error'}), 500
 
 

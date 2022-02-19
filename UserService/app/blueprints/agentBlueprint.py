@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
-from app import db
 from app.database.models import User
 
 agentBP = Blueprint('adminBlueprint', __name__)
@@ -14,7 +13,7 @@ def validator_error(e):
 
 
 @agentBP.errorhandler(DatabaseError)
-def database_error(e):
+def database_error():
     return jsonify({'error': 'Database error'}), 500
 
 
