@@ -4,7 +4,7 @@ import flask
 from flask import jsonify
 from flask_mail import Message
 
-from app.database.models import User, OTP, Token, BlacklistToken
+from app.database.models import User, OTP, Token, OTPToken
 from app.myconfirmation import MyConfirmation
 from app.myjwt import MyJWT
 from app.validator import Validator
@@ -72,7 +72,15 @@ def loginDAO(current_app, db, mail, password, identifier):
                           recipients=[otp.email])
             msg.html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
             mail.send(msg)
-            return jsonify({'message': 'OTP sent'}), 200
+
+            otp_token = MyJWT.encode_OTP_token(username=otp.username, jwt_secret=current_app.config['JWT_SECRET_KEY'])
+            token = OTPToken(token=otp_token)
+            OTPToken.add_to_token(token)
+            response = flask.Response(content_type='application/json')
+            response.data = json.dumps({'message': 'OTP send'})
+            response.headers['Authorization'] = otp_token
+            return response, 200
+
         except Exception:
             db.session.rollback()
             return jsonify({'error': 'OTP mail send failed'}), 500
@@ -83,7 +91,7 @@ def loginDAO(current_app, db, mail, password, identifier):
         Token.add_to_token(token)
         response = flask.Response(content_type='application/json')
         response.data = json.dumps({'message': 'Login successfully'})
-        response.headers["Authorization"] = jwt_token
+        response.headers['Authorization'] = jwt_token
         return response, 200
 
 
@@ -126,6 +134,7 @@ def resend_validate_accountDAO(request, current_app, mail, identifier):
         return jsonify({'error': 'Unexpected error'}), 500
 
 
+# succesfully validate or 3 time tries should blacklist OTP
 def validate_otpDAO(current_app, identifier, code):
     identifier = identifier.lower()
     check_otp = OTP.check_otp(identifier=identifier, code=code)
@@ -147,8 +156,13 @@ def validate_otpDAO(current_app, identifier, code):
         return jsonify({'error': 'OTP is not valid'}), 400
 
 
-def resend_otpDAO(current_app, db, mail, identifier):
-    identifier = identifier.lower()
+def resend_otpDAO(current_app, db, mail, otp_jwt):
+    if OTPToken.check_token(otp_jwt) is False:
+        return jsonify({'error': 'Invalid token'}), 403
+    decoded_otp_jwt = MyJWT.decode_OTP_token(auth_token=otp_jwt, jwt_secret=current_app.config['JWT_SECRET_KEY'])
+    if decoded_otp_jwt[0] == -1 or decoded_otp_jwt[0] == -2:
+        return jsonify({'error': 'Token {}'.format(decoded_otp_jwt[1])}), 403
+    identifier = decoded_otp_jwt.lower()
     user = User.get_user_by_identifier(identifier=identifier)
     if user.confirmed is False:
         return jsonify({'error': 'Please validate your account'}), 400
@@ -169,9 +183,11 @@ def resend_otpDAO(current_app, db, mail, identifier):
 
 
 def logoutDAO(request):
-    blacklist = BlacklistToken(token=request.headers['Authorization'])
-    BlacklistToken.add_to_blacklist(blacklist=blacklist)
-    return jsonify({'message': 'Token was blacklisted!'}), 200
+    blacklist = Token.blacklisted_token(auth_token=request.headers['Authorization'])
+    if blacklist is True:
+        return jsonify({'message': 'Token was blacklisted!'}), 200
+    else:
+        return jsonify({'message': 'Token was not blacklisted!'}), 400
 
 
 def change_passwordDAO(identifier, password, new_password):

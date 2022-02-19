@@ -113,12 +113,12 @@ class User(db.Model):
         db.session.commit()
 
 
-
 class Token(db.Model):
     __tablename__ = 'tokens'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     token = db.Column(db.String(500), unique=True, nullable=False)
+    blacklisted = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, token):
         self.token = token
@@ -130,8 +130,7 @@ class Token(db.Model):
     def check_token(auth_token):
         res = Token.query.filter_by(token=str(auth_token)).first()
         if res:
-            blacklist = BlacklistToken.query.filter_by(token=str(auth_token)).first()
-            if blacklist:
+            if res.blacklisted:
                 return False
             else:
                 return True
@@ -143,33 +142,15 @@ class Token(db.Model):
         db.session.add(token)
         db.session.commit()
 
-
-class BlacklistToken(db.Model):
-    __tablename__ = 'blacklist_tokens'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    token = db.Column(db.String(500), unique=True, nullable=False)
-    blacklisted_on = db.Column(db.DateTime, nullable=False)
-
-    def __init__(self, token):
-        self.token = token
-        self.blacklisted_on = datetime.utcnow()
-
-    def __repr__(self):
-        return '<id: token: {}'.format(self.token)
-
     @staticmethod
-    def check_blacklist(auth_token):
-        res = BlacklistToken.query.filter_by(token=str(auth_token)).first()
+    def blacklisted_token(auth_token):
+        res = Token.query.filter_by(token=str(auth_token)).first()
         if res:
+            res.blacklisted = True
+            db.session.commit()
             return True
         else:
             return False
-
-    @staticmethod
-    def add_to_blacklist(blacklist):
-        db.session.add(blacklist)
-        db.session.commit()
 
 
 class OTP(db.Model):
@@ -206,4 +187,34 @@ class OTP(db.Model):
     @staticmethod
     def add_to_otp(otp):
         db.session.add(otp)
+        db.session.commit()
+
+
+class OTPToken(db.Model):
+    __tablename__ = 'OTPtokens'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+    blacklisted = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __init__(self, token):
+        self.token = token
+
+    def __repr__(self):
+        return '<id: token: {}'.format(self.token)
+
+    @staticmethod
+    def check_token(auth_token):
+        res = OTPToken.query.filter_by(token=str(auth_token)).first()
+        if res:
+            if res.blacklisted:
+                return False
+            else:
+                return True
+        else:
+            return False
+
+    @staticmethod
+    def add_to_token(token):
+        db.session.add(token)
         db.session.commit()

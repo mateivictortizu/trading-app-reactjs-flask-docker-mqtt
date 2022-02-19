@@ -38,13 +38,6 @@ resend_validate_schema = {
     }
 }
 
-resend_otp_schema = {
-    'required': ['identifier'],
-    'properties': {
-        'identifier': {'type': 'string'}
-    }
-}
-
 change_password_schema = {
     'required': ['identifier', 'password', 'new_password'],
     'properties': {

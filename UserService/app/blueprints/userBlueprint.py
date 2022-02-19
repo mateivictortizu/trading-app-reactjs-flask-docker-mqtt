@@ -9,7 +9,7 @@ from app import db, schema, mail
 from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
     resend_otpDAO, logoutDAO, change_passwordDAO
 from app.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
-    resend_otp_schema, change_password_schema
+    change_password_schema
 
 userBP = Blueprint('userBlueprint', __name__)
 
@@ -72,10 +72,9 @@ def validate_otp():
 
 
 @userBP.route('/resend-otp', methods=['POST'])
-@schema.validate(resend_otp_schema)
 def resend_otp():
-    identifier = request.json['identifier']
-    return resend_otpDAO(current_app, db, mail, identifier)
+    otp_jwt = request.headers.get('Authorization')
+    return resend_otpDAO(current_app, db, mail, otp_jwt)
 
 
 @userBP.route('/logout', methods=['DELETE'])
