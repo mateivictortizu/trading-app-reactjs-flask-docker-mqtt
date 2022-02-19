@@ -24,9 +24,8 @@ login_schema = {
 }
 
 validate_otp_schema = {
-    'required': ['identifier', 'code'],
+    'required': ['code'],
     'properties': {
-        'identifier': {'type': 'string'},
         'code': {'type': 'integer'}
     }
 }

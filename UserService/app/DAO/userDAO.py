@@ -134,9 +134,15 @@ def resend_validate_accountDAO(request, current_app, mail, identifier):
         return jsonify({'error': 'Unexpected error'}), 500
 
 
-# succesfully validate or 3 time tries should blacklist OTP
-def validate_otpDAO(current_app, identifier, code):
-    identifier = identifier.lower()
+# TODO succesfully validate or 3 time tries should blacklist OTP
+# TODO check behaviour in case of expired token
+def validate_otpDAO(current_app, otp_jwt, code):
+    if OTPToken.check_token(otp_jwt) is False:
+        return jsonify({'error': 'Invalid token'}), 403
+    decoded_otp_jwt = MyJWT.decode_OTP_token(auth_token=otp_jwt, jwt_secret=current_app.config['JWT_SECRET_KEY'])
+    if decoded_otp_jwt[0] == -1 or decoded_otp_jwt[0] == -2:
+        return jsonify({'error': 'Token {}'.format(decoded_otp_jwt[1])}), 403
+    identifier = decoded_otp_jwt.lower()
     check_otp = OTP.check_otp(identifier=identifier, code=code)
     if check_otp is True:
         try:
@@ -146,6 +152,7 @@ def validate_otpDAO(current_app, identifier, code):
                                                 jwt_secret=current_app.config['JWT_SECRET_KEY'])
             token = Token(token=jwt_token)
             Token.add_to_token(token)
+            OTP.delete_all_otp_from_identifier(user.username)
             response = flask.Response(content_type='application/json')
             response.data = json.dumps({'message': 'Login successfully'})
             response.headers["Authorization"] = jwt_token
@@ -153,6 +160,7 @@ def validate_otpDAO(current_app, identifier, code):
         except Exception:
             return jsonify({'error': 'OTP OK. Generate token failed'}), 500
     elif check_otp is False:
+        OTP.increment_no_of_tries(identifier)
         return jsonify({'error': 'OTP is not valid'}), 400
 
 
@@ -167,6 +175,7 @@ def resend_otpDAO(current_app, db, mail, otp_jwt):
     if user.confirmed is False:
         return jsonify({'error': 'Please validate your account'}), 400
     if user.twoFA is True:
+        OTP.delete_all_otp_from_identifier(user.username)
         otp = OTP(username=user.username, email=user.email)
         OTP.add_to_otp(otp)
         try:

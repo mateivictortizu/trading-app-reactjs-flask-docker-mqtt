@@ -66,9 +66,9 @@ def resend_validate_account():
 @userBP.route('/validate-otp', methods=['POST'])
 @schema.validate(validate_otp_schema)
 def validate_otp():
-    identifier = request.json['identifier']
+    otp_jwt = request.headers.get('Authorization')
     code = request.json['code']
-    return validate_otpDAO(current_app, identifier, code)
+    return validate_otpDAO(current_app, otp_jwt, code)
 
 
 @userBP.route('/resend-otp', methods=['POST'])

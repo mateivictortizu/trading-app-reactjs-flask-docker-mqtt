@@ -160,6 +160,7 @@ class OTP(db.Model):
     username = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False)
     code = db.Column(db.Integer, nullable=False)
+    number_of_tries = db.Column(db.Integer, default=0)
 
     def __init__(self, username, email):
         self.username = username
@@ -175,12 +176,16 @@ class OTP(db.Model):
             if search_otp.issue_date > date_now:
                 return True
             else:
+                db.session.remove(search_otp)
+                db.session.commit()
                 return False
         search_otp = OTP.query.filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
         if search_otp:
-            if search_otp.issuse_date > date_now:
+            if search_otp.issue_date > date_now:
                 return True
             else:
+                db.session.remove(search_otp)
+                db.session.commit()
                 return False
         return False
 
@@ -188,6 +193,28 @@ class OTP(db.Model):
     def add_to_otp(otp):
         db.session.add(otp)
         db.session.commit()
+
+    @staticmethod
+    def delete_all_otp_from_identifier(identifier):
+        OTP.query.filter_by(username=identifier).delete()
+        db.session.commit()
+
+    @staticmethod
+    def increment_no_of_tries(identifier):
+        date_now = datetime.utcnow() + timedelta(minutes=-10)
+        search_otp = OTP.query.filter_by(username=identifier).order_by(desc(OTP.issue_date)).first()
+        if search_otp:
+            if search_otp.issue_date > date_now:
+                search_otp.number_of_tries = search_otp.number_of_tries + 1
+                if search_otp.number_of_tries > 3:
+                    db.session.delete(search_otp)
+                db.session.commit()
+                return True
+            else:
+                db.session.delete(search_otp)
+                db.session.commit()
+                return False
+        return False
 
 
 class OTPToken(db.Model):
