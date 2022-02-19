@@ -5,7 +5,7 @@ from flask import request, jsonify, current_app
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
-from app import db, schema, mail
+from app import db, schema, mail, executor
 from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
     resend_otpDAO, logoutDAO, change_passwordDAO
 from app.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
@@ -39,7 +39,7 @@ def register():
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
 
-    return registerDAO(request, current_app, db, mail, username, password, email, name, surname, address, nationality,
+    return registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address, nationality,
                        phone, date_of_birth, country)
 
 

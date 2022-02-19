@@ -245,3 +245,8 @@ class OTPToken(db.Model):
     def add_to_token(token):
         db.session.add(token)
         db.session.commit()
+
+    @staticmethod
+    def blacklist_otp_token(token):
+        token.blacklisted = True
+        db.session.commit()

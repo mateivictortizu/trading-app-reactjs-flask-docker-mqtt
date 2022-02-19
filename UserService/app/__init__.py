@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from flask_executor import Executor
 from flask_json_schema import JsonSchema
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -24,6 +25,7 @@ migrate = Migrate(app, db, 'app/database/migrations')
 bcrypt = Bcrypt()
 schema = JsonSchema(app)
 mail = Mail(app)
+executor = Executor(app)
 
 from app.blueprints import userBlueprint, agentBlueprint
 

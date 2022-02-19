@@ -1,4 +1,5 @@
 import json
+from threading import Thread
 
 import flask
 from flask import jsonify
@@ -10,7 +11,13 @@ from app.myjwt import MyJWT
 from app.validator import Validator
 
 
-def registerDAO(request, current_app, db, mail, username, password, email, name, surname, address, nationality,
+def send_email(current_app, mail, to, subject, message_html):
+    msg = Message(subject, sender=current_app.config['MAIL_USERNAME'], recipients=to)
+    msg.html = message_html
+    mail.send(msg)
+
+
+def registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address, nationality,
                 phone, date_of_birth, country):
     email = email.lower()
     username = username.lower()
@@ -41,19 +48,18 @@ def registerDAO(request, current_app, db, mail, username, password, email, name,
     User.add_to_user(user)
     # TODO Use Flask-RQ2 to send mail in background
     try:
-        msg = Message('Welcome {} {}'.format(user.name, user.surname), sender=current_app.config['MAIL_USERNAME'],
-                      recipients=[user.email])
-        msg.html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
+        message_html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
                    MyConfirmation.generate_confirmation_token(email=user.email,
                                                               secret=current_app.config['JWT_SECRET_KEY'],
                                                               security_pass=current_app.config['JWT_SECRET_KEY'])
-        mail.send(msg)
+        executor.submit(send_email, current_app, mail, [user.email], 'Welcome {} {}'.format(user.name, user.surname), message_html)
         return jsonify({'message': 'User registration completed'}), 201
     except Exception:
         db.session.rollback()
         return jsonify({'error': 'Confirmation mail send failed'}), 500
 
 
+# TODO check if password is expired
 def loginDAO(current_app, db, mail, password, identifier):
     identifier = identifier.lower()
     user_checked = User.check_user(password, identifier)
@@ -134,7 +140,6 @@ def resend_validate_accountDAO(request, current_app, mail, identifier):
         return jsonify({'error': 'Unexpected error'}), 500
 
 
-# TODO succesfully validate or 3 time tries should blacklist OTP
 # TODO check behaviour in case of expired token
 def validate_otpDAO(current_app, otp_jwt, code):
     if OTPToken.check_token(otp_jwt) is False:
@@ -153,6 +158,7 @@ def validate_otpDAO(current_app, otp_jwt, code):
             token = Token(token=jwt_token)
             Token.add_to_token(token)
             OTP.delete_all_otp_from_identifier(user.username)
+            OTPToken.blacklist_otp_token(otp_jwt)
             response = flask.Response(content_type='application/json')
             response.data = json.dumps({'message': 'Login successfully'})
             response.headers["Authorization"] = jwt_token
