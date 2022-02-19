@@ -1,19 +1,21 @@
 from itsdangerous import URLSafeTimedSerializer
 
 
-def generate_confirmation_token(email, secret, security_pass):
-    serializer = URLSafeTimedSerializer(secret)
-    return serializer.dumps(email, salt=security_pass)
+class MyConfirmation:
+    @staticmethod
+    def generate_confirmation_token(email, secret, security_pass):
+        serializer = URLSafeTimedSerializer(secret)
+        return serializer.dumps(email, salt=security_pass)
 
-
-def confirm_token(token, secret, security_pass, expiration=3600):
-    serializer = URLSafeTimedSerializer(secret)
-    try:
-        email = serializer.loads(
-            token,
-            salt=security_pass,
-            max_age=expiration
-        )
-    except:
-        return False
-    return email
+    @staticmethod
+    def confirm_token(token, secret, security_pass, expiration=3600):
+        serializer = URLSafeTimedSerializer(secret)
+        try:
+            email = serializer.loads(
+                token,
+                salt=security_pass,
+                max_age=expiration
+            )
+        except:
+            return False
+        return email
