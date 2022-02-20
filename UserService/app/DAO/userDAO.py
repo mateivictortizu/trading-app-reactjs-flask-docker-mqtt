@@ -5,9 +5,9 @@ from flask import jsonify
 from flask_mail import Message
 
 from app.database.models import User, OTP, Token, OTPToken
-from app.Utils.myconfirmation import MyConfirmation
-from app.Utils.myjwt import MyJWT
-from app.Utils.validator import Validator
+from app.utils.myconfirmation import MyConfirmation
+from app.utils.myjwt import MyJWT
+from app.utils.validator import Validator
 
 
 def send_email(current_app, mail, to, subject, message_html):

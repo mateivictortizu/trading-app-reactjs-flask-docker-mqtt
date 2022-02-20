@@ -4,7 +4,7 @@ from sqlalchemy.exc import DatabaseError
 
 from app import schema
 from app.DAO.agentDAO import verify_userDAO, ban_userDAO
-from app.Utils.json_schema import verify_user_schema, ban_user_schema
+from app.utils.json_schema import verify_user_schema, ban_user_schema
 
 agentBP = Blueprint('adminBlueprint', __name__)
 
