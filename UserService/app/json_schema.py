@@ -45,3 +45,17 @@ change_password_schema = {
         'new_password': {'type': 'string'}
     }
 }
+
+verify_user_schema = {
+    'required': ['identifier'],
+    'properties': {
+        'identifier': {'type': 'string'}
+    }
+}
+
+ban_user_schema = {
+    'required': ['user-to-ban'],
+    'properties': {
+        'user-to-ban': {'type': 'string'}
+    }
+}

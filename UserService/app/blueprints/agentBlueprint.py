@@ -2,7 +2,9 @@ from flask import Blueprint, jsonify, request
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
-from app.database.models import User
+from app import schema
+from app.DAO.agentDAO import verify_userDAO, ban_userDAO
+from app.json_schema import verify_user_schema, ban_user_schema
 
 agentBP = Blueprint('adminBlueprint', __name__)
 
@@ -19,14 +21,16 @@ def database_error():
 
 # The entire investment goes to the company if the user violates the rules and is banned.
 # Uninvested money will be returned.
+# TODO Role validation checking before banning
 @agentBP.route('/ban', methods=['DELETE'])
-def ban():
-    pass
+@schema.validate(ban_user_schema)
+def ban_user():
+    user_to_ban = request.json['user-to-ban']
+    return ban_userDAO(user_to_ban)
 
 
-# TODO check it
 @agentBP.route('/verify-user', methods=['PUT'])
+@schema.validate(verify_user_schema)
 def verify_user():
     identifier = request.json['identifier']
-    User.verify_user(identifier=identifier)
-    pass
+    return verify_userDAO(identifier)

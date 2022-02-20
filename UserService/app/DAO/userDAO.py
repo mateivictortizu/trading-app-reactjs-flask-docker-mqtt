@@ -62,6 +62,8 @@ def registerDAO(executor, request, current_app, db, mail, username, password, em
 # TODO check if password is expired
 def loginDAO(executor, current_app, db, mail, password, identifier):
     identifier = identifier.lower()
+    if User.check_if_banned(identifier):
+        return jsonify({'error': 'User is banned'}), 403
     user_checked = User.check_user(password, identifier)
     if user_checked is False or user_checked is None:
         return jsonify({'message': 'User or password is wrong!'}), 401
@@ -105,6 +107,9 @@ def validate_accountDAO(current_app, db, validation_code):
     if validate is False:
         return jsonify({'error': 'Bad link!'}), 400
 
+    if User.check_if_banned(validate):
+        return jsonify({'error': 'User is banned'}), 403
+
     search_user = User.get_user_by_identifier(validate)
 
     if search_user is None:
@@ -118,6 +123,8 @@ def validate_accountDAO(current_app, db, validation_code):
 
 def resend_validate_accountDAO(executor, request, current_app, mail, identifier):
     identifier = identifier.lower()
+    if User.check_if_banned(identifier):
+        return jsonify({'error': 'User is banned'}), 403
     user = User.get_user_by_identifier(identifier=identifier)
     if user is not None:
         if user.confirmed is False:
@@ -146,6 +153,8 @@ def validate_otpDAO(current_app, otp_jwt, code):
     if decoded_otp_jwt[0] == -1 or decoded_otp_jwt[0] == -2:
         return jsonify({'error': 'Token {}'.format(decoded_otp_jwt[1])}), 403
     identifier = decoded_otp_jwt.lower()
+    if User.check_if_banned(identifier):
+        return jsonify({'error': 'User is banned'}), 403
     check_otp = OTP.check_otp(identifier=identifier, code=code)
     if check_otp is True:
         try:
@@ -175,6 +184,8 @@ def resend_otpDAO(executor, current_app, db, mail, otp_jwt):
     if decoded_otp_jwt[0] == -1 or decoded_otp_jwt[0] == -2:
         return jsonify({'error': 'Token {}'.format(decoded_otp_jwt[1])}), 403
     identifier = decoded_otp_jwt.lower()
+    if User.check_if_banned(identifier):
+        return jsonify({'error': 'User is banned'}), 403
     user = User.get_user_by_identifier(identifier=identifier)
     if user.confirmed is False:
         return jsonify({'error': 'Please validate your account'}), 400
@@ -203,6 +214,8 @@ def logoutDAO(request):
 
 def change_passwordDAO(identifier, password, new_password):
     identifier = identifier.lower()
+    if User.check_if_banned(identifier):
+        return jsonify({'error': 'User is banned'}), 403
     if Validator.password_check(new_password) is False:
         return jsonify({'error': 'Bad password format'}), 400
     change_user_pass = User.change_pass(identifier=identifier, password=password, new_password=new_password)

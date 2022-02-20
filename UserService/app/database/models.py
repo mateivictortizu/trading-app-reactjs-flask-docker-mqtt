@@ -25,6 +25,7 @@ class User(db.Model):
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     twoFA = db.Column(db.Boolean, nullable=False, default=True)
     validated_by_admin = db.Column(db.Boolean, nullable=False, default=False)
+    banned = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, username, password, email, name, surname, address, nationality, phone, date_of_birth, country,
                  role="USER"):
@@ -104,13 +105,39 @@ class User(db.Model):
     @staticmethod
     def verify_user(identifier):
         search_user = User.get_user_by_identifier(identifier)
+        if search_user is None:
+            return False
+        if search_user.validated_by_admin is True:
+            return False
         search_user.validated_by_admin = True
         db.session.commit()
+        return True
 
     @staticmethod
     def add_to_user(user):
         db.session.add(user)
         db.session.commit()
+
+    @staticmethod
+    def check_if_banned(identifier):
+        search_user = User.get_user_by_identifier(identifier)
+        if search_user is None:
+            return False
+        if search_user.banned is False:
+            return False
+        elif search_user.banned is True:
+            return True
+
+    @staticmethod
+    def ban_user(identifier):
+        search_user = User.get_user_by_identifier(identifier)
+        if search_user is None:
+            return False
+        if search_user.banned is True:
+            return False
+        search_user.banned = True
+        db.session.commit()
+        return True
 
 
 class Token(db.Model):
