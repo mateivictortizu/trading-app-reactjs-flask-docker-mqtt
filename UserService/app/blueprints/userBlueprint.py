@@ -8,7 +8,7 @@ from sqlalchemy.exc import DatabaseError
 from app import db, schema, mail, executor
 from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
     resend_otpDAO, logoutDAO, change_passwordDAO
-from app.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
+from app.Utils.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
     change_password_schema
 
 userBP = Blueprint('userBlueprint', __name__)
