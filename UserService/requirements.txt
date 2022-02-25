@@ -11,3 +11,4 @@ SQLAlchemy
 PyJWT
 itsdangerous
 flask_executor
+pyOpenSSL
