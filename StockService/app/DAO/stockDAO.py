@@ -1,6 +1,6 @@
 import requests
 import yfinance
-import _thread as thread
+import threading
 
 from app import db
 from app.database.models import Stock
@@ -29,10 +29,15 @@ def updateStockAsync(user):
     user.currency = search_stock.info['financialCurrency'] if 'financialCurrency' in search_stock.info.keys() \
         else None
     user.isin = search_stock.isin
-    db.session.commit()
 
 
 def updateStockDAO():
     users = Stock.query.all()
+    list_threads = []
     for user in users:
-        thread.start_new_thread(updateStockAsync, (user,))
+        t = threading.Thread(target=updateStockAsync, args=(user,))
+        list_threads.append(t)
+        t.start()
+    for t in list_threads:
+        t.join()
+    db.session.commit()
