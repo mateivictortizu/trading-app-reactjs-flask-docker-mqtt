@@ -9,7 +9,7 @@ from app.DAO.stockDAO import addStockDAO, updateStockDAO
 stockBP = Blueprint('stockBlueprint', __name__)
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(updateStockDAO, 'interval', days=1)
+sched.add_job(updateStockDAO, 'interval', seconds=30)
 sched.start()
 
 
