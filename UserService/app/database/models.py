@@ -249,7 +249,6 @@ class OTPToken(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     token = db.Column(db.String(500), unique=True, nullable=False)
-    blacklisted = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, token):
         self.token = token
@@ -274,7 +273,8 @@ class OTPToken(db.Model):
         db.session.commit()
 
     @staticmethod
-    def blacklist_otp_token(token):
+    def delete_otp_token(token):
         res = OTPToken.query.filter_by(token=str(token)).first()
-        res.blacklisted = True
-        db.session.commit()
+        if res is not None:
+            db.session.delete(res)
+            db.session.commit()

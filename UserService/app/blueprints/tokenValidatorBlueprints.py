@@ -15,6 +15,7 @@ def database_error():
     return jsonify({'error': 'Database error'}), 500
 
 
+#TODO implementation of check token
 @tokenValidatorBP.route('/check-token', methods=['GET'])
 def check_token():
     pass
