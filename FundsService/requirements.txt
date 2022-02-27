@@ -1,0 +1,10 @@
+flask
+flask_executor
+flask_migrate
+flask_sqlalchemy
+flask_json_schema
+SQLAlchemy
+requests
+alembic
+apscheduler
+pyOpenSSL

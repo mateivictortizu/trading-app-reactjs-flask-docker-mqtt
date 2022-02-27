@@ -3,7 +3,7 @@ import yfinance
 import threading
 
 from app import db
-from app.database.models import Stock
+from app.database.models import Stock, Price
 
 
 def addStockDAO(stock_symbol):
@@ -12,32 +12,67 @@ def addStockDAO(stock_symbol):
         return False
     check_stock = Stock.check_if_exists(stock_symbol=stock_symbol)
     if check_stock is False:
+        check_price = Price.check_if_exists(stock_symbol=stock_symbol)
+        if check_price is False:
+            new_price = Price(stock_symbol=stock_symbol)
+            Price.add_to_price(new_price)
+        elif check_price is False:
+            update_price = Price(stock_symbol=stock_symbol)
+            Price.update_price(update_price)
         Stock.add_to_stock(new_stock)
 
 
-def updateStockAsync(user):
-    print(user.stock_symbol)
-    search_stock = yfinance.Ticker(user.stock_symbol)
-    user.company_name = search_stock.info['longName'] if 'longName' in search_stock.info.keys() else None
-    user.logo = requests.get(search_stock.info['logo_url']).content if 'logo_url' in search_stock.info.keys() \
+def updateStockAsync(stock):
+    search_stock = yfinance.Ticker(stock.stock_symbol)
+    stock.company_name = search_stock.info['longName'] if 'longName' in search_stock.info.keys() else None
+    stock.logo = requests.get(search_stock.info['logo_url']).content if 'logo_url' in search_stock.info.keys() \
         else None
-    user.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
+    stock.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
         else None
-    user.sector = search_stock.info['sector'] if 'sector' in search_stock.info.keys() else None
-    user.industry = search_stock.info['industry'] if 'sector' in search_stock.info.keys() else None
-    user.market_name = search_stock.info['market'] if 'market' in search_stock.info.keys() else None
-    user.currency = search_stock.info['financialCurrency'] if 'financialCurrency' in search_stock.info.keys() \
+    stock.sector = search_stock.info['sector'] if 'sector' in search_stock.info.keys() else None
+    stock.industry = search_stock.info['industry'] if 'sector' in search_stock.info.keys() else None
+    stock.market_name = search_stock.info['market'] if 'market' in search_stock.info.keys() else None
+    stock.currency = search_stock.info['financialCurrency'] if 'financialCurrency' in search_stock.info.keys() \
         else None
-    user.isin = search_stock.isin
+    stock.isin = search_stock.isin
+    db.session.commit()
 
 
 def updateStockDAO():
-    users = Stock.query.all()
+    print("Stock")
+    stocks = Stock.query.all()
     list_threads = []
-    for user in users:
-        t = threading.Thread(target=updateStockAsync, args=(user,))
+    for stock in stocks:
+        t = threading.Thread(target=updateStockAsync, args=(stock,))
         list_threads.append(t)
         t.start()
     for t in list_threads:
         t.join()
+
+
+def updatePriceAsync(price):
+    search_price = yfinance.Ticker(price.stock_symbol)
+    price.price = search_price.info['currentPrice'] if 'currentPrice' in search_price.info.keys() else None
+    price.recommendation = search_price.info['recommendationKey'] if 'recommendationKey' in \
+                                                                     search_price.info.keys() else None
+    price.targetLow = search_price.info['targetLowPrice'] if 'targetLowPrice' in search_price.info.keys() \
+        else None
+    price.targetMean = search_price.info['targetMeanPrice'] if 'targetMeanPrice' in search_price.info.keys() \
+        else None
+    price.targetHigh = search_price.info['targetHighPrice'] if 'targetHighPrice' in search_price.info.keys() \
+        else None
+    price.recommendationMean = search_price.info['recommendationMean'] if 'recommendationMean' in \
+                                                                          search_price.info.keys() else None
     db.session.commit()
+
+
+def updatePriceDAO():
+    print("Price")
+    prices = Price.query.all()
+    list_threads = []
+    for price in prices:
+        t = threading.Thread(target=updatePriceAsync, args=(price,))
+        list_threads.append(t)
+        t.start()
+    for t in list_threads:
+        t.join()

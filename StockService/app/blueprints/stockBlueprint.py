@@ -1,15 +1,18 @@
+from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Blueprint, jsonify, request
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
 from app import executor
-from app.DAO.stockDAO import addStockDAO, updateStockDAO
+from app.DAO.stockDAO import addStockDAO, updateStockDAO, updatePriceDAO
 
 stockBP = Blueprint('stockBlueprint', __name__)
 
+
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(updateStockDAO, 'interval', seconds=30)
+sched.add_job(updatePriceDAO, 'interval', seconds=30)
 sched.start()
 
 
