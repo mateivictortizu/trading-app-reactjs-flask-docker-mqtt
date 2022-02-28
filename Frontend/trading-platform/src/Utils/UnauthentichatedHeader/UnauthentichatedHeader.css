@@ -3,7 +3,7 @@ element.style {
 }
 
 .header_header-container.header_accent {
-    background: #00a7e1;
+    background: #0066cc;
     border-color: transparent;
 }
 
@@ -31,7 +31,7 @@ header {
 @media screen and (max-width: 375px) {
     .warning
     {
-        font-size: 7px;
+        font-size: 5px;
     }
     
 }
@@ -48,24 +48,24 @@ header {
 
 @media screen and (max-width: 1440px){
     .warning {
-        font-size: 7.6px;
+        font-size: 5px;
     }
 }
 
 @media screen and (max-width: 1590px) {
     .warning {
-        font-size: 9px;
+        font-size: 5px;
     }
 }
 
 @media screen and (max-width: 1795px){
     .warning {
-        font-size: 9px;
+        font-size: 5px;
     }
 }
 
 .warning {
-    font-size: 1rem;
+    font-size: 0.6rem;
 }
 
 :not(input,textarea,img)
@@ -109,14 +109,14 @@ section {
 
 @media screen and (max-width: 980px) {
     .main-wrapper {
-        padding: 0 1.5rem
+        padding: 0 1rem
     }
 }
 
 @media screen and (max-width: 1024px) {
     .main-wrapper {
         width: 120rem;
-        padding: 0 5rem
+        padding: 0 3rem
     }
 }
 
@@ -131,8 +131,8 @@ div {
     justify-content: center;
     -moz-box-align: center;
     align-items: center;
-    min-height: 6em;
-    padding: 0 3rem;
+    min-height: 3em;
+    padding: 0 2rem;
     background-color: #dadbe2;
     border-bottom: 1px solid #3f3f3f;
     cursor: default;
