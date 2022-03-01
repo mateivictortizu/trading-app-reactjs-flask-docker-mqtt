@@ -8,3 +8,18 @@ a {
     text-decoration: underline;
   }
   
+  .svgDIV{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+   }
+
+   .overlap {
+    position: absolute;
+
+    
+   }
+
+.thirdDiv{
+    background: #0066cc;
+}
