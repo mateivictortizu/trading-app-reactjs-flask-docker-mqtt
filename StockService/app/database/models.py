@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 import yfinance as yf
 from sqlalchemy import CheckConstraint
@@ -10,7 +12,7 @@ class Stock(db.Model):
 
     stock_symbol = db.Column(db.String(10), primary_key=True, unique=True)
     company_name = db.Column(db.String(100), nullable=False)
-    logo = db.Column(db.String(255), nullable=False)
+    logo = db.Column(db.LargeBinary, nullable=False)
     employees = db.Column(db.Integer, nullable=True)
     sector = db.Column(db.String(40), nullable=False)
     industry = db.Column(db.String(40), nullable=False)
@@ -19,7 +21,7 @@ class Stock(db.Model):
     isin = db.Column(db.String(50), nullable=False)
 
     def __init__(self, stock_symbol):
-        self.stock_symbol = stock_symbol
+        self.stock_symbol = stock_symbol.upper()
         search_stock = yf.Ticker(self.stock_symbol)
         self.company_name = search_stock.info['longName'] if 'longName' in search_stock.info.keys() else None
         self.logo = requests.get(search_stock.info['logo_url']).content if 'logo_url' in search_stock.info.keys() \
@@ -32,11 +34,6 @@ class Stock(db.Model):
         self.currency = search_stock.info['financialCurrency'] if 'financialCurrency' in search_stock.info.keys() \
             else None
         self.isin = search_stock.isin
-
-    @staticmethod
-    def add_to_stock(stock_item):
-        db.session.add(stock_item)
-        db.session.commit()
 
     @staticmethod
     def check_if_exists(stock_symbol):
@@ -55,10 +52,11 @@ class Price(db.Model):
     targetMean = db.Column(db.Float, nullable=False)
     targetHigh = db.Column(db.Float, nullable=False)
     recommendationMean = db.Column(db.Float, nullable=False)
+    lastModify = db.Column(db.DateTime)
     CheckConstraint('price >=0', name='priceChecking')
 
     def __init__(self, stock_symbol):
-        self.stock_symbol = stock_symbol
+        self.stock_symbol = stock_symbol.upper()
         search_stock = yf.Ticker(self.stock_symbol)
         self.price = search_stock.info['currentPrice'] if 'currentPrice' in search_stock.info.keys() else None
         self.recommendation = search_stock.info['recommendationKey'] if 'recommendationKey' in \
@@ -71,6 +69,8 @@ class Price(db.Model):
             else None
         self.recommendationMean = search_stock.info['recommendationMean'] if 'recommendationMean' in \
                                                                              search_stock.info.keys() else None
+
+        self.lastModify = datetime.utcnow()
 
     @staticmethod
     def add_to_price(price_item):
@@ -90,6 +90,7 @@ class Price(db.Model):
                 search_price.targetMean = price_item.targetMean
                 search_price.targetHigh = price_item.targetHigh
                 search_price.recommendationMean = price_item.recommendationMean
+                search_price.lastModify = datetime.utcnow()
                 db.session.commit()
                 return True
         else:

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 import yfinance
 import threading
@@ -8,6 +10,8 @@ from app.database.models import Stock, Price
 
 def addStockDAO(stock_symbol):
     new_stock = Stock(stock_symbol=stock_symbol)
+    db.session.add(new_stock)
+    db.session.commit()
     if new_stock.company_name is None:
         return False
     check_stock = Stock.check_if_exists(stock_symbol=stock_symbol)
@@ -16,10 +20,11 @@ def addStockDAO(stock_symbol):
         if check_price is False:
             new_price = Price(stock_symbol=stock_symbol)
             Price.add_to_price(new_price)
-        elif check_price is False:
+        elif check_price is True:
             update_price = Price(stock_symbol=stock_symbol)
             Price.update_price(update_price)
-        Stock.add_to_stock(new_stock)
+        db.session.add(new_stock)
+        db.session.commit()
 
 
 def updateStockAsync(stock):
@@ -39,7 +44,6 @@ def updateStockAsync(stock):
 
 
 def updateStockDAO():
-    print("Stock")
     stocks = Stock.query.all()
     list_threads = []
     for stock in stocks:
@@ -50,7 +54,8 @@ def updateStockDAO():
         t.join()
 
 
-def updatePriceAsync(price):
+def updatePriceAsync(stock_symbol, date):
+    price = Price.query.filter_by(stock_symbol=stock_symbol).first()
     search_price = yfinance.Ticker(price.stock_symbol)
     price.price = search_price.info['currentPrice'] if 'currentPrice' in search_price.info.keys() else None
     price.recommendation = search_price.info['recommendationKey'] if 'recommendationKey' in \
@@ -63,16 +68,20 @@ def updatePriceAsync(price):
         else None
     price.recommendationMean = search_price.info['recommendationMean'] if 'recommendationMean' in \
                                                                           search_price.info.keys() else None
-    db.session.commit()
+
+    if Price.query.filter_by(stock_symbol=stock_symbol).first().lastModify < date \
+            and not (price.targetLow is None or price.targetMean is None or price.targetHigh is None
+                     or price.recommendationMean is None):
+        price.lastModify = date
+        db.session.commit()
 
 
 def updatePriceDAO():
-    print("Price")
     prices = Price.query.all()
+    db.session.close()
     list_threads = []
     for price in prices:
-        t = threading.Thread(target=updatePriceAsync, args=(price,))
-        list_threads.append(t)
-        t.start()
-    for t in list_threads:
-        t.join()
+        if isinstance(price, Price):
+            t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
+            list_threads.append(t)
+            t.start()

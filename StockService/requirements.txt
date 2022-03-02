@@ -10,3 +10,4 @@ alembic
 apscheduler
 pyOpenSSL
 thread6
+mysqlclient
