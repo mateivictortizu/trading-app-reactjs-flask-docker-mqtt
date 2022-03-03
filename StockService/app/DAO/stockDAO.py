@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import yfinance
@@ -23,7 +23,7 @@ def addStockDAO(stock_symbol):
         Price.update_price(update_price)
     db.session.commit()
 
-
+# TODO check update stock async and rework it in case of errors
 def updateStockAsync(stock):
     search_stock = yfinance.Ticker(stock.stock_symbol.upper())
     if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
@@ -58,23 +58,22 @@ def updateStockAsync(stock):
         return
     stock.isin = search_stock.isin
     db.session.commit()
+    db.session.remove()
 
 
 def updateStockDAO():
-    stocks = Stock.query.all()
-    list_threads = []
+    stocks = db.session.query(Stock).all()
+    db.session.remove()
     for stock in stocks:
         t = threading.Thread(target=updateStockAsync, args=(stock,))
-        list_threads.append(t)
         t.start()
-    for t in list_threads:
-        t.join()
 
 
 def updatePriceAsync(stock_symbol, date):
     stock_symbol = stock_symbol.upper()
-    price = Price.query.filter_by(stock_symbol=stock_symbol).first()
+    price = db.session.query(Price).filter_by(stock_symbol=stock_symbol).first()
     search_price = yfinance.Ticker(price.stock_symbol)
+    print(search_price)
     if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
         price.price = search_price.info['currentPrice']
     else:
@@ -104,19 +103,16 @@ def updatePriceAsync(stock_symbol, date):
     else:
         return
 
-    if Price.query.filter_by(stock_symbol=stock_symbol).first().lastModify < date:
+    if db.session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:
         price.lastModify = date
         db.session.commit()
+    db.session.remove()
 
 
 def updatePriceDAO():
-    prices = Price.query.all()
-    db.session.close()
-    list_threads = []
+    prices = db.session.query(Price).all()
+    db.session.remove()
     for price in prices:
         if isinstance(price, Price):
             t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
-            list_threads.append(t)
             t.start()
-    for t in list_threads:
-        t.join(4)
