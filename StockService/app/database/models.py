@@ -23,16 +23,32 @@ class Stock(db.Model):
     def __init__(self, stock_symbol):
         self.stock_symbol = stock_symbol.upper()
         search_stock = yf.Ticker(self.stock_symbol)
-        self.company_name = search_stock.info['longName'] if 'longName' in search_stock.info.keys() else None
-        self.logo = requests.get(search_stock.info['logo_url']).content if 'logo_url' in search_stock.info.keys() \
-            else None
+        if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
+            self.company_name = search_stock.info['longName']
+        else:
+            return
+        if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+            self.logo = requests.get(search_stock.info['logo_url']).content
+        else:
+            return
         self.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
             else None
-        self.sector = search_stock.info['sector'] if 'sector' in search_stock.info.keys() else None
-        self.industry = search_stock.info['industry'] if 'industry' in search_stock.info.keys() else None
-        self.market_name = search_stock.info['market'] if 'market' in search_stock.info.keys() else None
-        self.currency = search_stock.info['financialCurrency'] if 'financialCurrency' in search_stock.info.keys() \
-            else None
+        if 'sector' in search_stock.info.keys() and search_stock.info['sector'] is not None:
+            self.sector = search_stock.info['sector']
+        else:
+            return
+        if 'industry' in search_stock.info.keys() and search_stock.info['industry'] is not None:
+            self.industry = search_stock.info['industry']
+        else:
+            return
+        if 'market' in search_stock.info.keys() and search_stock.info['market'] is not None:
+            self.market_name = search_stock.info['market']
+        else:
+            return
+        if 'financialCurrency' in search_stock.info.keys() and search_stock.info['financialCurrency'] is not None:
+            self.currency = search_stock.info['financialCurrency']
+        else:
+            return
         self.isin = search_stock.isin
 
     @staticmethod
@@ -58,24 +74,28 @@ class Price(db.Model):
     def __init__(self, stock_symbol):
         self.stock_symbol = stock_symbol.upper()
         search_stock = yf.Ticker(self.stock_symbol)
-        self.price = search_stock.info['currentPrice'] if 'currentPrice' in search_stock.info.keys() else None
-        self.recommendation = search_stock.info['recommendationKey'] if 'recommendationKey' in \
-                                                                        search_stock.info.keys() else None
-        self.targetLow = search_stock.info['targetLowPrice'] if 'targetLowPrice' in search_stock.info.keys() \
-            else None
-        self.targetMean = search_stock.info['targetMeanPrice'] if 'targetMeanPrice' in search_stock.info.keys() \
-            else None
-        self.targetHigh = search_stock.info['targetHighPrice'] if 'targetHighPrice' in search_stock.info.keys() \
-            else None
-        self.recommendationMean = search_stock.info['recommendationMean'] if 'recommendationMean' in \
-                                                                             search_stock.info.keys() else None
-
+        if 'currentPrice' in search_stock.info.keys() and search_stock.info['currentPrice'] is not None:
+            self.price = search_stock.info['currentPrice']
+        else:
+            return
+        if 'recommendationKey' in search_stock.info.keys() and search_stock.info['recommendationKey'] is not None:
+            self.recommendation = search_stock.info['recommendationKey']
+        if 'targetLowPrice' in search_stock.info.keys() and search_stock.info['targetLowPrice'] is not None:
+            self.targetLow = search_stock.info['targetLowPrice']
+        if 'targetMeanPrice' in search_stock.info.keys() and search_stock.info['targetMeanPrice'] is not None:
+            self.targetMean = search_stock.info['targetMeanPrice']
+        else:
+            return
+        if 'targetHighPrice' in search_stock.info.keys() and search_stock.info['targetHighPrice'] is not None:
+            self.targetHigh = search_stock.info['targetHighPrice']
+        else:
+            return
+        if 'recommendationMean' in search_stock.info.keys() and search_stock.info['recommendationMean'] is not None:
+            self.recommendationMean = search_stock.info['recommendationMean']
+        else:
+            return
         self.lastModify = datetime.utcnow()
 
-    @staticmethod
-    def add_to_price(price_item):
-        db.session.add(price_item)
-        db.session.commit()
 
     @staticmethod
     def update_price(price_item):
