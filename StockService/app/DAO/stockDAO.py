@@ -22,6 +22,7 @@ def addStockDAO(stock_symbol):
         update_price = Price(stock_symbol=stock_symbol)
         Price.update_price(update_price)
     db.session.commit()
+    db.session.remove()
 
 
 # TODO check update stock async and rework it in case of errors

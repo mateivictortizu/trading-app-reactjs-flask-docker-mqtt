@@ -7,9 +7,14 @@ app = Flask(__name__)
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://matteovk:admin@localhost/stock'
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 30, "pool_timeout": 9, 'connect_args': {
-    'connect_timeout': 5
-}}
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 30, "pool_timeout": 9,
+                                           'connect_args': {'connect_timeout': 5},
+                                           'execution_options': {"timeout": 1.0,
+                                                                 "statement_timeout": 1.0,
+                                                                 "query_timeout": 1.0,
+                                                                 "execution_timeout": 1.0
+                                                                 }
+                                           }
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, 'app/database/migrations')
