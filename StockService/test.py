@@ -2,7 +2,7 @@ import threading
 from urllib import parse
 
 import requests
-import yfinance as yf
+import yfinance_ez as yf
 import time
 
 
@@ -13,5 +13,4 @@ def functionForTicker(stock):
 
 if __name__ == '__main__':
     from app.database.models import Price
-    while True:
-        functionForTicker("GMS")
+    functionForTicker("MULN")

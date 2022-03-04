@@ -23,6 +23,7 @@ def addStockDAO(stock_symbol):
         Price.update_price(update_price)
     db.session.commit()
 
+
 # TODO check update stock async and rework it in case of errors
 def updateStockAsync(stock):
     search_stock = yfinance.Ticker(stock.stock_symbol.upper())
@@ -70,37 +71,48 @@ def updateStockDAO():
 
 
 def updatePriceAsync(stock_symbol, date):
+    if datetime.utcnow() > date + timedelta(seconds=10):
+        return
     stock_symbol = stock_symbol.upper()
     price = db.session.query(Price).filter_by(stock_symbol=stock_symbol).first()
-    search_price = yfinance.Ticker(price.stock_symbol)
-    print(search_price)
+    try:
+        search_price = yfinance.Ticker(price.stock_symbol)
+    except Exception:
+        db.session.remove()
+        return
     if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
         price.price = search_price.info['currentPrice']
     else:
+        db.session.remove()
         return
 
     if 'recommendationKey' in search_price.info.keys() and search_price.info['recommendationKey'] is not None:
         price.recommendation = search_price.info['recommendationKey']
     else:
+        db.session.remove()
         return
 
     if 'targetLowPrice' in search_price.info.keys() and search_price.info['targetLowPrice'] is not None:
         price.targetLow = search_price.info['targetLowPrice']
     else:
+        db.session.remove()
         return
 
     if 'targetMeanPrice' in search_price.info.keys() and search_price.info['targetMeanPrice'] is not None:
         price.targetMean = search_price.info['targetMeanPrice']
     else:
+        db.session.remove()
         return
 
     if 'targetHighPrice' in search_price.info.keys() and search_price.info['targetHighPrice'] is not None:
         price.targetHigh = search_price.info['targetHighPrice']
     else:
+        db.session.remove()
         return
     if 'recommendationMean' in search_price.info.keys() and search_price.info['recommendationMean'] is not None:
         price.recommendationMean = search_price.info['recommendationMean']
     else:
+        db.session.remove()
         return
 
     if db.session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:

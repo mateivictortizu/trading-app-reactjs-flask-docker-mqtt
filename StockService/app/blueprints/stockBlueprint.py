@@ -11,7 +11,7 @@ stockBP = Blueprint('stockBlueprint', __name__)
 
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(updateStockDAO, 'interval', seconds=30)
+#sched.add_job(updateStockDAO, 'interval', seconds=30)
 sched.add_job(updatePriceDAO, 'interval', seconds=5)
 sched.start()
 
