@@ -51,13 +51,6 @@ class Stock(db.Model):
             return
         self.isin = search_stock.isin
 
-    @staticmethod
-    def check_if_exists(stock_symbol):
-        search_stock = Stock.query.filter_by(stock_symbol=stock_symbol).first()
-        if search_stock is None:
-            return False
-        return True
-
 
 class Price(db.Model):
     __tablename__ = 'prices'
@@ -73,7 +66,10 @@ class Price(db.Model):
 
     def __init__(self, stock_symbol):
         self.stock_symbol = stock_symbol.upper()
-        search_stock = yf.Ticker(self.stock_symbol)
+        try:
+            search_stock = yf.Ticker(self.stock_symbol)
+        except Exception:
+            return
         if 'currentPrice' in search_stock.info.keys() and search_stock.info['currentPrice'] is not None:
             self.price = search_stock.info['currentPrice']
         else:
@@ -96,12 +92,12 @@ class Price(db.Model):
             return
         self.lastModify = datetime.utcnow()
 
-
     @staticmethod
     def update_price(price_item):
         if isinstance(price_item, Price):
-            search_price = Price.query.filter_by(stock_symbol=price_item.stock_symbol).first()
+            search_price = db.session.query(Price).filter_by(stock_symbol=price_item.stock_symbol).first()
             if search_price is None:
+                db.session.remove()
                 return False
             else:
                 search_price.price = price_item.price
@@ -112,13 +108,16 @@ class Price(db.Model):
                 search_price.recommendationMean = price_item.recommendationMean
                 search_price.lastModify = datetime.utcnow()
                 db.session.commit()
+                db.session.remove()
                 return True
         else:
+            db.session.remove()
             return False
 
     @staticmethod
     def check_if_exists(stock_symbol):
-        search_price = Price.query.filter_by(stock_symbol=stock_symbol).first()
+        search_price = db.session.query(Price).filter_by(stock_symbol=stock_symbol).first()
+        db.session.remove()
         if search_price is None:
             return False
         return True

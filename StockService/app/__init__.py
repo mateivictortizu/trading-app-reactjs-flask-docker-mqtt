@@ -24,4 +24,10 @@ from app.blueprints import stockBlueprint
 
 app.register_blueprint(stockBlueprint.stockBP)
 
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
+
+
 from app.database import models

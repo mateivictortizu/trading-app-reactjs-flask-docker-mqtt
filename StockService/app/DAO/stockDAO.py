@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 
 import requests
@@ -13,29 +14,40 @@ def addStockDAO(stock_symbol):
     new_stock = Stock(stock_symbol=stock_symbol)
     if new_stock.company_name is None:
         return False
-    db.session.add(new_stock)
     check_price = Price.check_if_exists(stock_symbol=stock_symbol)
     if check_price is False:
         new_price = Price(stock_symbol=stock_symbol)
+        db.session.add(new_stock)
         db.session.add(new_price)
     elif check_price is True:
         update_price = Price(stock_symbol=stock_symbol)
+        db.session.add(new_stock)
         Price.update_price(update_price)
     db.session.commit()
     db.session.remove()
 
 
 # TODO check update stock async and rework it in case of errors
-def updateStockAsync(stock):
-    search_stock = yfinance.Ticker(stock.stock_symbol.upper())
+def updateStockAsync(stock_symbol, date):
+    if datetime.utcnow() > date + timedelta(seconds=30):
+        return
+    stock_symbol = stock_symbol.upper()
+    stock = db.session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
+    try:
+        search_stock = yfinance.Ticker(stock_symbol)
+    except Exception:
+        db.session.remove()
+        return
     if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
         stock.company_name = search_stock.info['longName']
     else:
+        db.session.remove()
         return
 
     if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
         stock.logo = requests.get(search_stock.info['logo_url']).content
     else:
+        db.session.remove()
         return
 
     stock.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
@@ -44,19 +56,25 @@ def updateStockAsync(stock):
     if 'sector' in search_stock.info.keys() and search_stock.info['sector'] is not None:
         stock.sector = search_stock.info['sector']
     else:
+        db.session.remove()
         return
 
     if 'industry' in search_stock.info.keys() and search_stock.info['industry'] is not None:
         stock.industry = search_stock.info['industry']
     else:
+        db.session.remove()
         return
+
     if 'market' in search_stock.info.keys() and search_stock.info['market'] is not None:
         stock.market_name = search_stock.info['market']
     else:
+        db.session.remove()
         return
+
     if 'financialCurrency' in search_stock.info.keys() and search_stock.info['financialCurrency'] is not None:
         stock.currency = search_stock.info['financialCurrency']
     else:
+        db.session.remove()
         return
     stock.isin = search_stock.isin
     db.session.commit()
@@ -67,8 +85,11 @@ def updateStockDAO():
     stocks = db.session.query(Stock).all()
     db.session.remove()
     for stock in stocks:
-        t = threading.Thread(target=updateStockAsync, args=(stock,))
+        t = threading.Thread(target=updateStockAsync, args=(stock.stock_symbol, datetime.utcnow()))
+        t.daemon = True
         t.start()
+        time.sleep(10)
+        print("Sent {} to update data".format(stock.stock_symbol))
 
 
 def updatePriceAsync(stock_symbol, date):
@@ -120,6 +141,7 @@ def updatePriceAsync(stock_symbol, date):
         price.lastModify = date
         db.session.commit()
     db.session.remove()
+    db.session.close()
 
 
 def updatePriceDAO():
@@ -128,4 +150,5 @@ def updatePriceDAO():
     for price in prices:
         if isinstance(price, Price):
             t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
+            t.daemon = True
             t.start()
