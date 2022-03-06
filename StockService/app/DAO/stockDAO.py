@@ -141,7 +141,6 @@ def updatePriceAsync(stock_symbol, date):
         price.lastModify = date
         db.session.commit()
     db.session.remove()
-    db.session.close()
 
 
 def updatePriceDAO():
