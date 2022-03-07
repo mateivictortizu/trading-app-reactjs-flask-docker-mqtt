@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="">
+    <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/../FundsService/app/blueprints/fundsBlueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/../FundsService/app/blueprints/fundsBlueprint.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../StockService/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../StockService/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../StockService/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../StockService/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/UserService.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/UserService.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DAO/userDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DAO/userDAO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/userBlueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/userBlueprint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,9 +29,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Docker.Dockerfile">
     <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="UserService" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -59,6 +55,14 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -69,8 +73,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.run" />
+        <item itemvalue="Docker.Dockerfile" />
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Python.run" />
       </list>
     </recent_temporary>
   </component>
@@ -83,6 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646685203987</updated>
       <workItem from="1646685206204" duration="479000" />
+      <workItem from="1646694801863" duration="848000" />
     </task>
     <servers />
   </component>
@@ -94,23 +100,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>62</line>
+          <line>78</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>63</line>
+          <line>79</line>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>95</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>94</line>
-          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/utils/myjwt.py</url>
