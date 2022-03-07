@@ -48,8 +48,8 @@ class User(db.Model):
     @staticmethod
     def check_user(password, identifier=None):
         if identifier is not None:
-            search_user = User.query.filter_by(username=identifier).first()
-            search_email = User.query.filter_by(email=identifier).first()
+            search_user = db.session.query(User).filter_by(username=identifier).first()
+            search_email = db.session.query(User).filter_by(email=identifier).first()
             if search_user is None:
                 pass
             else:
@@ -70,24 +70,31 @@ class User(db.Model):
 
     @staticmethod
     def check_if_username_exists(username):
-        search_user = User.query.filter_by(username=username).first()
+        search_user = db.session.query(User).filter_by(username=username).first()
         if search_user is None:
             return False
         return True
 
     @staticmethod
     def check_if_email_exists(email):
-        search_user = User.query.filter_by(email=email).first()
+        search_user = db.session.query(User).filter_by(email=email).first()
+        if search_user is None:
+            return False
+        return True
+
+    @staticmethod
+    def check_if_phone_exists(phone):
+        search_user = db.session.query(User).filter_by(phone=phone).first()
         if search_user is None:
             return False
         return True
 
     @staticmethod
     def get_user_by_identifier(identifier):
-        search_user = User.query.filter_by(email=identifier).first()
+        search_user = db.session.query(User).filter_by(email=identifier).first()
         if search_user is not None:
             return search_user
-        search_user = User.query.filter_by(username=identifier).first()
+        search_user = db.session.query(User).filter_by(username=identifier).first()
         if search_user is not None:
             return search_user
         return None
@@ -155,7 +162,7 @@ class Token(db.Model):
 
     @staticmethod
     def check_token(auth_token):
-        res = Token.query.filter_by(token=str(auth_token)).first()
+        res = db.session.query(Token).filter_by(token=str(auth_token)).first()
         if res:
             if res.blacklisted:
                 return False
@@ -198,7 +205,7 @@ class OTP(db.Model):
     @staticmethod
     def check_otp(identifier, code):
         date_now = datetime.utcnow() + timedelta(minutes=-10)
-        search_otp = OTP.query.filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
+        search_otp = db.session.query(OTP).filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
         if search_otp:
             if search_otp.issue_date > date_now:
                 return True
@@ -206,7 +213,7 @@ class OTP(db.Model):
                 db.session.delete(search_otp)
                 db.session.commit()
                 return False
-        search_otp = OTP.query.filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
+        search_otp = db.session.query(OTP).filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
         if search_otp:
             if search_otp.issue_date > date_now:
                 return True
@@ -223,13 +230,13 @@ class OTP(db.Model):
 
     @staticmethod
     def delete_all_otp_from_identifier(identifier):
-        OTP.query.filter_by(username=identifier).delete()
+        db.session.query(OTP).filter_by(username=identifier).delete()
         db.session.commit()
 
     @staticmethod
     def increment_no_of_tries(identifier):
         date_now = datetime.utcnow() + timedelta(minutes=-10)
-        search_otp = OTP.query.filter_by(username=identifier).order_by(desc(OTP.issue_date)).first()
+        search_otp = db.session.query(OTP).filter_by(username=identifier).order_by(desc(OTP.issue_date)).first()
         if search_otp:
             if search_otp.issue_date > date_now:
                 search_otp.number_of_tries = search_otp.number_of_tries + 1
@@ -258,14 +265,11 @@ class OTPToken(db.Model):
 
     @staticmethod
     def check_token(auth_token):
-        res = OTPToken.query.filter_by(token=str(auth_token)).first()
-        if res:
-            if res.blacklisted:
-                return False
-            else:
-                return True
-        else:
+        res = db.session.query(OTPToken).filter_by(token=str(auth_token)).first()
+        if res is None:
             return False
+        else:
+            return True
 
     @staticmethod
     def add_to_token(token):

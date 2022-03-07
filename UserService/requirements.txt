@@ -6,9 +6,10 @@ flask_migrate
 flask_json_schema
 flask_mail
 alembic
-jwt
 SQLAlchemy
 PyJWT
 itsdangerous
 flask_executor
 pyOpenSSL
+requests
+mysqlclient

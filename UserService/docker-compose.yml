@@ -1,0 +1,51 @@
+version: '2.9'
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+    volumes:
+      - .:/userService
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=matteovk
+      - DB_PASSWORD=admin
+      - DB_DATABASE=stock
+    depends_on:
+      mysql:
+        condition: service_healthy
+    links:
+      - 'mysql'
+    networks:
+      - user_network
+
+  mysql:
+    image: mysql:latest
+    cap_add:
+      - SYS_NICE
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=stock
+      - MYSQL_USER=matteovk
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - mysql:/var/lib/mysql
+      - mysql_config:/etc/mysql
+    ports:
+      - "3308:3306"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - user_network
+
+networks:
+  user_network:
+volumes:
+  mysql:
+  mysql_config:

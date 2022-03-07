@@ -61,7 +61,7 @@ def validate_account(validation_code):
 @schema.validate(resend_validate_schema)
 def resend_validate_account():
     identifier = request.json['identifier']
-    return resend_validate_accountDAO(executor, request, current_app, mail, identifier)
+    return resend_validate_accountDAO(executor, request, current_app, db, mail, identifier)
 
 
 @userBP.route('/validate-otp', methods=['POST'])
@@ -69,7 +69,7 @@ def resend_validate_account():
 def validate_otp():
     otp_jwt = request.headers.get('Authorization')
     code = request.json['code']
-    return validate_otpDAO(current_app, otp_jwt, code)
+    return validate_otpDAO(current_app, db, otp_jwt, code)
 
 
 @userBP.route('/resend-otp', methods=['POST'])
@@ -80,7 +80,7 @@ def resend_otp():
 
 @userBP.route('/logout', methods=['DELETE'])
 def logout():
-    return logoutDAO(request)
+    return logoutDAO(request,db)
 
 
 @schema.validate(change_password_schema)
@@ -89,4 +89,4 @@ def change_password():
     identifier = request.json['identifier']
     password = request.json['password']
     new_password = request.json['new_password']
-    return change_passwordDAO(identifier, password, new_password)
+    return change_passwordDAO(identifier, db, password, new_password)
