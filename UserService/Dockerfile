@@ -1,10 +1,9 @@
 FROM python:3.9.10-buster
 
-COPY . /userService
-WORKDIR /userService
+WORKDIR /app
+
+COPY . .
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT [ "python" ]
-
-CMD ["run.py" ]
+CMD gunicorn --bind 0.0.0.0:5001 wsgi:application

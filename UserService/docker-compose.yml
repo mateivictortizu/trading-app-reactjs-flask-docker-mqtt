@@ -4,11 +4,7 @@ services:
     build: .
     restart: always
     ports:
-      - "5001:5001"
-    expose:
       - "5001"
-    volumes:
-      - .:/userService
     environment:
       - DB_HOST=mysql
       - DB_USER=matteovk
@@ -24,8 +20,6 @@ services:
 
   mysql:
     image: mysql:latest
-    cap_add:
-      - SYS_NICE
     environment:
       - MYSQL_ROOT_PASSWORD=test
       - MYSQL_DATABASE=stock
@@ -44,6 +38,16 @@ services:
     networks:
       - user_network
 
+  nginx:
+      image: nginx:latest
+      volumes:
+          - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      depends_on:
+          - web
+      ports:
+          - "80:80"
+      networks:
+        - user_network
 networks:
   user_network:
 volumes:

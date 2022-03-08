@@ -13,3 +13,4 @@ flask_executor
 pyOpenSSL
 requests
 mysqlclient
+gunicorn
