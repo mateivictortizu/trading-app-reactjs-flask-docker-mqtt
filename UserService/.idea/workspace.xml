@@ -2,12 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/../StockService/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/stocks.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +43,7 @@
       <recent name="D:\Anul IV\LICENTA\UserService\app" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.wsgi (1)">
+  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
     <configuration name="wsgi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="UserService" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -98,7 +105,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.wsgi (1)" />
         <item itemvalue="Python.wsgi" />
         <item itemvalue="Docker.Dockerfile" />
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />

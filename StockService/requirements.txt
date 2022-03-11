@@ -11,3 +11,4 @@ apscheduler
 pyOpenSSL
 thread6
 mysqlclient
+gunicorn

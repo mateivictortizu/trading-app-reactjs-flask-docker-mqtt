@@ -1,0 +1,110 @@
+version: '2.9'
+services:
+  webuser:
+    build: UserService
+    restart: always
+    ports:
+      - "5001"
+    environment:
+      - DB_HOST=mysqluser
+      - DB_USER=matteovk
+      - DB_PASSWORD=admin
+      - DB_DATABASE=users
+    depends_on:
+      mysqluser:
+        condition: service_healthy
+    links:
+      - 'mysqluser'
+    networks:
+      - network
+      
+  mysqluser:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=users
+      - MYSQL_USER=matteovk
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - mysqluser:/var/lib/mysql
+      - mysqlconfig:/etc/mysql
+    ports:
+      - "3309:3307"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - network
+
+  nginxuser:
+      image: nginx:latest
+      volumes:
+          - ./UserService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./UserService/cert.pem:/etc/nginx/cert.pem
+          - ./UserService/key.pem:/etc/nginx/key.pem
+      depends_on:
+          - webuser
+      ports:
+          - "5001:5001"
+      networks:
+        - network
+        
+  webstock:
+    build: StockService
+    restart: always
+    ports:
+      - "5000"
+    environment:
+      - DB_HOST=mysqlstock
+      - DB_USER=matteovk
+      - DB_PASSWORD=admin
+      - DB_DATABASE=stocks
+    depends_on:
+      mysqlstock:
+        condition: service_healthy
+    links:
+      - 'mysqlstock'
+    networks:
+      - network
+      
+  mysqlstock:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=stocks
+      - MYSQL_USER=matteovk
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - mysqlstock:/var/lib/mysql
+      - mysqlconfig:/etc/mysql
+    ports:
+      - "3308:3306"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - network
+  
+  nginxstock:
+      image: nginx:latest
+      volumes:
+          - ./StockService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./StockService/cert.pem:/etc/nginx/cert.pem
+          - ./StockService/key.pem:/etc/nginx/key.pem
+      depends_on:
+          - webstock
+      ports:
+          - "5000:5000"
+      networks:
+        - network
+        
+networks:
+  network:
+volumes:
+  mysqluser:
+  mysqlstock:
+  mysqlconfig:
