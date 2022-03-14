@@ -101,7 +101,17 @@ services:
           - "5000:5000"
       networks:
         - network
-        
+  
+  backgroundscheduler:
+      build: BackgroundService
+      restart: always
+      environment:
+       - STOCK_HOST=nginxstock:5000
+       - STOCK_PROTOCOL=https
+      depends_on:
+       - nginxstock
+      networks:
+       - network  
 networks:
   network:
 volumes:
