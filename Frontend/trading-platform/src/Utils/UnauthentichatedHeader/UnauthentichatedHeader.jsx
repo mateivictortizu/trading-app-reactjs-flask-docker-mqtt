@@ -30,8 +30,54 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function UnauthentichatedHeader ()
 {
 
+
     const [openLogin, setOpenLogin] = React.useState(false);
     const [openRegister, setOpenRegister] = React.useState(false);
+
+    const [identifierLogin, setIdentifierLogin] = React.useState("");
+    const handleChangeIdentifierLogin =(event)=>{
+        setIdentifierLogin(event.target.value);
+    };
+
+    const [passwordLogin, setPasswordLogin] = React.useState("");
+    const handleChangePasswordLogin =(event)=>{
+        setPasswordLogin(event.target.value);
+    };
+
+    const [usernameRegister, setUsernameRegister] = React.useState("");
+    const handleChangeUsernameRegister =(event)=>{
+        setUsernameRegister(event.target.value);
+    };
+
+    const [passwordRegister, setPasswordRegister] = React.useState("");
+    const handleChangePasswordRegister =(event)=>{
+        setPasswordRegister(event.target.value);
+    };
+
+    const [emailRegister, setEmailRegister] = React.useState("");
+    const handleChangeEmailRegister =(event)=>{
+        setEmailRegister(event.target.value);
+    };
+
+    const [phoneRegister, setPhoneRegister] = React.useState("");
+    const handleChangePhoneRegister =(event)=>{
+        setPhoneRegister(event.target.value);
+    };
+
+    const [nameRegister, setNameRegister] = React.useState("");
+    const handleChangeNameRegister =(event)=>{
+        setNameRegister(event.target.value);
+    };
+
+    const [surnameRegister, setSurnameRegister] = React.useState("");
+    const handleChangeSurnameRegister =(event)=>{
+        setSurnameRegister(event.target.value);
+    };
+
+    const [addressRegister, setAddressRegister] = React.useState("");
+    const handleChangeAddressRegister =(event)=>{
+        setAddressRegister(event.target.value);
+    };
 
     const [country, setCountry] = React.useState("");
     const handleChangeCountry =(event)=>{
@@ -43,10 +89,9 @@ export default function UnauthentichatedHeader ()
         setNationality(event.target.value);
     }
 
-    const [value, setValue] = React.useState(new Date());
-
-    const handleChange = (newValue) => {
-      setValue(newValue);
+    const [dateRegister, setDateRegister] = React.useState(new Date());
+    const handleChangeDateRegister = (newValue) => {
+      setDateRegister(newValue);
     };
 
     const handleClickOpenLogin = () => {
@@ -54,11 +99,40 @@ export default function UnauthentichatedHeader ()
     };
   
     const handleCloseLogin = () => {
+      setIdentifierLogin("");
+      setPasswordLogin("");
       setOpenLogin(false);
     };
 
     const handleSendLogin = () => {
-        setOpenLogin(false);
+        fetch("https://127.0.0.1:5001/login",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                identifier: identifierLogin,
+                password: passwordLogin,
+            }),        
+        })
+        .then((data) => {
+            if (data.status === 200) {
+              data.json().then((message)=>{
+                console.log(message);
+              });
+
+            } else if (data.status === 404 || data.status === 400 | data.status===401) {
+              data.json().then((message) => {
+                  console.log(message)
+              });
+            } else {
+              throw new Error("Internal server error");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        handleCloseLogin();
     };
 
     const handleClickOpenRegister = () => {
@@ -66,25 +140,71 @@ export default function UnauthentichatedHeader ()
       };
     
       const handleCloseRegister = () => {
+        setUsernameRegister("");
+        setPasswordRegister("");
+        setEmailRegister("");
+        setNameRegister("");
+        setSurnameRegister("");
+        setAddressRegister("");
+        setCountry("");
+        setNationality("");
+        setDateRegister(new Date());
         setOpenRegister(false);
       };
   
       const handleSendRegister = () => {
-          setOpenRegister(false);
+          var dateBirthRegister=dateRegister.toUTCString()
+          console.log(dateRegister);
+        fetch("https://127.0.0.1:5001/register",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: usernameRegister,
+                password: passwordRegister,
+                email: emailRegister,
+                name: nameRegister,
+                surname: surnameRegister,
+                address: addressRegister,
+                nationality: nationality,
+                phone: phoneRegister,
+                date_of_birth: dateBirthRegister,
+                country: country
+            }),        
+        })
+        .then((data) => {
+            if (data.status === 201) {
+              data.json().then((message)=>{
+                console.log(message);
+              });
+
+            } else if (data.status === 404 || data.status === 400 | data.status===401) {
+              data.json().then((message) => {
+                  console.log(message)
+              });
+            } else {
+              throw new Error("Internal server error");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          handleCloseRegister();
       };
 
     return (
-
         <header className="header">
             <div className="header_header-container header_accent">
-                <section className="warning">
-                    <div className="main-wrapper">
-                        <div className="warningDiv">
-                            <p className="warningText">Investițiile pot să scadă sau să crească. Puteți primi înapoi mai puțin decât ați investit. Performanțele anterioare nu reprezintă o garanție a rezultatelor viitoare.</p>
+                <Box sx={{ flexGrow: 1 }}>
+                    <section className="warning">
+                        <div className="main-wrapper">
+                            <div className="warningDiv">
+                                <p className="warningText">Investițiile pot să scadă sau să crească. Puteți primi înapoi mai puțin decât ați investit. Performanțele anterioare nu reprezintă o garanție a rezultatelor viitoare.</p>
+                            </div>
                         </div>
-                    </div>
-                </section>
-
+                    </section>
+                </Box>
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar style={{ background: '#0066cc' }} position="static">
                         <Toolbar>
@@ -101,8 +221,10 @@ export default function UnauthentichatedHeader ()
                                 </svg>
                             </div>
                         </Typography>
-                        <Button variant="outlined" color="inherit" onClick={handleClickOpenRegister}>Register</Button>
-                        <Button color="inherit" onClick={handleClickOpenLogin}>Login</Button>
+                        <Stack spacing={2} direction="row">
+                            <Button variant="outlined" color='inherit' onClick={handleClickOpenRegister}>Register</Button>
+                            <Button color="inherit" onClick={handleClickOpenLogin}>Login</Button>
+                        </Stack>
                         </Toolbar>
                     </AppBar>
                 </Box>
@@ -118,17 +240,21 @@ export default function UnauthentichatedHeader ()
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="name"
+                        id="identifierLogin"
                         label="Username or Email Address"
                         type="string"
+                        value={identifierLogin}
+                        onChange={handleChangeIdentifierLogin}
                         fullWidth
                     />
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="password"
+                        id="passwordLogin"
                         label="Password"
                         type="password"
+                        value={passwordLogin}
+                        onChange={handleChangePasswordLogin}
                         fullWidth
                     />
                     </DialogContent>
@@ -152,6 +278,8 @@ export default function UnauthentichatedHeader ()
                         id="username"
                         label="Username"
                         type="string"
+                        value={usernameRegister}
+                        onChange={handleChangeUsernameRegister}
                         fullWidth
                     />
                     <TextField
@@ -160,6 +288,8 @@ export default function UnauthentichatedHeader ()
                         id="password"
                         label="Password"
                         type="password"
+                        value={passwordRegister}
+                        onChange={handleChangePasswordRegister}
                         fullWidth
                     />
                     <TextField
@@ -168,6 +298,8 @@ export default function UnauthentichatedHeader ()
                         id="email"
                         label="Email"
                         type="email"
+                        value={emailRegister}
+                        onChange={handleChangeEmailRegister}
                         fullWidth
                     />
                     <TextField
@@ -176,6 +308,8 @@ export default function UnauthentichatedHeader ()
                         id="phone"
                         label="Phone"
                         type="string"
+                        value={phoneRegister}
+                        onChange={handleChangePhoneRegister}
                         fullWidth
                     />                    
                     <TextField
@@ -184,6 +318,8 @@ export default function UnauthentichatedHeader ()
                         id="name"
                         label="Name"
                         type="string"
+                        value={nameRegister}
+                        onChange={handleChangeNameRegister}
                         fullWidth
                     />
                     <TextField
@@ -192,6 +328,8 @@ export default function UnauthentichatedHeader ()
                         id="surname"
                         label="Surname"
                         type="string"
+                        value={surnameRegister}
+                        onChange={handleChangeSurnameRegister}
                         fullWidth
                     />
                     <TextField
@@ -200,6 +338,8 @@ export default function UnauthentichatedHeader ()
                         id="address"
                         label="Address"
                         type="string"
+                        value={addressRegister}
+                        onChange={handleChangeAddressRegister}
                         fullWidth
 
                     />
@@ -251,8 +391,8 @@ export default function UnauthentichatedHeader ()
                                 <DesktopDatePicker
                                 label="Date of birth"
                                 inputFormat="dd/MM/yyyy"
-                                value={value}
-                                onChange={handleChange}
+                                value={dateRegister}
+                                onChange={handleChangeDateRegister}
                                 renderInput={(params) => <TextField {...params} />}
                                 />
                             </Stack>

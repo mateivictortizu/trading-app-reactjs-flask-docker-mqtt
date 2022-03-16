@@ -18,6 +18,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/date-fns": "^2.6.0",
     "also": "^0.0.14",
+    "https-agent": "^1.0.0",
     "material-ui": "^1.0.0-beta.47",
     "material-ui-colors": "^1.0.0",
     "material-ui-flags": "^1.2.4",
@@ -33,6 +34,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+	"start-pc": "set PORT=3001&& react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

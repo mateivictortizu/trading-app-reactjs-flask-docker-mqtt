@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/../BackgroundService/.idea/BackgroundService.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/app/DAO/stockDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/DAO/stockDAO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/app/blueprints/stockBlueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/blueprints/stockBlueprint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/entrypoint.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/Utils/UnauthentichatedHeader/UnauthentichatedHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/Utils/UnauthentichatedHeader/UnauthentichatedHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DAO/userDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DAO/userDAO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,12 +139,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>78</line>
+          <line>79</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>79</line>
+          <line>80</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
