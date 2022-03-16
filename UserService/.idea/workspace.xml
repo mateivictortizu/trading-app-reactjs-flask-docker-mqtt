@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/Utils/UnauthentichatedHeader/UnauthentichatedHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/Utils/UnauthentichatedHeader/UnauthentichatedHeader.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DAO/userDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DAO/userDAO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/entrypoint.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +32,7 @@
       <recent name="D:\Anul IV\LICENTA\UserService\app" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
+  <component name="RunManager" selected="Python.wsgi">
     <configuration name="wsgi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="UserService" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -116,6 +110,7 @@
       <updated>1646685203987</updated>
       <workItem from="1646685206204" duration="479000" />
       <workItem from="1646694801863" duration="848000" />
+      <workItem from="1647440545765" duration="2490000" />
     </task>
     <servers />
   </component>
@@ -139,12 +134,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>79</line>
+          <line>80</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>80</line>
+          <line>81</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -154,5 +149,8 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/UserService$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1647463880797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
