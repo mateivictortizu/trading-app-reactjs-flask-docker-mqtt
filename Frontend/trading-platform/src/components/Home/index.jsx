@@ -6,7 +6,6 @@ import "./Home.css"
 import InfoIcon from '@mui/icons-material/Info';
 import { Grid } from '@mui/material';
 import FadeIn from 'react-fade-in';
-import { Button } from "@mui/material";
 
 const Home = () => {
     document.title = "Invest"
@@ -18,62 +17,62 @@ const Home = () => {
                 <FadeIn transitionDuration="1000">
                     <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
                         <Typography
-                        component="h1"
-                        variant="h2"
-                        align="center"
-                        color="#FFF"
-                        gutterBottom
-                        style={{fontWeight: "550"}}
+                            component="h1"
+                            variant="h2"
+                            align="center"
+                            color="#FFF"
+                            gutterBottom
+                            style={{ fontWeight: "550" }}
                         >
 
-                                Investitii pentru toata lumea fara comision
+                            Investitii pentru toata lumea fara comision
 
                         </Typography>
                         <Typography variant="h5" align="center" color="#ffcc00" component="p" gutterBottom>
-                            <InfoIcon style={{position: 'relative', top: '8px'}} fontSize='large'></InfoIcon> Se pot aplica si alte taxe. <a>Consultati termenii nostri de tranzactionare</a>.
+                            <InfoIcon style={{ position: 'relative', top: '8px' }} fontSize='large'></InfoIcon> Se pot aplica si alte taxe. <a>Consultati termenii nostri de tranzactionare</a>.
                         </Typography>
-                        <Typography style={{fontWeight: "550"}} variant="h3" align="center" color="#FFF" background="white">
+                        <Typography style={{ fontWeight: "550" }} variant="h3" align="center" color="#FFF" background="white">
 
-                                Inregisreaza-te acum!
+                            Inregisreaza-te acum!
 
-                        </Typography>               
+                        </Typography>
                     </Container>
                 </FadeIn>
             </div>
             <div className="secondDiv">
                 <Container>
-                <div style={{ padding: 20 }}>
-                    <Grid container spacing={15} alignItems="center" justifyContent="center"  >
-                        <Grid item>                   
-                            <Typography style={{fontWeight: "550"}} variant="h4" align="center" color="#0066cc">
-                                1,5 milioane
-                            </Typography> 
-                            <Typography variant="h6" align="center" color="#000">
-                                clienti
-                            </Typography> 
+                    <div style={{ padding: 20 }}>
+                        <Grid container spacing={15} alignItems="center" justifyContent="center"  >
+                            <Grid item>
+                                <Typography style={{ fontWeight: "550" }} variant="h4" align="center" color="#0066cc">
+                                    1,5 milioane
+                                </Typography>
+                                <Typography variant="h6" align="center" color="#000">
+                                    clienti
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography style={{ fontWeight: "550" }} variant="h4" align="center" color="#0066cc">
+                                    3,5 miliarde de euro
+                                </Typography>
+                                <Typography variant="h6" align="center">
+                                    in activele clientilor
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography style={{ fontWeight: "550" }} variant="h4" align="center" color="#0066cc">
+                                    1,5 milioane
+                                </Typography>
+                                <Typography variant="h6" align="center" color="#000">
+                                    ordine executate zilnic
+                                </Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item>                    
-                            <Typography style={{fontWeight: "550"}} variant="h4" align="center" color="#0066cc">
-                                3,5 miliarde de euro
-                            </Typography> 
-                            <Typography variant="h6" align="center">
-                                in activele clientilor
-                            </Typography>
-                        </Grid>
-                        <Grid item>                    
-                            <Typography style={{fontWeight: "550"}} variant="h4" align="center" color="#0066cc">
-                                1,5 milioane
-                            </Typography> 
-                            <Typography variant="h6" align="center" color="#000">
-                                ordine executate zilnic
-                            </Typography> 
-                        </Grid>
-                    </Grid>
-                </div>
+                    </div>
                 </Container>
             </div>
             <div style={{ padding: 20 }}>
-                <Grid container spacing={5} 
+                <Grid container spacing={5}
                     direction="column"
                     alignItems="center"
                     justifyContent="center"
@@ -86,15 +85,15 @@ const Home = () => {
                                 </svg>
                             </figure>
                             <figure className="overlap">
-                                <center><img src={require('./CySEC.png')} width="50%" height="50%"/></center>
+                                <center><img src={require('./CySEC.png')} width="50%" height="50%" /></center>
                             </figure>
-                        </div> 
-                        <Typography style={{fontWeight: "550"}} variant="h5" align="center" color="#0066cc">
+                        </div>
+                        <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
                             Reglementata de CySEC
-                        </Typography> 
+                        </Typography>
                         <Typography variant="h7" align="center" color="#000">
                             Trading este autorizata si reglementata de catre CYSEC
-                        </Typography> 
+                        </Typography>
                     </Grid>
                     <Grid item>
                         <div className="svgDIV">
@@ -104,12 +103,12 @@ const Home = () => {
                                 </svg>
                             </figure>
                             <figure className="overlap">
-                                <center><img src={require('./Fonduri.png')} width="50%" height="50%"/></center>
+                                <center><img src={require('./Fonduri.png')} width="50%" height="50%" /></center>
                             </figure>
-                        </div>                     
-                        <Typography style={{fontWeight: "550"}} variant="h5" align="center" color="#0066cc">
+                        </div>
+                        <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
                             Fondurile tale sunt in siguranta
-                        </Typography> 
+                        </Typography>
                         <Typography variant="h7" align="center" >
                             Fondurile dvs. sunt tinute intr-un cont separat, protejat de ICF in limita a 20.000 $.
                         </Typography>
@@ -123,15 +122,15 @@ const Home = () => {
                                 </svg>
                             </figure>
                             <figure className="overlap">
-                                <center><img src={require('./Date.png')} width="50%" height="50%"/></center>
+                                <center><img src={require('./Date.png')} width="50%" height="50%" /></center>
                             </figure>
-                        </div>                     
-                        <Typography style={{fontWeight: "550"}} variant="h5" align="center" color="#0066cc">
+                        </div>
+                        <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
                             Datele dvs. sunt protejate
-                        </Typography> 
+                        </Typography>
                         <Typography variant="h7" align="center" color="#000">
                             Datele dvs sunt protejate datorita implementarii celor mai bune practici din domeniu
-                        </Typography> 
+                        </Typography>
                     </Grid>
                 </Grid>
             </div>
@@ -139,22 +138,22 @@ const Home = () => {
 
                 <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
                     <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    color="#FFF"
-                    gutterBottom
-                    style={{fontWeight: "550"}}
+                        component="h1"
+                        variant="h2"
+                        align="center"
+                        color="#FFF"
+                        gutterBottom
+                        style={{ fontWeight: "550" }}
                     >
-                    <FadeIn>
-                        Incepe sa investesti acum!
-                    </FadeIn>
+                        <FadeIn>
+                            Incepe sa investesti acum!
+                        </FadeIn>
                     </Typography>
                 </Container>
             </div>
             <Footer></Footer>
         </div>
-        )
+    )
 }
 
 export default Home;
