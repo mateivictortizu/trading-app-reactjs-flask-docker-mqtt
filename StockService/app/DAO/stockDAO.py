@@ -10,13 +10,29 @@ from app import engine
 from app.database.models import Stock, Price
 
 
+def getStockInfoDAO(stock_symbol):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stock = session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
+    session.close()
+    return stock
+
+
+def getStockPriceDAO(stock_symbol):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stock = session.query(Price).filter_by(stock_symbol=stock_symbol).first()
+    session.close()
+    return stock
+
+
 def addStockDAO(stock_symbol):
     Session = sessionmaker(bind=engine)
     session = Session()
     stock_symbol = stock_symbol.upper()
     new_stock = None
     new_price = None
-    if Stock.check_if_exists(stock_symbol,session) is False:
+    if Stock.check_if_exists(stock_symbol, session) is False:
         new_stock = Stock(stock_symbol=stock_symbol)
         if new_stock.company_name is None:
             return False
@@ -24,10 +40,10 @@ def addStockDAO(stock_symbol):
     if new_price.price is None:
         return False
 
-    if Price.check_if_exists(stock_symbol=stock_symbol,session=session) is False:
+    if Price.check_if_exists(stock_symbol=stock_symbol, session=session) is False:
         session.add(new_price)
     else:
-        Price.update_price(new_price,session)
+        Price.update_price(new_price, session)
     if new_stock is not None:
         session.add(new_stock)
     session.commit()

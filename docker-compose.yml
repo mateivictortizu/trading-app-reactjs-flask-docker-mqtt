@@ -27,7 +27,6 @@ services:
       - MYSQL_PASSWORD=admin
     volumes:
       - mysqluser:/var/lib/mysql
-      - mysqlconfig:/etc/mysql
     ports:
       - "3309:3307"
     healthcheck:
@@ -78,7 +77,6 @@ services:
       - MYSQL_PASSWORD=admin
     volumes:
       - mysqlstock:/var/lib/mysql
-      - mysqlconfig:/etc/mysql
     ports:
       - "3308:3306"
     healthcheck:
@@ -117,4 +115,3 @@ networks:
 volumes:
   mysqluser:
   mysqlstock:
-  mysqlconfig:

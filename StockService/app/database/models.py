@@ -2,6 +2,7 @@ from datetime import datetime
 
 import requests
 import yfinance as yf
+from flask import jsonify
 from sqlalchemy import CheckConstraint
 
 from app import db
@@ -51,14 +52,18 @@ class Stock(db.Model):
             return
         self.isin = search_stock.isin
 
+    def to_json(self):
+        return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'employees': self.employees,
+                'sector': self.sector, 'industry': self.industry, 'market_name': self.market_name,
+                'currency': self.currency, 'logo': self.logo}
+
     @staticmethod
-    def check_if_exists(stock_symbol,session):
+    def check_if_exists(stock_symbol, session):
         search_stock = session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
         session.close()
         if search_stock is None:
             return False
         return True
-
 
 
 class Price(db.Model):
@@ -101,8 +106,13 @@ class Price(db.Model):
             return
         self.lastModify = datetime.utcnow()
 
+    def to_json(self):
+        return {'stock_symbol': self.stock_symbol, 'price': self.price, 'recommendation': self.recommendation,
+                'targetLow': self.targetLow, 'targetMean': self.targetMean, 'targetHigh': self.targetHigh,
+                'recommendationMean': self.recommendationMean, 'lastModify': self.lastModify}
+
     @staticmethod
-    def update_price(price_item,session):
+    def update_price(price_item, session):
         if isinstance(price_item, Price):
             search_price = session.query(Price).filter_by(stock_symbol=price_item.stock_symbol).first()
             if search_price is None:
@@ -124,7 +134,7 @@ class Price(db.Model):
             return False
 
     @staticmethod
-    def check_if_exists(stock_symbol,session):
+    def check_if_exists(stock_symbol, session):
         search_price = session.query(Price).filter_by(stock_symbol=stock_symbol).first()
         session.close()
         if search_price is None:

@@ -3,7 +3,7 @@ from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
 from app import executor
-from app.DAO.stockDAO import addStockDAO, updateStockDAO, updatePriceDAO
+from app.DAO.stockDAO import addStockDAO, updateStockDAO, updatePriceDAO, getStockInfoDAO, getStockPriceDAO
 
 stockBP = Blueprint('stockBlueprint', __name__)
 
@@ -31,9 +31,22 @@ def general_exception_error(e):
 @stockBP.route('/add-stock', methods=['POST'])
 def add_stock():
     symbol_stock = request.json['stock_symbol']
-    addStockDAO(stock_symbol=symbol_stock)
-    #executor.submit(addStockDAO, symbol_stock)
+    executor.submit(addStockDAO, symbol_stock)
     return jsonify({'message': 'Stock was added to db'}), 200
+
+
+@stockBP.route('/get-stock-info/<stock>', methods=['GET'])
+def get_stock_info(stock):
+    stock_info = getStockInfoDAO(stock)
+    print(stock_info.to_json())
+    return 'Ok', 200
+
+
+@stockBP.route('/get-stock-price/<stock>', methods=['GET'])
+def get_stock_price(stock):
+    stock_price = getStockPriceDAO(stock)
+    print(stock_price.to_json())
+    return 'Ok', 200
 
 
 @stockBP.route('/update-price', methods=['POST'])
