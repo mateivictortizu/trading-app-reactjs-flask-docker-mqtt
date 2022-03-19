@@ -4,6 +4,9 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import os
 
+from sqlalchemy import create_engine
+from sqlalchemy.pool import NullPool
+
 app = Flask(__name__)
 
 db_user = os.getenv('DB_USER', 'matteovk')
@@ -25,6 +28,7 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 151, "pool_timeout": 4,
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, 'app/database/migrations')
 executor = Executor(app)
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], poolclass=NullPool)
 
 from app.blueprints import stockBlueprint
 

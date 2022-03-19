@@ -1,41 +1,49 @@
+import threading
 import time
 from datetime import datetime, timedelta
 
 import requests
 import yfinance
-import threading
+from sqlalchemy.orm import sessionmaker
 
-from app import db
+from app import engine
 from app.database.models import Stock, Price
 
 
 def addStockDAO(stock_symbol):
+    Session = sessionmaker(bind=engine)
+    session = Session()
     stock_symbol = stock_symbol.upper()
-    new_stock = Stock(stock_symbol=stock_symbol)
-    if new_stock.company_name is None:
+    new_stock = None
+    new_price = None
+    if Stock.check_if_exists(stock_symbol,session) is False:
+        new_stock = Stock(stock_symbol=stock_symbol)
+        if new_stock.company_name is None:
+            return False
+    new_price = Price(stock_symbol=stock_symbol)
+    if new_price.price is None:
         return False
-    check_price = Price.check_if_exists(stock_symbol=stock_symbol)
-    if check_price is False:
-        new_price = Price(stock_symbol=stock_symbol)
-        db.session.add(new_stock)
-        db.session.add(new_price)
-    elif check_price is True:
-        update_price = Price(stock_symbol=stock_symbol)
-        db.session.add(new_stock)
-        Price.update_price(update_price)
-    db.session.commit()
-    db.session.close()
+
+    if Price.check_if_exists(stock_symbol=stock_symbol,session=session) is False:
+        session.add(new_price)
+    else:
+        Price.update_price(new_price,session)
+    if new_stock is not None:
+        session.add(new_stock)
+    session.commit()
+    session.close()
 
 
-# TODO check update stock async and rework it in case of errors
 def updateStockAsync(stock_symbol, date):
+    Session = sessionmaker(bind=engine)
+    session = Session()
     if datetime.utcnow() > date + timedelta(seconds=30):
-        db.session.close()
+        session.close()
         return
     bad_check = False
     stock_symbol = stock_symbol.upper()
     try:
-        stock = db.session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
+        stock = session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
         try:
             search_stock = yfinance.Ticker(stock_symbol)
         except Exception:
@@ -76,30 +84,32 @@ def updateStockAsync(stock_symbol, date):
             bad_check = True
         stock.isin = search_stock.isin
         if bad_check is False:
-            db.session.commit()
+            session.commit()
     finally:
-        db.session.close()
+        session.close()
 
 
 def updateStockDAO():
-    stocks = db.session.query(Stock).all()
-    db.session.close()
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stocks = session.query(Stock).all()
+    session.close()
     for stock in stocks:
         t = threading.Thread(target=updateStockAsync, args=(stock.stock_symbol, datetime.utcnow()))
         t.daemon = True
-        print("Start")
         t.start()
         time.sleep(300)
 
 
 def updatePriceAsync(stock_symbol, date):
+    Session = sessionmaker(bind=engine)
+    session = Session()
     if datetime.utcnow() > date + timedelta(seconds=7):
-        db.session.commit()
-        db.session.close()
+        session.close()
         return
     stock_symbol = stock_symbol.upper()
     try:
-        price = db.session.query(Price).filter_by(stock_symbol=stock_symbol).first()
+        price = session.query(Price).filter_by(stock_symbol=stock_symbol).first()
         bad_check = False
         try:
             search_price = yfinance.Ticker(price.stock_symbol)
@@ -135,20 +145,19 @@ def updatePriceAsync(stock_symbol, date):
         else:
             bad_check = True
 
-        if db.session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:
+        if session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:
             price.lastModify = date
             if bad_check is False:
-                db.session.commit()
-            else:
-                price = None
-                db.session.commit()
+                session.commit()
     finally:
-        db.session.close()
+        session.close()
 
 
 def updatePriceDAO():
-    prices = db.session.query(Price).all()
-    db.session.close()
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    prices = session.query(Price).all()
+    session.close()
     for price in prices:
         if isinstance(price, Price):
             t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
