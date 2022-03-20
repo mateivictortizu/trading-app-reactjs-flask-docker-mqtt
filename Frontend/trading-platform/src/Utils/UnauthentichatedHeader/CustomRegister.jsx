@@ -8,252 +8,261 @@ import {
     FormHelperText, Box, Dialog, DialogActions, DialogContent, DialogTitle
 } from '@mui/material';
 import {
-    checkIsValidUsername, checkIsValidPassword, checkIsValidEmail, checkIsValidPhone, checkIsValidName, checkIsValidSurname, checkIsValidDate,
-    checkIsValidCountryCode, checkIsValidNationality, checkIsValidCountry
+    checkIsValidUsername, checkIsValidPassword, checkIsValidEmail, checkIsValidPhone, checkIsValidName,
+    checkIsValidCountryCode, checkIsValidNationality, checkIsValidCountry, checkIsEmpty, checkIsValidSurname, checkIsValidDate,
 } from '../validator';
 import ReactCountryFlag from "react-country-flag";
 
-export function CustomRegister({ openRegister, Transition, setOpenRegister,setMessageRegister, handleClickOpenRegisterComplete}) {
+export function CustomRegister({ openRegister, Transition, setOpenRegister, setMessageRegister, handleClickOpenRegisterComplete }) {
 
-        const [usernameRegister, setUsernameRegister] = React.useState("");
-        const handleChangeUsernameRegister = (event) => {
-            setUsernameRegister(event.target.value);
-            if (checkIsValidUsername(event.target.value)) {
-                setErrorUsernameRegister(false);
-            }
-        };
-    
-        const [passwordRegister, setPasswordRegister] = React.useState("");
-        const handleChangePasswordRegister = (event) => {
-            setPasswordRegister(event.target.value);
-            if (checkIsValidPassword(event.target.value)) {
-                setErrorPasswordRegister(false);
-            }
-        };
-    
-        const [emailRegister, setEmailRegister] = React.useState("");
-        const handleChangeEmailRegister = (event) => {
-            setEmailRegister(event.target.value);
-            if (checkIsValidEmail(event.target.value)) {
-                setErrorEmailRegister(false);
-            }
-        };
-    
-        const [phoneRegister, setPhoneRegister] = React.useState("");
-        const handleChangePhoneRegister = (event) => {
-            setPhoneRegister(event.target.value);
-            if (checkIsValidPhone(event.target.value)) {
-                setErrorPhoneRegister(false);
-            }
-        };
-    
-        const [phoneCountryRegister, setPhoneCountryRegister] = React.useState("");
-        const handleChangePhoneCountry = (event) => {
-            setPhoneCountryRegister(event.target.value);
-            if (checkIsValidCountryCode(event.target.value)) {
-                setErrorPhoneCodeRegister(false);
-            }
-        };
-    
-        const [nameRegister, setNameRegister] = React.useState("");
-        const handleChangeNameRegister = (event) => {
-            setNameRegister(event.target.value);
-            if (checkIsValidName(event.target.value)) {
-                setErrorNameRegister(false);
-            }
-        };
-    
-        const [surnameRegister, setSurnameRegister] = React.useState("");
-        const handleChangeSurnameRegister = (event) => {
-            setSurnameRegister(event.target.value);
-            if (checkIsValidSurname(event.target.value)) {
-                setErrorSurnameRegister(false);
-            }
-        };
-    
-        const [addressRegister, setAddressRegister] = React.useState("");
-        const handleChangeAddressRegister = (event) => {
-            setAddressRegister(event.target.value);
-        };
-    
-        const [country, setCountry] = React.useState("");
-        const handleChangeCountry = (event) => {
-            setCountry(event.target.value);
-            if (checkIsValidCountry(event.target.value)) {
-                setErrorCountryRegister(false);
-            }
-        }
-    
-        const [nationality, setNationality] = React.useState("");
-        const handleChangeNationality = (event) => {
-            setNationality(event.target.value);
-            if (checkIsValidNationality(event.target.value)) {
-                setErrorNationalityRegister(false);
-            }
-        }
-    
-        const [dateRegister, setDateRegister] = React.useState(new Date());
-        const handleChangeDateRegister = (newValue) => {
-            setDateRegister(newValue);
-            if (checkIsValidDate(newValue)) {
-                setErrorDateRegister(false);
-            }
-        };
-
-        const [errorUsernameRegister, setErrorUsernameRegister] = React.useState(false);
-        const [errorPasswordRegister, setErrorPasswordRegister] = React.useState(false);
-        const [errorEmailRegister, setErrorEmailRegister] = React.useState(false);
-        const [errorPhoneRegister, setErrorPhoneRegister] = React.useState(false);
-        const [errorPhoneCodeRegister, setErrorPhoneCodeRegister] = React.useState(false);
-        const [errorNameRegister, setErrorNameRegister] = React.useState(false);
-        const [errorSurnameRegister, setErrorSurnameRegister] = React.useState(false);
-        const [errorCountryRegister, setErrorCountryRegister] = React.useState(false);
-        const [errorNationalityRegister, setErrorNationalityRegister] = React.useState(false);
-        const [errorDateRegister, setErrorDateRegister] = React.useState(false);
-    
-        function setAllErrorsRegisterFalse() {
+    const [usernameRegister, setUsernameRegister] = React.useState("");
+    const handleChangeUsernameRegister = (event) => {
+        setUsernameRegister(event.target.value);
+        if (checkIsValidUsername(event.target.value)) {
             setErrorUsernameRegister(false);
+        }
+    };
+
+    const [passwordRegister, setPasswordRegister] = React.useState("");
+    const handleChangePasswordRegister = (event) => {
+        setPasswordRegister(event.target.value);
+        if (checkIsValidPassword(event.target.value)) {
             setErrorPasswordRegister(false);
+        }
+    };
+
+    const [emailRegister, setEmailRegister] = React.useState("");
+    const handleChangeEmailRegister = (event) => {
+        setEmailRegister(event.target.value);
+        if (checkIsValidEmail(event.target.value)) {
             setErrorEmailRegister(false);
+        }
+    };
+
+    const [phoneRegister, setPhoneRegister] = React.useState("");
+    const handleChangePhoneRegister = (event) => {
+        setPhoneRegister(event.target.value);
+        if (checkIsValidPhone(event.target.value)) {
             setErrorPhoneRegister(false);
+        }
+    };
+
+    const [phoneCountryRegister, setPhoneCountryRegister] = React.useState("");
+    const handleChangePhoneCountry = (event) => {
+        setPhoneCountryRegister(event.target.value);
+        if (checkIsValidCountryCode(event.target.value)) {
             setErrorPhoneCodeRegister(false);
+        }
+    };
+
+    const [nameRegister, setNameRegister] = React.useState("");
+    const handleChangeNameRegister = (event) => {
+        setNameRegister(event.target.value);
+        if (checkIsValidName(event.target.value)) {
             setErrorNameRegister(false);
+        }
+    };
+
+    const [surnameRegister, setSurnameRegister] = React.useState("");
+    const handleChangeSurnameRegister = (event) => {
+        setSurnameRegister(event.target.value);
+        if (checkIsValidSurname(event.target.value)) {
             setErrorSurnameRegister(false);
+        }
+    };
+
+    const [addressRegister, setAddressRegister] = React.useState("");
+    const handleChangeAddressRegister = (event) => {
+        setAddressRegister(event.target.value);
+        if (checkIsEmpty(event.target.value)) {
+            setErrorAddressRegister(false);
+        }
+    };
+
+    const [country, setCountry] = React.useState("");
+    const handleChangeCountry = (event) => {
+        setCountry(event.target.value);
+        if (checkIsValidCountry(event.target.value)) {
             setErrorCountryRegister(false);
+        }
+    }
+
+    const [nationality, setNationality] = React.useState("");
+    const handleChangeNationality = (event) => {
+        setNationality(event.target.value);
+        if (checkIsValidNationality(event.target.value)) {
             setErrorNationalityRegister(false);
+        }
+    }
+
+    const [dateRegister, setDateRegister] = React.useState(new Date());
+    const handleChangeDateRegister = (newValue) => {
+        setDateRegister(newValue);
+        if (checkIsValidDate(newValue)) {
             setErrorDateRegister(false);
         }
-    
-        function resetAllRegisterFields() {
-            setUsernameRegister("");
-            setPasswordRegister("");
-            setEmailRegister("");
-            setPhoneRegister("");
-            setPhoneCountryRegister("");
-            setNameRegister("");
-            setSurnameRegister("");
-            setAddressRegister("");
-            setCountry("");
-            setNationality("");
-            setDateRegister(new Date());
+    };
+
+    const [errorUsernameRegister, setErrorUsernameRegister] = React.useState(false);
+    const [errorPasswordRegister, setErrorPasswordRegister] = React.useState(false);
+    const [errorEmailRegister, setErrorEmailRegister] = React.useState(false);
+    const [errorPhoneRegister, setErrorPhoneRegister] = React.useState(false);
+    const [errorPhoneCodeRegister, setErrorPhoneCodeRegister] = React.useState(false);
+    const [errorNameRegister, setErrorNameRegister] = React.useState(false);
+    const [errorSurnameRegister, setErrorSurnameRegister] = React.useState(false);
+    const [errorCountryRegister, setErrorCountryRegister] = React.useState(false);
+    const [errorAddressRegister, setErrorAddressRegister] = React.useState(false);
+    const [errorNationalityRegister, setErrorNationalityRegister] = React.useState(false);
+    const [errorDateRegister, setErrorDateRegister] = React.useState(false);
+
+    function setAllErrorsRegisterFalse() {
+        setErrorUsernameRegister(false);
+        setErrorPasswordRegister(false);
+        setErrorEmailRegister(false);
+        setErrorPhoneRegister(false);
+        setErrorPhoneCodeRegister(false);
+        setErrorNameRegister(false);
+        setErrorSurnameRegister(false);
+        setErrorCountryRegister(false);
+        setErrorAddressRegister(false);
+        setErrorNationalityRegister(false);
+        setErrorDateRegister(false);
+    }
+
+    function resetAllRegisterFields() {
+        setUsernameRegister("");
+        setPasswordRegister("");
+        setEmailRegister("");
+        setPhoneRegister("");
+        setPhoneCountryRegister("");
+        setNameRegister("");
+        setSurnameRegister("");
+        setAddressRegister("");
+        setCountry("");
+        setNationality("");
+        setDateRegister(new Date());
+    }
+
+    function checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateBirthRegister) {
+        var result = true
+
+        if (!checkIsValidUsername(usernameRegister)) {
+            setErrorUsernameRegister(true);
+            result = false;
         }
 
-        function checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateBirthRegister) {
-            var result = true
-    
-            if (!checkIsValidUsername(usernameRegister)) {
-                setErrorUsernameRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidPassword(passwordRegister)) {
-                setErrorPasswordRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidEmail(emailRegister)) {
-                setErrorEmailRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidName(nameRegister)) {
-                setErrorNameRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidSurname(surnameRegister)) {
-                setErrorSurnameRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidPhone(phoneRegister)) {
-                setErrorPhoneRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidDate(dateBirthRegister)) {
-                setErrorDateRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidCountryCode(phoneCountryRegister)) {
-                setErrorPhoneCodeRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidCountry(country)) {
-                setErrorCountryRegister(true);
-                result = false;
-            }
-    
-            if (!checkIsValidNationality(nationality)) {
-                setErrorNationalityRegister(true);
-                result = false;
-            }
-    
-            return result;
+        if (!checkIsValidPassword(passwordRegister)) {
+            setErrorPasswordRegister(true);
+            result = false;
         }
 
-        const handleCloseRegister = () => {
-            resetAllRegisterFields();
-            setAllErrorsRegisterFalse();
-            setOpenRegister(false);
-        };
+        if (!checkIsValidEmail(emailRegister)) {
+            setErrorEmailRegister(true);
+            result = false;
+        }
 
-        const handleSendRegister = () => {
-            setAllErrorsRegisterFalse();
-    
-            if (checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateRegister)) {
-                var dateBirthRegister = dateRegister.toLocaleDateString("en-US", { year: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { month: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { day: 'numeric' });
-                fetch("http://127.0.0.1:5000/register", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: usernameRegister,
-                        password: passwordRegister,
-                        email: emailRegister,
-                        name: nameRegister,
-                        surname: surnameRegister,
-                        address: addressRegister,
-                        nationality: nationality,
-                        phone: phoneRegister,
-                        date_of_birth: dateBirthRegister,
-                        country: country,
-                    }),
-                })
-                    .then((data) => {
-                        if (data.status === 201) {
-                            data.json().then((message) => {
-                                handleCloseRegister();
-                                setMessageRegister(message);
-                                console.log(message);
-                                handleClickOpenRegisterComplete();
-                            });
-    
-                        } else if (data.status === 404 || data.status === 400 | data.status === 401) {
-                            data.json().then((message) => {
-                                handleCloseRegister();
-                                setMessageRegister(message);
-                                console.log(message)
-                                handleClickOpenRegisterComplete();
-                            });
-                        } else {
+        if (!checkIsValidName(nameRegister)) {
+            setErrorNameRegister(true);
+            result = false;
+        }
+
+        if (!checkIsValidSurname(surnameRegister)) {
+            setErrorSurnameRegister(true);
+            result = false;
+        }
+
+        if (!checkIsValidPhone(phoneRegister)) {
+            setErrorPhoneRegister(true);
+            result = false;
+        }
+
+        if (!checkIsValidDate(dateBirthRegister)) {
+            setErrorDateRegister(true);
+            result = false;
+        }
+
+        if (!checkIsValidCountryCode(phoneCountryRegister)) {
+            setErrorPhoneCodeRegister(true);
+            result = false;
+        }
+
+        if (!checkIsValidCountry(country)) {
+            setErrorCountryRegister(true);
+            result = false;
+        }
+
+        if (!checkIsEmpty(addressRegister)) {
+            setErrorAddressRegister(true);
+            result = false;
+        }
+
+        if (!checkIsValidNationality(nationality)) {
+            setErrorNationalityRegister(true);
+            result = false;
+        }
+
+        return result;
+    }
+
+    const handleCloseRegister = () => {
+        resetAllRegisterFields();
+        setAllErrorsRegisterFalse();
+        setOpenRegister(false);
+    };
+
+    const handleSendRegister = () => {
+
+        if (checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateRegister)) {
+            var dateBirthRegister = dateRegister.toLocaleDateString("en-US", { year: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { month: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { day: 'numeric' });
+            fetch("http://127.0.0.1:5000/register", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: usernameRegister,
+                    password: passwordRegister,
+                    email: emailRegister,
+                    name: nameRegister,
+                    surname: surnameRegister,
+                    address: addressRegister,
+                    nationality: nationality,
+                    phone: phoneRegister,
+                    date_of_birth: dateBirthRegister,
+                    country: country,
+                }),
+            })
+                .then((data) => {
+                    if (data.status === 201) {
+                        data.json().then((message) => {
                             handleCloseRegister();
-                            setMessageRegister('Eroare');
+                            setMessageRegister(message);
+                            console.log(message);
                             handleClickOpenRegisterComplete();
-                            throw new Error("Internal server error");
-                        }
-                    })
-                    .catch((error) => {
+                        });
+
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then((message) => {
+                            handleCloseRegister();
+                            setMessageRegister(message);
+                            console.log(message)
+                            handleClickOpenRegisterComplete();
+                        });
+                    } else {
                         handleCloseRegister();
                         setMessageRegister('Eroare');
-                        console.log(error);
                         handleClickOpenRegisterComplete();
-                    });
-            }
-        };
+                        throw new Error("Internal server error");
+                    }
+                })
+                .catch((error) => {
+                    handleCloseRegister();
+                    setMessageRegister('Eroare');
+                    console.log(error);
+                    handleClickOpenRegisterComplete();
+                });
+        }
+    };
 
     return (
         <Dialog
@@ -261,7 +270,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister,setMe
             onClose={handleCloseRegister}
             TransitionComponent={Transition}
             keepMounted
-            style={{backdropFilter: 'blur(4px)'}}
+            style={{ backdropFilter: 'blur(4px)' }}
         >
             <DialogTitle>Register</DialogTitle>
             <DialogContent>
@@ -391,6 +400,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister,setMe
                     autoFocus
                     margin="dense"
                     id="address"
+                    error={errorAddressRegister}
+                    helperText={errorAddressRegister ? "Bad surname format" : ""}
                     label="Address"
                     type="string"
                     value={addressRegister}
