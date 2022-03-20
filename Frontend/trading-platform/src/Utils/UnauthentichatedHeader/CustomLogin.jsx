@@ -10,6 +10,7 @@ export function CustomLogin({ openLogin, handleCloseLogin, Transition, identifie
                 onClose={handleCloseLogin}
                 TransitionComponent={Transition}
                 keepMounted
+                style={{backdropFilter: 'blur(4px)'}}
             >
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>

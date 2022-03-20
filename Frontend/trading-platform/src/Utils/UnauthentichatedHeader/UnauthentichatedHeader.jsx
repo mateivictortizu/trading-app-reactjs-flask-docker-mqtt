@@ -8,14 +8,24 @@ import { Slide } from '@mui/material';
 import { CustomAppBar } from "./CustomAppBar";
 import { CustomLogin } from "./CustomLogin";
 import { CustomRegister } from "./CustomRegister";
+import { CustomRegisterCompleted } from "./CustomRegisterCompleted";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function UnauthentichatedHeader() {
+    
     const [openLogin, setOpenLogin] = React.useState(false);
     const [openRegister, setOpenRegister] = React.useState(false);
+
+    const [openRegisterCompleted, setOpenRegisterCompleted] = React.useState(false);
+    const handleClickOpenRegisterComplete = () => {
+        setOpenRegisterCompleted(true);
+    };
+    const handleClickCloseRegisterComplete = () => {
+        setOpenRegisterCompleted(false);
+    };
 
     const [identifierLogin, setIdentifierLogin] = React.useState("");
     const handleChangeIdentifierLogin = (event) => {
@@ -257,6 +267,9 @@ export default function UnauthentichatedHeader() {
         setOpenRegister(false);
     };
 
+    
+    const [messageRegister,setMessageRegister]=React.useState('');
+
     const handleSendRegister = () => {
         setAllErrorsRegisterFalse();
 
@@ -283,23 +296,35 @@ export default function UnauthentichatedHeader() {
                 .then((data) => {
                     if (data.status === 201) {
                         data.json().then((message) => {
+                            handleCloseRegister();
+                            setMessageRegister(message);
                             console.log(message);
+                            handleClickOpenRegisterComplete();
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then((message) => {
+                            handleCloseRegister();
+                            setMessageRegister(message);
                             console.log(message)
+                            handleClickOpenRegisterComplete();
                         });
                     } else {
+                        handleCloseRegister();
+                        setMessageRegister('Eroare');
+                        handleClickOpenRegisterComplete();
                         throw new Error("Internal server error");
                     }
                 })
                 .catch((error) => {
+                    handleCloseRegister();
+                    setMessageRegister('Eroare');
                     console.log(error);
+                    handleClickOpenRegisterComplete();
                 });
-            handleCloseRegister();
         }
     };
+
 
     return (
         <header className="header">
@@ -358,6 +383,14 @@ export default function UnauthentichatedHeader() {
                     errorDateRegister={errorDateRegister}
                     handleSendRegister={handleSendRegister}
                 />
+
+                <CustomRegisterCompleted
+                    openDialog={openRegisterCompleted}
+                    handleClose={handleClickCloseRegisterComplete}
+                    Transition={Transition}
+                    message={messageRegister}
+                />
+
             </div>
         </header>
     );

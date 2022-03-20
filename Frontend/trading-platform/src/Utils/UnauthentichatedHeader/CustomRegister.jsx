@@ -22,6 +22,7 @@ export function CustomRegister({ openRegister, handleCloseRegister, Transition, 
             onClose={handleCloseRegister}
             TransitionComponent={Transition}
             keepMounted
+            style={{backdropFilter: 'blur(4px)'}}
         >
             <DialogTitle>Register</DialogTitle>
             <DialogContent>

@@ -25,6 +25,7 @@
     "material-ui-country-flags": "^3.0.1",
     "material-ui-flags": "^1.2.4",
     "react": "^17.0.2",
+    "react-cookie": "^4.1.1",
     "react-country-flag": "^3.0.2",
     "react-country-region-selector": "^3.4.0",
     "react-date-picker": "^8.4.0",
