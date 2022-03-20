@@ -1,15 +1,17 @@
-import { DialogContent, Dialog,DialogActions,DialogTitle } from "@mui/material";
+import { DialogContent, Dialog } from "@mui/material";
 import DoneIcon from '@mui/icons-material/Done';
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
-export function CustomRegisterCompleted({openDialog, handleClose, Transition, message}) {
+export function CustomRegisterCompleted({openDialog, setOpenRegisterCompleted, Transition, message}) {
+    
+    const handleClickCloseRegisterComplete = () => {
+        setOpenRegisterCompleted(false);
+    };
+
     return (
         <div>
             <Dialog
                 open={openDialog}
-                onClose={handleClose}
+                onClose={handleClickCloseRegisterComplete}
                 TransitionComponent={Transition}
                 keepMounted
                 fullWidth
