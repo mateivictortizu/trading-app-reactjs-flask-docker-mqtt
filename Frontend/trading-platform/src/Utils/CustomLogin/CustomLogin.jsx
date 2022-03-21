@@ -1,10 +1,11 @@
 import React from "react";
+import './CustomLogin.css';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Link, Grid } from '@mui/material';
 import { checkIsEmpty } from "../Extra/validator";
 import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
 import { Oval } from 'react-loader-spinner';
-import './CustomLogin.css';
+
 
 export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
 
@@ -44,7 +45,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         setSeverityType(severityType);
         setMessageAlert(message);
         handleClick();
-        if (severityType == 'error') {
+        if (severityType === 'error') {
             await sleep(3000);
             handleCloseLogin();
             await sleep(1000);
@@ -169,15 +170,15 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     />
                     <Grid container spacing={25}
                         direction="row">
-                        <Grid item><Link className='linkcss' onClick={handleSendLogin} >Forgot your password?</Link></Grid>
-                        <Grid item><Link className='linkcss' onClick={handleOpenRegister} >Open account</Link></Grid>
+                        <Grid item><Link id="linkLogin" onClick={handleSendLogin} >Forgot your password?</Link></Grid>
+                        <Grid item><Link id="linkLogin" onClick={handleOpenRegister} >Open account</Link></Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button fullWidth className='button' onClick={handleSendLogin}>{loginState ? "Login" :
+                    <Button id="buttonLogin" fullWidth onClick={handleSendLogin}>{loginState ? "Login" :
                         <Oval
                             secondaryColor='#ffcc00'
-                            height="30"
+                            height="20"
                             width="30"
                             color='#ffcc00'
                             ariaLabel='loading'

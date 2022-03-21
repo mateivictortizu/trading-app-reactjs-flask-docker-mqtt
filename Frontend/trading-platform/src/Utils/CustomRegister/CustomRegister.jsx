@@ -503,7 +503,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button fullWidth className='button' onClick={handleSendRegister}>Register</Button>
+                <Button fullWidth id='buttonRegister' onClick={handleSendRegister}>Register</Button>
             </DialogActions>
         </Dialog>
     )

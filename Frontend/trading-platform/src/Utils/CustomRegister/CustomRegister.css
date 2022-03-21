@@ -1,9 +1,9 @@
-.button{
+#buttonRegister{
     background-color:#0066cc;
     color:white;
 }
 
-.button:hover{
+#buttonRegister:hover{
     background-color:#205385;
     color:white;
 }
