@@ -11,6 +11,7 @@ import {
     checkIsValidCountryCode, checkIsValidNationality, checkIsValidCountry, checkIsEmpty, checkIsValidSurname, checkIsValidDate,
 } from '../Extra/validator';
 import ReactCountryFlag from "react-country-flag";
+import './CustomRegister.css';
 
 export function CustomRegister({ openRegister, Transition, setOpenRegister, setMessageRegister, handleClickOpenRegisterComplete }) {
 
@@ -204,9 +205,9 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     }
 
     const handleCloseRegister = () => {
+        setOpenRegister(false);
         resetAllRegisterFields();
         setAllErrorsRegisterFalse();
-        setOpenRegister(false);
     };
 
     const handleSendRegister = () => {
@@ -502,7 +503,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleSendRegister}>Register</Button>
+                <Button fullWidth className='button' onClick={handleSendRegister}>Register</Button>
             </DialogActions>
         </Dialog>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Oval } from 'react-loader-spinner';
-import './HomeLogged.css'
+import './HomeLogged.css';
 
 
 const HomeLogged = () => {

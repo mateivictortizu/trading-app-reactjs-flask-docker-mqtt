@@ -3,12 +3,14 @@ import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, L
 import { checkIsEmpty } from "../Extra/validator";
 import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
+import { Oval } from 'react-loader-spinner';
 import './CustomLogin.css';
 
 export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
 
     const [errorIdentifierLogin, setErrorIdentifierLogin] = React.useState(false);
     const [errorPasswordLogin, setErrorPasswordLogin] = React.useState(false);
+    const [loginState, setLoginState] = React.useState(true);
 
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -53,6 +55,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
     const handleSendLogin = () => {
         setAllErrorsLoginFalse();
         if (checkFields(identifierLogin, passwordLogin)) {
+            setLoginState(false);
             fetch("https://127.0.0.1:5001/login", {
                 method: "POST",
                 headers: {
@@ -136,7 +139,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                 keepMounted
                 PaperProps={{
                     style: { borderRadius: 10 }
-                  }}
+                }}
             >
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
@@ -166,16 +169,22 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     />
                     <Grid container spacing={25}
                         direction="row">
-                        <Grid item><Link onClick={handleSendLogin} className='link' >Forgot your password?</Link></Grid>
-                        <Grid item><Link onClick={handleOpenRegister} className='link' >Open account</Link></Grid>
+                        <Grid item><Link className='linkcss' onClick={handleSendLogin} >Forgot your password?</Link></Grid>
+                        <Grid item><Link className='linkcss' onClick={handleOpenRegister} >Open account</Link></Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSendLogin}>Login</Button>
+                    <Button fullWidth className='button' onClick={handleSendLogin}>{loginState ? "Login" :
+                        <Oval
+                            secondaryColor='#ffcc00'
+                            height="30"
+                            width="30"
+                            color='#ffcc00'
+                            ariaLabel='loading'
+                        />}</Button>
                 </DialogActions>
                 <CustomSnackbarAlert open={open} handleClose={handleClose} message={messageAlert} severityType={severityType} />
             </Dialog>
-
         </div>
     )
 }

@@ -1,15 +1,27 @@
-.link {
+.linkcss {
     color:gray;
     text-decoration: none;
     text-decoration-color: gray;
 }
 
-.link:hover{
+.linkcss:hover{
     color:gray;
     text-decoration: underline;
     text-decoration-color: gray;
 }
 
 .dialog{
-    border-radius: 2px;
+    border-radius: 50px;
+}
+
+.button{
+    background-color:#0066cc;
+    color:white;
+    font-size: 30;
+}
+
+.button:hover{
+    background-color:#205385;
+    color:white;
+    font-size: 30;
 }
