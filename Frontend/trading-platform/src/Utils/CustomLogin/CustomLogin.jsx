@@ -22,6 +22,13 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
+    function handleCloseLoginOpenRegister(){
+        handleCloseLogin();
+        handleOpenRegister();
+
+
+    }
+
     const handleSendLogin = () => {
         setAllErrorsLoginFalse();
         if (checkFields(identifierLogin, passwordLogin)) {
@@ -55,8 +62,8 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     configAlert('Server is down', 'error')
                 });
         }
-
     };
+
     const handleCloseLogin = () => {
         setIdentifierLogin("");
         setPasswordLogin("");
@@ -170,7 +177,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     <Grid container spacing={25}
                         direction="row">
                         <Grid item><Link id="linkLogin" onClick={handleOpenForgotPassword} >Forgot your password?</Link></Grid>
-                        <Grid item><Link id="linkLogin" onClick={handleOpenRegister} >Open account</Link></Grid>
+                        <Grid item><Link id="linkLogin" onClick={handleCloseLoginOpenRegister} >Open account</Link></Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>

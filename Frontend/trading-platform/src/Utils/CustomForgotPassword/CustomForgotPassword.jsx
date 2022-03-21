@@ -6,7 +6,7 @@ import { checkIsEmpty } from "../Extra/Validator";
 export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword, Transition }) {
 
     const [openAlert, setOpenAlert] = React.useState(false);
-    const [identifierLogin, setIdentifierLogin] = React.useState("");
+    const [identifierForgotPassword, setIdentifierForgotPassword] = React.useState("");
 
     const handleClickAlert = () => {
         setOpenAlert(true);
@@ -20,8 +20,8 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
         setOpenAlert(false);
     };
 
-    const handleChangeIdentifierLogin = (event) => {
-        setIdentifierLogin(event.target.value);
+    const handleChangeIdentifierForgotPassword = (event) => {
+        setIdentifierForgotPassword(event.target.value);
         if (checkIsEmpty(event.target.value)) {
             setErrorIdentifierForgotPassword(false);
         }
@@ -30,7 +30,43 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
     const [errorIdentifierForgotPassword, setErrorIdentifierForgotPassword] = React.useState(false);
 
     const handleCloseForgotPassword = () => {
+        setIdentifierForgotPassword('');
         setOpenForgotPassword(false);
+        setErrorIdentifierForgotPassword(false);
+    };
+
+    const handleSendForgotPassword = () => {
+        setErrorIdentifierForgotPassword(false);
+        if (checkIsEmpty(identifierForgotPassword)) {
+            fetch("https://127.0.0.1:5001/forgot-password", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    identifier: identifierForgotPassword,
+                }),
+            })
+                .then((data) => {
+                    if (data.status === 200) {
+                        data.json().then((message) => {
+                            console.log(message);
+                        });
+
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then((message) => {
+                        });
+                    } else {
+                        throw new Error("Internal server error");
+                    }
+                })
+                .catch(() => {
+                });
+        }
+        else
+        {
+            setErrorIdentifierForgotPassword(true);
+        }
     };
 
     return (
@@ -52,15 +88,15 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
                         id="identifierLogin"
                         error={errorIdentifierForgotPassword}
                         helperText={errorIdentifierForgotPassword ? "Fill identifier" : ""}
-                        label="Username or Email Address"
+                        label="Username or Email"
                         type="string"
-                        value={identifierLogin}
-                        onChange={handleChangeIdentifierLogin}
+                        value={identifierForgotPassword}
+                        onChange={handleChangeIdentifierForgotPassword}
                         fullWidth
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button id="buttonForgotPassword" fullWidth >Recover password</Button>
+                    <Button id="buttonForgotPassword" onClick={handleSendForgotPassword} fullWidth >Recover password</Button>
                 </DialogActions>
             </Dialog>
         </div>
