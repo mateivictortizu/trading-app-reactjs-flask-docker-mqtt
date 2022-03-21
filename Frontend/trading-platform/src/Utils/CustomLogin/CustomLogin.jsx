@@ -1,20 +1,54 @@
-import "./UnauthentichatedHeader.css";
 import React from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { checkIsEmpty } from "../validator";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Link, Grid } from '@mui/material';
+import { checkIsEmpty } from "../Extra/validator";
+import { useNavigate } from "react-router-dom";
+import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
+import './CustomLogin.css';
 
-
-export function CustomLogin({ openLogin, setOpenLogin, Transition }) {
+export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
 
     const [errorIdentifierLogin, setErrorIdentifierLogin] = React.useState(false);
     const [errorPasswordLogin, setErrorPasswordLogin] = React.useState(false);
+
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
 
     const handleCloseLogin = () => {
         setIdentifierLogin("");
         setPasswordLogin("");
         setAllErrorsLoginFalse();
+        handleClose();
         setOpenLogin(false);
     };
+
+    let history = useNavigate();
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    async function configAlert(message, severityType) {
+        setSeverityType(severityType);
+        setMessageAlert(message);
+        handleClick();
+        if (severityType == 'error') {
+            await sleep(3000);
+            handleCloseLogin();
+            await sleep(1000);
+            history('/blogs');
+        }
+    }
 
     const handleSendLogin = () => {
         setAllErrorsLoginFalse();
@@ -33,21 +67,20 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition }) {
                     if (data.status === 200) {
                         data.json().then((message) => {
                             console.log(message);
+                            configAlert(message, 'success')
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then((message) => {
-                            console.log(message)
+                            configAlert(message, 'error')
                         });
                     } else {
                         throw new Error("Internal server error");
                     }
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch(() => {
+                    configAlert('Server is down', 'error')
                 });
-            handleCloseLogin();
-
         }
 
     };
@@ -91,6 +124,9 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition }) {
         setErrorPasswordLogin(false);
     }
 
+    const [severityType, setSeverityType] = React.useState('');
+    const [messageAlert, setMessageAlert] = React.useState('');
+
     return (
         <div>
             <Dialog
@@ -98,7 +134,9 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition }) {
                 onClose={handleCloseLogin}
                 TransitionComponent={Transition}
                 keepMounted
-                style={{ backdropFilter: 'blur(4px)' }}
+                PaperProps={{
+                    style: { borderRadius: 10 }
+                  }}
             >
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
@@ -126,12 +164,18 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition }) {
                         onChange={handleChangePasswordLogin}
                         fullWidth
                     />
+                    <Grid container spacing={25}
+                        direction="row">
+                        <Grid item><Link onClick={handleSendLogin} className='link' >Forgot your password?</Link></Grid>
+                        <Grid item><Link onClick={handleOpenRegister} className='link' >Open account</Link></Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseLogin}>Cancel</Button>
                     <Button onClick={handleSendLogin}>Login</Button>
                 </DialogActions>
+                <CustomSnackbarAlert open={open} handleClose={handleClose} message={messageAlert} severityType={severityType} />
             </Dialog>
+
         </div>
     )
 }

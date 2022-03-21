@@ -1,6 +1,5 @@
-import "./UnauthentichatedHeader.css";
 import React from "react";
-import countries from '../countries';
+import countries from '../Extra/countries';
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { LocalizationProvider, DesktopDatePicker } from '@mui/lab';
 import {
@@ -10,7 +9,7 @@ import {
 import {
     checkIsValidUsername, checkIsValidPassword, checkIsValidEmail, checkIsValidPhone, checkIsValidName,
     checkIsValidCountryCode, checkIsValidNationality, checkIsValidCountry, checkIsEmpty, checkIsValidSurname, checkIsValidDate,
-} from '../validator';
+} from '../Extra/validator';
 import ReactCountryFlag from "react-country-flag";
 
 export function CustomRegister({ openRegister, Transition, setOpenRegister, setMessageRegister, handleClickOpenRegisterComplete }) {
@@ -270,7 +269,9 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
             onClose={handleCloseRegister}
             TransitionComponent={Transition}
             keepMounted
-            style={{ backdropFilter: 'blur(4px)' }}
+            PaperProps={{
+                style: { borderRadius: 10 }
+              }}
         >
             <DialogTitle>Register</DialogTitle>
             <DialogContent>

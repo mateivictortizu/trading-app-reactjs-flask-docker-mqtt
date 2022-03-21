@@ -1,10 +1,10 @@
 import "./UnauthentichatedHeader.css";
 import React from "react";
 import { Slide } from '@mui/material';
-import { CustomAppBar } from "./CustomAppBar";
-import { CustomLogin } from "./CustomLogin";
-import { CustomRegister } from "./CustomRegister";
-import { CustomRegisterCompleted } from "./CustomRegisterCompleted";
+import { CustomAppBar } from "../CustomAppBar/CustomAppBar";
+import { CustomLogin } from "../CustomLogin/CustomLogin";
+import { CustomRegister } from "../CustomRegister/CustomRegister";
+import { CustomRegisterCompleted } from "../CustomRegisterCompleted/CustomRegisterCompleted";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -41,6 +41,7 @@ export default function UnauthentichatedHeader() {
                     openLogin={openLogin}
                     setOpenLogin={setOpenLogin}
                     Transition={Transition}
+                    handleOpenRegister={handleClickOpenRegister}
 
                 />
 

@@ -1,11 +1,8 @@
-import React from 'react';
-import Webpages from '../../webpages/Webpages.js'
+import { Webpages } from "./webpages";
 
 function App() {
   return (
-    <div>
-      <Webpages />
-    </div>
+    <Webpages></Webpages>
   );
 }
 

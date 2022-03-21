@@ -1,0 +1,15 @@
+.link {
+    color:gray;
+    text-decoration: none;
+    text-decoration-color: gray;
+}
+
+.link:hover{
+    color:gray;
+    text-decoration: underline;
+    text-decoration-color: gray;
+}
+
+.dialog{
+    border-radius: 2px;
+}

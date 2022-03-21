@@ -1,5 +1,7 @@
 .firstDiv {
     background:#0066cc;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 a {
@@ -22,4 +24,15 @@ a {
 
 .thirdDiv{
     background: #0066cc;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.footerDiv {
+    background: #0066cc;
+}
+
+.footer {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

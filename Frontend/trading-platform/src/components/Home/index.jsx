@@ -85,7 +85,7 @@ const Home = () => {
                                 </svg>
                             </figure>
                             <figure className="overlap">
-                                <center><img src={require('./CySEC.png')} width="50%" height="50%" /></center>
+                                <center><img src={require('./resource/CySEC.png')} width="50%" height="50%" /></center>
                             </figure>
                         </div>
                         <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
@@ -103,7 +103,7 @@ const Home = () => {
                                 </svg>
                             </figure>
                             <figure className="overlap">
-                                <center><img src={require('./Fonduri.png')} width="50%" height="50%" /></center>
+                                <center><img src={require('./resource/Fonduri.png')} width="50%" height="50%" /></center>
                             </figure>
                         </div>
                         <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
@@ -122,7 +122,7 @@ const Home = () => {
                                 </svg>
                             </figure>
                             <figure className="overlap">
-                                <center><img src={require('./Date.png')} width="50%" height="50%" /></center>
+                                <center><img src={require('./resource/Date.png')} width="50%" height="50%" /></center>
                             </figure>
                         </div>
                         <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
@@ -151,7 +151,9 @@ const Home = () => {
                     </Typography>
                 </Container>
             </div>
-            <Footer></Footer>
+            <div className="footerDiv">
+                <Footer className='footer'></Footer>
+            </div>
         </div>
     )
 }
