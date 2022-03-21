@@ -1,56 +1,25 @@
 import React from "react";
 import './CustomLogin.css';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Link, Grid } from '@mui/material';
-import { checkIsEmpty } from "../Extra/validator";
+import { checkIsEmpty } from "../Extra/Validator";
 import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
 import { Oval } from 'react-loader-spinner';
+import { CustomForgotPassword } from "../CustomForgotPassword/CustomForgotPassword";
 
 
 export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
 
+    let history = useNavigate();
     const [errorIdentifierLogin, setErrorIdentifierLogin] = React.useState(false);
     const [errorPasswordLogin, setErrorPasswordLogin] = React.useState(false);
     const [loginState, setLoginState] = React.useState(true);
-
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [severityType, setSeverityType] = React.useState('');
+    const [messageAlert, setMessageAlert] = React.useState('');
+    const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-
-    const handleCloseLogin = () => {
-        setIdentifierLogin("");
-        setPasswordLogin("");
-        setAllErrorsLoginFalse();
-        handleClose();
-        setOpenLogin(false);
-    };
-
-    let history = useNavigate();
-
-    const [open, setOpen] = React.useState(false);
-
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
-
-    async function configAlert(message, severityType) {
-        setSeverityType(severityType);
-        setMessageAlert(message);
-        handleClick();
-        if (severityType === 'error') {
-            await sleep(3000);
-            handleCloseLogin();
-            await sleep(1000);
-            history('/blogs');
-        }
     }
 
     const handleSendLogin = () => {
@@ -88,6 +57,41 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         }
 
     };
+    const handleCloseLogin = () => {
+        setIdentifierLogin("");
+        setPasswordLogin("");
+        setAllErrorsLoginFalse();
+        handleCloseAlert();
+        setOpenLogin(false);
+    };
+
+    const handleClickAlert = () => {
+        setOpenAlert(true);
+    };
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenAlert(false);
+    };
+
+    const handleOpenForgotPassword = () => {
+        handleCloseLogin();
+        setOpenForgotPassword(true);
+    };
+
+    async function configAlert(message, severityType) {
+        setSeverityType(severityType);
+        setMessageAlert(message);
+        handleClickAlert();
+        if (severityType === 'error') {
+            await sleep(3000);
+            handleCloseLogin();
+            await sleep(1000);
+            history('/blogs');
+        }
+    }
 
     const [identifierLogin, setIdentifierLogin] = React.useState("");
     const handleChangeIdentifierLogin = (event) => {
@@ -105,8 +109,6 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         }
     };
 
-
-
     function checkFields(identifierLogin, passwordLogin) {
         var result = true
 
@@ -121,15 +123,12 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         }
 
         return result;
-    }
+    };
 
     function setAllErrorsLoginFalse() {
         setErrorIdentifierLogin(false);
         setErrorPasswordLogin(false);
-    }
-
-    const [severityType, setSeverityType] = React.useState('');
-    const [messageAlert, setMessageAlert] = React.useState('');
+    };
 
     return (
         <div>
@@ -170,7 +169,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     />
                     <Grid container spacing={25}
                         direction="row">
-                        <Grid item><Link id="linkLogin" onClick={handleSendLogin} >Forgot your password?</Link></Grid>
+                        <Grid item><Link id="linkLogin" onClick={handleOpenForgotPassword} >Forgot your password?</Link></Grid>
                         <Grid item><Link id="linkLogin" onClick={handleOpenRegister} >Open account</Link></Grid>
                     </Grid>
                 </DialogContent>
@@ -184,8 +183,14 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                             ariaLabel='loading'
                         />}</Button>
                 </DialogActions>
-                <CustomSnackbarAlert open={open} handleClose={handleClose} message={messageAlert} severityType={severityType} />
+                <CustomSnackbarAlert open={openAlert} handleClose={handleCloseAlert} message={messageAlert} severityType={severityType} />
             </Dialog>
+
+            <CustomForgotPassword
+                openForgotPassword={openForgotPassword}
+                setOpenForgotPassword={setOpenForgotPassword}
+                Transition={Transition}>
+            </CustomForgotPassword>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import countries from '../Extra/countries';
+import countries from '../Extra/Countries';
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { LocalizationProvider, DesktopDatePicker } from '@mui/lab';
 import {
@@ -9,7 +9,7 @@ import {
 import {
     checkIsValidUsername, checkIsValidPassword, checkIsValidEmail, checkIsValidPhone, checkIsValidName,
     checkIsValidCountryCode, checkIsValidNationality, checkIsValidCountry, checkIsEmpty, checkIsValidSurname, checkIsValidDate,
-} from '../Extra/validator';
+} from '../Extra/Validator';
 import ReactCountryFlag from "react-country-flag";
 import './CustomRegister.css';
 
