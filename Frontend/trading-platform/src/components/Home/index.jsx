@@ -1,3 +1,4 @@
+import React from "react";
 import UnauthentichatedHeader from "../../Utils/UnauthentichatedHeader/UnauthentichatedHeader"
 import Footer from "../../Utils/Footer/Footer"
 import Typography from '@mui/material/Typography';

@@ -4,7 +4,6 @@ import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, L
 import { checkIsEmpty } from "../Extra/Validator";
 import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
-import { Oval } from 'react-loader-spinner';
 import { CustomForgotPassword } from "../CustomForgotPassword/CustomForgotPassword";
 
 
@@ -182,13 +181,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                 </DialogContent>
                 <DialogActions>
                     <Button id="buttonLogin" fullWidth onClick={handleSendLogin}>{loginState ? "Login" :
-                        <Oval
-                            secondaryColor='#ffcc00'
-                            height="20"
-                            width="30"
-                            color='#ffcc00'
-                            ariaLabel='loading'
-                        />}</Button>
+                        ":"}</Button>
                 </DialogActions>
                 <CustomSnackbarAlert open={openAlert} handleClose={handleCloseAlert} message={messageAlert} severityType={severityType} />
             </Dialog>
