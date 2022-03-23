@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inspiration&family=Open+Sans:wght@700&family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&display=swap');
+#firstDivValidation {
+    background:#0066cc;
+    justify-items: center;
+    color: rgb(255, 255, 255);
+}
+
+#typographyValidation {
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Secular One', sans-serif;
+}
+
+#typographySecondaryValidation {
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#secondDivValidation{
+    padding: 40px;
+}
+
+#thirdDivValidation{
+    text-align: center;
+}
+
+#buttonValidation{
+    background:#0066cc;
+    color: white;
+    width: 500px;
+    height: 50px;
+
+}
+
+#footerDivValidation {
+    position:relative;
+    bottom:0px;
+    width:100%;
+    height:60px;
+    background: transparent;
+}
+
+#footerValidation {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+
+#iconCheck {
+    color: white;
+    font-size: 100px;
+}
+

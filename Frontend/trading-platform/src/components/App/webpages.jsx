@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from "../Home";
 import HomeLogged from "../HomeLogged";
+import Validation from '../Validation';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 export function Webpages() {
@@ -10,6 +11,7 @@ export function Webpages() {
           <Route exact path="/" element={<Home />}/>
           <Route exact path="/blogs" element={<HomeLogged />} />
           <Route exact path="/tests" element={<HomeLogged />} />
+          <Route exact path ="/validate/:id" element ={<Validation />} />
         </Routes>
       </BrowserRouter>
     );

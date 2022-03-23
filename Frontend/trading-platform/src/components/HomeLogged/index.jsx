@@ -1,4 +1,5 @@
 import React from 'react';
+import { Oval } from 'react-loader-spinner';
 import './HomeLogged.css';
 
 
@@ -19,7 +20,13 @@ const HomeLogged = () => {
                     </svg>
 
                     <span className='icons'>
-
+                        <Oval
+                            secondaryColor='#ffcc00'
+                            height="100"
+                            width="100"
+                            color='#ffcc00'
+                            ariaLabel='loading'
+                        />
                     </span>
 
 
