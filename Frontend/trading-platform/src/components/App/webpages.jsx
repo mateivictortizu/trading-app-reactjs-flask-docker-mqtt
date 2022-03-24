@@ -11,7 +11,7 @@ export function Webpages() {
           <Route exact path="/" element={<Home />}/>
           <Route exact path="/blogs" element={<HomeLogged />} />
           <Route exact path="/tests" element={<HomeLogged />} />
-          <Route exact path ="/validate/:id" element ={<Validation />} />
+          <Route exact path ="/validate-account/:id" element ={<Validation />} />
         </Routes>
       </BrowserRouter>
     );

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inspiration&family=Open+Sans:wght@700&family=Secular+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&display=swap');
+.content {
+    min-height: 760px;
+}
+
 #firstDivValidation {
     background:#0066cc;
     justify-items: center;
@@ -36,11 +40,9 @@
 }
 
 #footerDivValidation {
-    position:relative;
-    bottom:0px;
-    width:100%;
-    height:60px;
-    background: transparent;
+    position: absolute;
+    bottom:auto;
+    width: 100%;
 }
 
 #footerValidation {
