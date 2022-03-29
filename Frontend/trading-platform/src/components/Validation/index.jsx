@@ -10,6 +10,34 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { USER_HOST } from "../../Utils/Extra/Hosts";
 
 function ConditionalRenderingValidation({ responseCode, messageResponse }) {
+    function ResendValidateAccountFuncton(){
+        fetch("http://" + USER_HOST + "/resend-validate-account", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                identifier:"matteovkt@gmail.com"
+            }),
+        })
+            .then((data) => {
+                if (data.status === 200) {
+                    data.json().then((message) => {
+                        console.log(message);
+                    });
+
+                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                    data.json().then((message) => {
+                    });
+                } else {
+                    throw new Error("Internal server error");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+
+            });
+    }
 
     if (responseCode === 201) {
         return (
@@ -51,7 +79,7 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
                     </Typography>
                 </div>
                 <div id="thirdDivValidation">
-                    <Button id="buttonValidation">Continue</Button>
+                    <Button id="buttonValidation" onClick={ResendValidateAccountFuncton}>Continue</Button>
                 </div>
             </div>);
 
@@ -87,12 +115,11 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
     }
 };
 
+
+
 const Validation = () => {
-    document.title = "Confirm your account";
-    let { id } = useParams();
-    const [messageResponse, setMessageResponse] = React.useState("");
-    const [codeResponse, setCodeResponse] = React.useState("");
-    useEffect(() => {
+    
+    function ValidateAccountFuncton(){
         fetch("http://" + USER_HOST + "/validate-account/" + id, {
             method: "GET",
             headers: {
@@ -100,11 +127,11 @@ const Validation = () => {
             },
         })
             .then((data) => {
-                if (data.status === 201) {
+                if (data.status === 200) {
                     setCodeResponse(data.status);
                     data.json().then((message) => {
                         console.log(message);
-                        setMessageResponse(message);
+                        setMessageResponse(message['message']);
                     });
 
                 } else if (data.status === 404 || data.status === 400 | data.status === 401) {
@@ -120,9 +147,16 @@ const Validation = () => {
                 console.log(error);
 
             });
+    }
 
-    });
-
+    document.title = "Confirm your account";
+    let { id } = useParams();
+    const [messageResponse, setMessageResponse] = React.useState("");
+    const [codeResponse, setCodeResponse] = React.useState("");
+    if (messageResponse == "" && codeResponse === "")
+    {
+        ValidateAccountFuncton();
+    }
     return (
         <div className="main-div-validation">
             <div className="content">

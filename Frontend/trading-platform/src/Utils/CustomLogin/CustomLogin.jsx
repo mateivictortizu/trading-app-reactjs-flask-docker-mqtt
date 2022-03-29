@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
 import { Oval } from 'react-loader-spinner';
 import { CustomForgotPassword } from "../CustomForgotPassword/CustomForgotPassword";
-
+import { CustomOTP} from "../CustomOTP/CustomOTP";
+import { useCookies } from 'react-cookie';
 
 export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
 
@@ -18,6 +19,8 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
     const [severityType, setSeverityType] = React.useState('');
     const [messageAlert, setMessageAlert] = React.useState('');
     const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
+    const [openOTP, setOpenOTP] = React.useState(false);
+    const [cookies, setCookie] = useCookies(['jwt']);
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
@@ -33,7 +36,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         setAllErrorsLoginFalse();
         if (checkFields(identifierLogin, passwordLogin)) {
             setLoginState(false);
-            fetch("https://127.0.0.1:5001/login", {
+            fetch("http://127.0.0.1:5000/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -47,12 +50,21 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     if (data.status === 200) {
                         data.json().then((message) => {
                             console.log(message);
-                            configAlert(message, 'success')
+                            if (message.message=="OTP send")
+                            {
+                                setCookie("jwt_otp",data.headers.get("Authorization"));
+                            }
+                            else
+                            {
+                                setCookie("jwt",data.headers.get("Authorization"));
+                            }
+                            setOpenOTP(true);
+                            handleCloseLogin();
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then((message) => {
-                            configAlert(message, 'error')
+                            configAlert(message.message, 'error')
                         });
                     } else {
                         throw new Error("Internal server error");
@@ -62,6 +74,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     configAlert('Server is down', 'error')
                 });
         }
+        setLoginState(true);
     };
 
     const handleCloseLogin = () => {
@@ -92,7 +105,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         setSeverityType(severityType);
         setMessageAlert(message);
         handleClickAlert();
-        if (severityType === 'error') {
+        if (severityType === 'success') {
             await sleep(3000);
             handleCloseLogin();
             await sleep(1000);
@@ -198,6 +211,12 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                 setOpenForgotPassword={setOpenForgotPassword}
                 Transition={Transition}>
             </CustomForgotPassword>
+
+            <CustomOTP
+                openOTP={openOTP}
+                setOpenOTP={setOpenOTP}
+                Transition={Transition}>
+            </CustomOTP>
         </div>
     )
 }

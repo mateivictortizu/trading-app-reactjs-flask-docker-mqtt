@@ -1,12 +1,9 @@
 import json
 import os
-from urllib import parse
-import requests
 
 import flask
 from flask import jsonify
 from flask_mail import Message
-import dateutil.parser as dt
 
 from app.database.models import User, OTP, Token, OTPToken
 from app.utils.myconfirmation import MyConfirmation
@@ -128,7 +125,7 @@ def validate_accountDAO(current_app, db, validation_code):
     validate = MyConfirmation.confirm_token(token=validation_code, secret=current_app.config['JWT_SECRET_KEY'],
                                             security_pass=current_app.config['JWT_SECRET_KEY'])
     if validate is False:
-        return jsonify({'error': 'Bad link!'}), 400
+        return jsonify({'error': 'Expired link!'}), 400
 
     if User.check_if_banned(validate):
         db.session.remove()
@@ -145,13 +142,16 @@ def validate_accountDAO(current_app, db, validation_code):
     search_user.confirmed = True
 
     FUNDS_HOST = os.getenv("FUNDS_HOST", "https://127.0.0.1:5002")
-    print(FUNDS_HOST)
     json_user = {'email': validate}
+
     try:
+        '''
         r = requests.post(parse.urljoin(FUNDS_HOST, "/add-new"), json=json_user, verify=False)
         if r.status_code != 201:
             db.session.remove()
             return jsonify({'error': 'Account was not confirmed'}), 400
+        '''
+        pass
     except Exception:
         return jsonify({'error': 'Error in create account'}), 400
     db.session.commit()
