@@ -8,6 +8,7 @@ export function CustomRegisterCompleted({openDialog, setOpenRegisterCompleted, T
         setOpenRegisterCompleted(false);
     };
 
+
     return (
         <div>
             <Dialog
@@ -27,5 +28,4 @@ export function CustomRegisterCompleted({openDialog, setOpenRegisterCompleted, T
             </Dialog>
         </div>
     )
-
 }

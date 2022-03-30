@@ -20,7 +20,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeUsernameRegister = (event) => {
         setUsernameRegister(event.target.value);
         if (checkIsValidUsername(event.target.value)) {
-            setErrorUsernameRegister(false);
+            setErrorUsernameRegisterMessage("");
         }
     };
 
@@ -28,7 +28,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangePasswordRegister = (event) => {
         setPasswordRegister(event.target.value);
         if (checkIsValidPassword(event.target.value)) {
-            setErrorPasswordRegister(false);
+            setErrorPasswordRegisterMessage("");
         }
     };
 
@@ -36,7 +36,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeEmailRegister = (event) => {
         setEmailRegister(event.target.value);
         if (checkIsValidEmail(event.target.value)) {
-            setErrorEmailRegister(false);
+            setErrorEmailRegisterMessage("");
         }
     };
 
@@ -44,7 +44,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangePhoneRegister = (event) => {
         setPhoneRegister(event.target.value);
         if (checkIsValidPhone(event.target.value)) {
-            setErrorPhoneRegister(false);
+            setErrorPhoneRegisterMessage("");
         }
     };
 
@@ -52,7 +52,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangePhoneCountry = (event) => {
         setPhoneCountryRegister(event.target.value);
         if (checkIsValidCountryCode(event.target.value)) {
-            setErrorPhoneCodeRegister(false);
+            setErrorPhoneCodeRegisterMessage("");
         }
     };
 
@@ -60,7 +60,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeNameRegister = (event) => {
         setNameRegister(event.target.value);
         if (checkIsValidName(event.target.value)) {
-            setErrorNameRegister(false);
+            setErrorNameRegisterMessage("");
         }
     };
 
@@ -68,7 +68,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeSurnameRegister = (event) => {
         setSurnameRegister(event.target.value);
         if (checkIsValidSurname(event.target.value)) {
-            setErrorSurnameRegister(false);
+            setErrorSurnameRegisterMessage("");
         }
     };
 
@@ -76,7 +76,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeAddressRegister = (event) => {
         setAddressRegister(event.target.value);
         if (checkIsEmpty(event.target.value)) {
-            setErrorAddressRegister(false);
+            setErrorAddressRegisterMessage("");
         }
     };
 
@@ -84,7 +84,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeCountry = (event) => {
         setCountry(event.target.value);
         if (checkIsValidCountry(event.target.value)) {
-            setErrorCountryRegister(false);
+            setErrorCountryRegisterMessage("");
         }
     }
 
@@ -92,7 +92,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeNationality = (event) => {
         setNationality(event.target.value);
         if (checkIsValidNationality(event.target.value)) {
-            setErrorNationalityRegister(false);
+            setErrorNationalityRegisterMessage("");
         }
     }
 
@@ -100,34 +100,36 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleChangeDateRegister = (newValue) => {
         setDateRegister(newValue);
         if (checkIsValidDate(newValue)) {
-            setErrorDateRegister(false);
+            setErrorDateRegisterMessage("");
         }
     };
 
-    const [errorUsernameRegister, setErrorUsernameRegister] = React.useState(false);
-    const [errorPasswordRegister, setErrorPasswordRegister] = React.useState(false);
-    const [errorEmailRegister, setErrorEmailRegister] = React.useState(false);
-    const [errorPhoneRegister, setErrorPhoneRegister] = React.useState(false);
-    const [errorPhoneCodeRegister, setErrorPhoneCodeRegister] = React.useState(false);
-    const [errorNameRegister, setErrorNameRegister] = React.useState(false);
-    const [errorSurnameRegister, setErrorSurnameRegister] = React.useState(false);
-    const [errorCountryRegister, setErrorCountryRegister] = React.useState(false);
-    const [errorAddressRegister, setErrorAddressRegister] = React.useState(false);
-    const [errorNationalityRegister, setErrorNationalityRegister] = React.useState(false);
-    const [errorDateRegister, setErrorDateRegister] = React.useState(false);
 
-    function setAllErrorsRegisterFalse() {
-        setErrorUsernameRegister(false);
-        setErrorPasswordRegister(false);
-        setErrorEmailRegister(false);
-        setErrorPhoneRegister(false);
-        setErrorPhoneCodeRegister(false);
-        setErrorNameRegister(false);
-        setErrorSurnameRegister(false);
-        setErrorCountryRegister(false);
-        setErrorAddressRegister(false);
-        setErrorNationalityRegister(false);
-        setErrorDateRegister(false);
+    const [errorUsernameRegisterMessage, setErrorUsernameRegisterMessage]=React.useState("");
+    const [errorPasswordRegisterMessage, setErrorPasswordRegisterMessage]=React.useState("");
+    const [errorEmailRegisterMessage, setErrorEmailRegisterMessage]=React.useState("");
+    const [errorPhoneRegisterMessage, setErrorPhoneRegisterMessage]=React.useState("");
+    const [errorPhoneCodeRegisterMessage, setErrorPhoneCodeRegisterMessage]=React.useState("");
+    const [errorNameRegisterMessage, setErrorNameRegisterMessage]=React.useState("");
+    const [errorSurnameRegisterMessage, setErrorSurnameRegisterMessage]=React.useState("");
+    const [errorCountryRegisterMessage, setErrorCountryRegisterMessage]=React.useState("");
+    const [errorAddressRegisterMessage, setErrorAddressRegisterMessage]=React.useState("");
+    const [errorNationalityRegisterMessage, setErrorNationalityRegisterMessage]=React.useState("");
+    const [errorDateRegisterMessage, setErrorDateRegisterMessage]=React.useState("");
+
+
+    function resetAllErrorsMessage(){
+        setErrorUsernameRegisterMessage("");
+        setErrorPasswordRegisterMessage("");
+        setErrorEmailRegisterMessage("");
+        setErrorPhoneRegisterMessage("");
+        setErrorPhoneCodeRegisterMessage("");
+        setErrorNameRegisterMessage("");
+        setErrorSurnameRegisterMessage("");
+        setErrorCountryRegisterMessage("");
+        setErrorAddressRegisterMessage("");
+        setErrorNationalityRegisterMessage("");
+        setErrorDateRegisterMessage("");
     }
 
     function resetAllRegisterFields() {
@@ -148,57 +150,57 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
         var result = true
 
         if (!checkIsValidUsername(usernameRegister)) {
-            setErrorUsernameRegister(true);
+            setErrorUsernameRegisterMessage("Bad username format");
             result = false;
         }
 
         if (!checkIsValidPassword(passwordRegister)) {
-            setErrorPasswordRegister(true);
+            setErrorPasswordRegisterMessage("Requires 1 upper, 1 digit, 1 lower, 1 special character, min length is 8")
             result = false;
         }
 
         if (!checkIsValidEmail(emailRegister)) {
-            setErrorEmailRegister(true);
+            setErrorUsernameRegisterMessage("Bad email format");
             result = false;
         }
 
         if (!checkIsValidName(nameRegister)) {
-            setErrorNameRegister(true);
+            setErrorNameRegisterMessage("");
             result = false;
         }
 
         if (!checkIsValidSurname(surnameRegister)) {
-            setErrorSurnameRegister(true);
+            setErrorSurnameRegisterMessage("");
             result = false;
         }
 
         if (!checkIsValidPhone(phoneRegister)) {
-            setErrorPhoneRegister(true);
+            setErrorPhoneRegisterMessage("");
             result = false;
         }
 
         if (!checkIsValidDate(dateBirthRegister)) {
-            setErrorDateRegister(true);
+            setErrorDateRegisterMessage("Minimum 18 years old required");
             result = false;
         }
 
         if (!checkIsValidCountryCode(phoneCountryRegister)) {
-            setErrorPhoneCodeRegister(true);
+            setErrorPhoneCodeRegisterMessage("Select a phone code");
             result = false;
         }
 
         if (!checkIsValidCountry(country)) {
-            setErrorCountryRegister(true);
+            setErrorCountryRegisterMessage("Select a country");
             result = false;
         }
 
         if (!checkIsEmpty(addressRegister)) {
-            setErrorAddressRegister(true);
+            setErrorAddressRegisterMessage("Use an address");
             result = false;
         }
 
         if (!checkIsValidNationality(nationality)) {
-            setErrorNationalityRegister(true);
+            setErrorNationalityRegisterMessage("Select your nationality");
             result = false;
         }
 
@@ -207,8 +209,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
 
     const handleCloseRegister = () => {
         setOpenRegister(false);
+        resetAllErrorsMessage();
         resetAllRegisterFields();
-        setAllErrorsRegisterFalse();
     };
 
     const handleSendRegister = () => {
@@ -237,29 +239,34 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     if (data.status === 201) {
                         data.json().then((message) => {
                             handleCloseRegister();
-                            setMessageRegister(message);
-                            console.log(message);
+                            setMessageRegister(message.message);
                             handleClickOpenRegisterComplete();
                         });
 
-                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                    } else if (data.status === 409) {
                         data.json().then((message) => {
-                            handleCloseRegister();
-                            setMessageRegister(message);
-                            console.log(message)
-                            handleClickOpenRegisterComplete();
+                            console.log(message.error);
+                            if(message.error==='User already exists')
+                            {
+                                setErrorUsernameRegisterMessage(message.error);
+                            }
+                            if(message.error==='Email already exists')
+                            {
+                                setErrorEmailRegisterMessage(message.error);
+                            }
+                            if(message.error==='Phone already exists')
+                            {
+                                setErrorPhoneRegisterMessage(message.error);
+                            }
                         });
                     } else {
-                        handleCloseRegister();
-                        setMessageRegister('Eroare');
-                        handleClickOpenRegisterComplete();
+                        setMessageRegister('Internal server error');
                         throw new Error("Internal server error");
                     }
                 })
                 .catch((error) => {
                     handleCloseRegister();
                     setMessageRegister('Eroare');
-                    console.log(error);
                     handleClickOpenRegisterComplete();
                 });
         }
@@ -281,8 +288,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="username"
-                    error={errorUsernameRegister}
-                    helperText={errorUsernameRegister ? "Bad username" : ""}
+                    error={errorUsernameRegisterMessage!==""}
+                    helperText={errorUsernameRegisterMessage}
                     label="Username"
                     type="string"
                     value={usernameRegister}
@@ -293,8 +300,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="password"
-                    error={errorPasswordRegister}
-                    helperText={errorPasswordRegister ? "Requires 1 upper, 1 digit, 1 lower, 1 special character, min length is 8" : ""}
+                    error={errorPasswordRegisterMessage!==""}
+                    helperText={errorPasswordRegisterMessage}
                     label="Password"
                     type="password"
                     value={passwordRegister}
@@ -305,8 +312,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="email"
-                    error={errorEmailRegister}
-                    helperText={errorEmailRegister ? "Bad email format" : ""}
+                    error={errorEmailRegisterMessage!==""}
+                    helperText={errorEmailRegisterMessage}
                     label="Email"
                     type="email"
                     value={emailRegister}
@@ -318,7 +325,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                 >
                     <Grid item xs={7}>
                         <FormControl
-                            error={errorPhoneCodeRegister}
+                            error={errorPhoneCodeRegisterMessage!==""}
                             margin="dense"
                             fullWidth>
                             <InputLabel id="countryphone-label">Country Phone</InputLabel>
@@ -347,7 +354,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <FormHelperText>{errorPhoneCodeRegister ? "Select a phone code" : ""}</FormHelperText>
+                            <FormHelperText>{errorPhoneCodeRegisterMessage}</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={5}>
@@ -357,8 +364,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                 margin="dense"
                                 id="phone"
                                 type='numeric'
-                                error={errorPhoneRegister}
-                                helperText={errorPhoneRegister ? "Bad phone format" : ""}
+                                error={errorPhoneRegisterMessage!==""}
+                                helperText={errorPhoneRegisterMessage}
                                 label="Phone"
                                 value={phoneRegister}
                                 onChange={handleChangePhoneRegister}
@@ -375,8 +382,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                             autoFocus
                             margin="dense"
                             id="name"
-                            error={errorNameRegister}
-                            helperText={errorNameRegister ? "Bad name format" : ""}
+                            error={errorNameRegisterMessage!==""}
+                            helperText={errorNameRegisterMessage}
                             label="Name"
                             type="string"
                             value={nameRegister}
@@ -389,8 +396,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                             autoFocus
                             margin="dense"
                             id="surname"
-                            error={errorSurnameRegister}
-                            helperText={errorSurnameRegister ? "Bad surname format" : ""}
+                            error={errorSurnameRegisterMessage!==""}
+                            helperText={errorSurnameRegisterMessage}
                             label="Surname"
                             type="string"
                             value={surnameRegister}
@@ -403,8 +410,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="address"
-                    error={errorAddressRegister}
-                    helperText={errorAddressRegister ? "Bad surname format" : ""}
+                    error={errorAddressRegisterMessage!==""}
+                    helperText={errorAddressRegisterMessage}
                     label="Address"
                     type="string"
                     value={addressRegister}
@@ -417,7 +424,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                 >
                     <Grid item xs={6}>
                         <FormControl
-                            error={errorCountryRegister}
+                            error={errorCountryRegisterMessage!==""}
                             margin="dense"
                             fullWidth>
                             <InputLabel id="country-label">Country</InputLabel>
@@ -447,12 +454,12 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <FormHelperText>{errorCountryRegister ? "Select a country" : ""}</FormHelperText>
+                            <FormHelperText>{errorCountryRegisterMessage}</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl
-                            error={errorNationalityRegister}
+                            error={errorNationalityRegisterMessage!==""}
                             margin="dense"
                             fullWidth>
                             <InputLabel id="nationality-lable">Nationality</InputLabel>
@@ -482,7 +489,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <FormHelperText>{errorNationalityRegister ? "Select a nationality" : ""}</FormHelperText>
+                            <FormHelperText>{errorNationalityRegisterMessage}</FormHelperText>
                         </FormControl>
                     </Grid>
                 </Grid>
@@ -496,8 +503,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                 onChange={handleChangeDateRegister}
                                 renderInput={(params) =>
                                     <TextField {...params}
-                                        error={errorDateRegister}
-                                        helperText={errorDateRegister ? "Miminum 18 years old requested" : ""} />}
+                                        error={errorDateRegisterMessage!==""}
+                                        helperText={errorDateRegisterMessage} />}
                             />
                         </Stack>
                     </LocalizationProvider>

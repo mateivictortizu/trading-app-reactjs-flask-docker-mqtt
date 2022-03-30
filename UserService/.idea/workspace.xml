@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/Utils/CustomLogin/CustomLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/Utils/CustomLogin/CustomLogin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/Validation/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/Validation/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DAO/userDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DAO/userDAO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,16 +115,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>77</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>78</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/utils/myjwt.py</url>
           <line>7</line>
           <option name="timeStamp" value="10" />
@@ -140,10 +126,15 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DAO/userDAO.py</url>
-          <line>225</line>
-          <option name="timeStamp" value="16" />
+          <line>189</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="request" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

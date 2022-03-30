@@ -1,0 +1,21 @@
+#linkOTP{
+    color:gray;
+    text-decoration: none;
+    text-decoration-color: gray;
+}
+
+#linkOTP:hover{
+    color:gray;
+    text-decoration: underline;
+    text-decoration-color: gray;
+}
+
+#buttonOTP{
+    background-color:#0066cc;
+    color:white;
+}
+
+#buttonOTP:hover{
+    background-color:#205385;
+    color:white;
+}
