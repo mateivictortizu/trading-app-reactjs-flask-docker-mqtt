@@ -1,7 +1,7 @@
 import React from "react";
 import './CustomForgotPassword.css';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { checkIsEmpty } from "../Extra/Validator";
+import { checkIsEmpty } from "../../../../Utils/Extra/Validator"
 
 export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword, Transition }) {
 

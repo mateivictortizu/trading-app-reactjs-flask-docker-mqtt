@@ -2,7 +2,7 @@ import "./UnauthentichatedHeader.css";
 import React from "react";
 import { Slide } from '@mui/material';
 import { CustomAppBar } from "../CustomAppBar/CustomAppBar";
-import { CustomLogin } from "../CustomLogin/CustomLogin";
+import { CustomLogin } from "../CustomLogin/CustomLogin"
 import { CustomRegister } from "../CustomRegister/CustomRegister";
 import { CustomRegisterCompleted } from "../CustomRegisterCompleted/CustomRegisterCompleted";
 

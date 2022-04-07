@@ -1,7 +1,7 @@
 import React from "react";
 import './CustomLogin.css';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Link, Grid } from '@mui/material';
-import { checkIsEmpty } from "../Extra/Validator";
+import { checkIsEmpty } from "../../../../Utils/Extra/Validator";
 import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
 import { Oval } from 'react-loader-spinner';

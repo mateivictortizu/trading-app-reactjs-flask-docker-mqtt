@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import UnauthentichatedHeader from "../../Utils/UnauthentichatedHeader/UnauthentichatedHeader"
+import UnauthentichatedHeader from "../Home/Utils/UnauthentichatedHeader/UnauthentichatedHeader"
 import Footer from "../../Utils/Footer/Footer"
 import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
