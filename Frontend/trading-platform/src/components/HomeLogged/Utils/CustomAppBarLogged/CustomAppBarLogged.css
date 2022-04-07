@@ -1,0 +1,15 @@
+element.style {
+
+}
+
+#buttonMenu {
+    background-color: #dcdcdc;
+    color: grey;
+}
+
+#depositMenuButton
+{
+    background-color: #0066cc;
+    color: white;
+    width: 90%;
+}
