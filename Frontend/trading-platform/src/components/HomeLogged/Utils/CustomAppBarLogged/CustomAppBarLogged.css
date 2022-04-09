@@ -2,14 +2,24 @@ element.style {
 
 }
 
-#buttonMenu {
-    background-color: #dcdcdc;
-    color: grey;
+#appBarLogged
+{
+    background-color: white;
+    color: black;
+    position: static; 
 }
 
-#depositMenuButton
+#appBarButtonAccountValue
 {
+    color: #0066cc;
+}
+
+#appBarButtonDeposit{
     background-color: #0066cc;
     color: white;
-    width: 90%;
+}
+
+#appBarButtonInvesting{
+    color: #0066cc;
+    width: 350px;
 }

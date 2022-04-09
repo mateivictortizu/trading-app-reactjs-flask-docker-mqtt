@@ -23,16 +23,16 @@ const Home = () => {
                             align="center"
                             color="#FFF"
                             gutterBottom
-                            style={{ fontWeight: "550" }}
+                            id='typographyHome'
                         >
 
                             Investitii pentru toata lumea fara comision
 
                         </Typography>
                         <Typography variant="h5" align="center" color="#ffcc00" component="p" gutterBottom>
-                            <InfoIcon style={{ position: 'relative', top: '8px' }} fontSize='large'></InfoIcon> Se pot aplica si alte taxe. <a>Consultati termenii nostri de tranzactionare</a>.
+                            <InfoIcon id='infoIconHome' fontSize='large'></InfoIcon> Se pot aplica si alte taxe. <a>Consultati termenii nostri de tranzactionare</a>.
                         </Typography>
-                        <Typography style={{ fontWeight: "550" }} variant="h3" align="center" color="#FFF" background="white">
+                        <Typography id='typographyHome' variant="h3" align="center" color="#FFF" background="white">
 
                             Inregisreaza-te acum!
 
@@ -45,7 +45,7 @@ const Home = () => {
                     <div style={{ padding: 20 }}>
                         <Grid container spacing={15} alignItems="center" justifyContent="center"  >
                             <Grid item>
-                                <Typography style={{ fontWeight: "550" }} variant="h4" align="center" color="#0066cc">
+                                <Typography id='typographyHome' variant="h4" align="center" color="#0066cc">
                                     1,5 milioane
                                 </Typography>
                                 <Typography variant="h6" align="center" color="#000">
@@ -53,7 +53,7 @@ const Home = () => {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                <Typography style={{ fontWeight: "550" }} variant="h4" align="center" color="#0066cc">
+                                <Typography id='typographyHome' variant="h4" align="center" color="#0066cc">
                                     3,5 miliarde de euro
                                 </Typography>
                                 <Typography variant="h6" align="center">
@@ -61,7 +61,7 @@ const Home = () => {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                <Typography style={{ fontWeight: "550" }} variant="h4" align="center" color="#0066cc">
+                                <Typography id='typographyHome' variant="h4" align="center" color="#0066cc">
                                     1,5 milioane
                                 </Typography>
                                 <Typography variant="h6" align="center" color="#000">
@@ -89,7 +89,7 @@ const Home = () => {
                                 <center><img src={require('./resource/CySEC.png')} width="50%" height="50%" /></center>
                             </figure>
                         </div>
-                        <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
+                        <Typography id='typographyHome' variant="h5" align="center" color="#0066cc">
                             Reglementata de CySEC
                         </Typography>
                         <Typography variant="h7" align="center" color="#000">
@@ -107,7 +107,7 @@ const Home = () => {
                                 <center><img src={require('./resource/Fonduri.png')} width="50%" height="50%" /></center>
                             </figure>
                         </div>
-                        <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
+                        <Typography id='typographyHome' variant="h5" align="center" color="#0066cc">
                             Fondurile tale sunt in siguranta
                         </Typography>
                         <Typography variant="h7" align="center" >
@@ -126,7 +126,7 @@ const Home = () => {
                                 <center><img src={require('./resource/Date.png')} width="50%" height="50%" /></center>
                             </figure>
                         </div>
-                        <Typography style={{ fontWeight: "550" }} variant="h5" align="center" color="#0066cc">
+                        <Typography id='typographyHome' variant="h5" align="center" color="#0066cc">
                             Datele dvs. sunt protejate
                         </Typography>
                         <Typography variant="h7" align="center" color="#000">
@@ -144,7 +144,7 @@ const Home = () => {
                         align="center"
                         color="#FFF"
                         gutterBottom
-                        style={{ fontWeight: "550" }}
+                        id='typographyHome'
                     >
                         <FadeIn>
                             Incepe sa investesti acum!

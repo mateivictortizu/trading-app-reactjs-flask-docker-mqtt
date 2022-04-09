@@ -1,0 +1,27 @@
+#firstDivMenuStats
+{
+    width: 250px;
+    text-align: center;
+}
+
+#secondDivMenuStats
+{
+    width: 200px; 
+    margin: 25px;
+}
+
+#textDivMenuStats
+{
+    text-align: center; 
+    margin: 20px;
+}
+
+#fundsTypographyMenuStats
+{
+    color: #32CD32;
+}
+
+#portofolioTypographyMenuStats
+{
+    color: #0066cc;
+}

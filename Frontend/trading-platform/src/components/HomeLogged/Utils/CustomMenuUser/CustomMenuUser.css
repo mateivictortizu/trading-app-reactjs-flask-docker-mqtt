@@ -1,0 +1,26 @@
+#buttonMenuUser {
+    background-color: #dcdcdc;
+    color: grey;
+}
+
+#depositMenuUser
+{
+    background-color: #0066cc;
+    color: white;
+    width: 90%;
+}
+
+#depositMenuUser:hover
+{
+    background-color: #205385;
+}
+
+#buttonMenuUser:hover {
+    background-color: #bebdbd;
+    color: grey;
+}
+
+#divButtonsMenuUser{
+    text-align: center;
+    margin: 20px;
+}

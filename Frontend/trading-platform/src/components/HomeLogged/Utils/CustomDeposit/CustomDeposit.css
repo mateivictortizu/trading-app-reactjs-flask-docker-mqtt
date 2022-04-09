@@ -1,0 +1,43 @@
+#dialogTitleDeposit {
+    background-color: #E8E8E8;
+}
+
+#dialogContentDeposit {
+    background-color: #E8E8E8;
+    font-size: 30px;
+}
+
+#buttonBankTransferDeposit {
+    background-color: #0066cc;
+    color: white;
+    width: 90%;
+    margin: 10px;
+    align-self: center;
+}
+
+#buttonBankTransferDeposit:hover {
+    background-color: #205385;
+
+}
+
+#buttonCardDeposit {
+    background-color: #0066cc;
+    color: white;
+    width: 90%;
+    margin: 10px;
+    align-self: center;
+}
+
+#buttonCardDeposit:hover {
+    background-color: #205385;
+}
+
+#bankSVGDeposit {
+    position: absolute;
+    left: 20px;
+}
+
+#cardSVGDeposit {
+    position:absolute;
+    left:20px;
+}
