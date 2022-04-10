@@ -5,7 +5,7 @@ import { Button, Stack, Toolbar, Box, AppBar, Typography } from '@mui/material';
 import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 
-export function CustomAppBarLogged({ handleClickOpenDeposit }) {
+export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
@@ -47,6 +47,16 @@ export function CustomAppBarLogged({ handleClickOpenDeposit }) {
     function deposit() {
         handleCloseUser();
         handleClickOpenDeposit();
+    }
+
+    function manageFunds() {
+        handleCloseUser();
+        handleClickOpenManageFunds();
+    }
+
+    function history() {
+        handleCloseUser();
+        handleClickOpenHistory();
     }
 
     return (
@@ -95,6 +105,8 @@ export function CustomAppBarLogged({ handleClickOpenDeposit }) {
                             anchorUser={anchorUser} 
                             handleCloseUser={handleCloseUser}
                             deposit={deposit}
+                            manageFunds={manageFunds}
+                            history={history}
                             logout={logout}
                         />
 

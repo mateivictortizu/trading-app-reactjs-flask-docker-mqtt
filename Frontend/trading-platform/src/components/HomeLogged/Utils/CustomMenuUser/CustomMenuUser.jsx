@@ -1,7 +1,7 @@
 import { Stack, Button, Menu, MenuItem } from '@mui/material';
 import './CustomMenuUser.css';
 
-export function CustomMenuUser({ anchorUser, handleCloseUser, deposit, logout }) {
+export function CustomMenuUser({ anchorUser, handleCloseUser, deposit, manageFunds, history, logout }) {
     return (
         <Menu
             keepMounted
@@ -13,12 +13,12 @@ export function CustomMenuUser({ anchorUser, handleCloseUser, deposit, logout })
             }}
         >
 
-            <MenuItem onClick={handleCloseUser}>
+            <MenuItem onClick={history}>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none" /><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" fill='grey' /></svg>
                 &nbsp;
                 History
             </MenuItem>
-            <MenuItem onClick={handleCloseUser}>
+            <MenuItem onClick={manageFunds}>
                 <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24" /></g><g><g><rect fill='grey' height="7" width="3" x="4" y="10" /><rect fill='grey' height="7" width="3" x="10.5" y="10" /><rect fill='grey' height="3" width="20" x="2" y="19" /><rect fill='grey' height="7" width="3" x="17" y="10" /><polygon fill='grey' points="12,1 2,6 2,8 22,8 22,6" /></g></g></svg>
                 &nbsp;
                 Manage funds

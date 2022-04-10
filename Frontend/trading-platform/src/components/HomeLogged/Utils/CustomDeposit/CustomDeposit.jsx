@@ -1,11 +1,16 @@
 import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import './CustomDeposit.css';
 
-export function CustomDeposit({ openDeposit, setOpenDeposit, Transition }) {
+export function CustomDeposit({ openDeposit, setOpenDeposit, setOpenCard, Transition }) {
 
     const handleCloseDeposit = () => {
         setOpenDeposit(false);
     };
+
+    function handleOpenCard () {
+        setOpenDeposit(false);
+        setOpenCard(true);
+    }
 
     return (
         <div>
@@ -14,13 +19,15 @@ export function CustomDeposit({ openDeposit, setOpenDeposit, Transition }) {
                 onClose={handleCloseDeposit}
                 TransitionComponent={Transition}
                 keepMounted
+                fullWidth
+                maxWidth="sm"
                 PaperProps={{
                     style: { borderRadius: 10 }
                 }}
             >
                 <DialogTitle style={{backgroundColor: '#E8E8E8'}}>Deposit funds
                 </DialogTitle>
-                <DialogContent id='dialogContentDeposit'>
+                <DialogContent dividers id='dialogContentDeposit'>
                     Select deposit method
                 </DialogContent>
                 <Button id='buttonBankTransferDeposit'>
@@ -38,7 +45,7 @@ export function CustomDeposit({ openDeposit, setOpenDeposit, Transition }) {
                     Bank transfer
 
                 </Button>
-                <Button id='buttonCardDeposit' >
+                <Button id='buttonCardDeposit' onClick={handleOpenCard} >
                     <svg id='cardSVGDeposit' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path fill='white' d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
