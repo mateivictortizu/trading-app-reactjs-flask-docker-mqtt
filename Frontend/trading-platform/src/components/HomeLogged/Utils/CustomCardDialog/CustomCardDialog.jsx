@@ -1,7 +1,9 @@
 import './CustomCardDialog.css';
 import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-export function CustomCardDialog({ openCard, setOpenCard, Transition }) {
+export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transition }) {
     function handleCloseCard() {
         setOpenCard(false);
     }
@@ -10,6 +12,12 @@ export function CustomCardDialog({ openCard, setOpenCard, Transition }) {
         setOpenCard(false);
         //Add a request to add money in account
     }
+
+    function back(){
+        setOpenCard(false);
+        setOpenDeposit(true);
+    }
+
 
     return (
         <div>
@@ -25,6 +33,17 @@ export function CustomCardDialog({ openCard, setOpenCard, Transition }) {
                 }}
             >
                 <DialogTitle style={{ backgroundColor: '#E8E8E8', textAlign: 'center' }}> Add card
+                    <IconButton
+                        aria-label="close"
+                        onClick={back}
+                        sx={{
+                            position: 'absolute',
+                            left: 8,
+                            top: 10,
+                            color: 'black'
+                        }}>
+                        <ArrowBackIcon />
+                    </IconButton>
                 </DialogTitle>
                 <DialogContent style={{ width: '99%' }}>
                     <div style={{ textAlign: 'center', borderRadius: '10px', marginTop: '20px', backgroundColor: '#E8E8E8' }}>

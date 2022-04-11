@@ -20,6 +20,10 @@
 
 }
 
+#buttonBankTransferDeposit:disabled {
+    background-color: #a6a7a8;
+}
+
 #buttonCardDeposit {
     background-color: #0066cc;
     color: white;
@@ -30,6 +34,10 @@
 
 #buttonCardDeposit:hover {
     background-color: #205385;
+}
+
+#buttonCardDeposit:disabled {
+    background-color: #a6a7a8;
 }
 
 #bankSVGDeposit {

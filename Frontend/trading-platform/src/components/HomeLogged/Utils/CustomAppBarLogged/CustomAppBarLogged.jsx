@@ -60,7 +60,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     }
 
     return (
-        <div className="appBar">
+        <div className="appBarLogged">
 
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar id='appBarLogged'>

@@ -30,8 +30,8 @@ export default function Header() {
     }
 
     return (
-        <header className="header">
-            <div className="header_header-container header_accent">
+        <header className="headerLogged">
+            <div className="header_header-container-logged">
                 <CustomAppBarLogged 
                     handleClickOpenDeposit={handleClickOpenDeposit}
                     handleClickOpenManageFunds={handleClickOpenManageFunds}
@@ -54,6 +54,7 @@ export default function Header() {
                 <CustomCardDialog
                     openCard={openCard} 
                     setOpenCard={setOpenCard}
+                    setOpenDeposit={setOpenDeposit}
                     Transition={Transition}
                 />
 
