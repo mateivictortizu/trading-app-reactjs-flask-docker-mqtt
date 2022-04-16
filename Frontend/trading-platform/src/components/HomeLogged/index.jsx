@@ -5,6 +5,7 @@ import Navigation from './Utils/Navigation/Navigation';
 import HomeNavigation from './Utils/HomeNavigation/HomeNavigation';
 import { Grid } from '@mui/material';
 import StockNavigation from './Utils/StockNavigation/StockNavigation';
+import DataStock from './Utils/DataStock/DataStock';
 
 
 const HomeLogged = () => {
@@ -12,7 +13,7 @@ const HomeLogged = () => {
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
-    const [buttonStockClicked, setButtonStockClicked] = React.useState('mywatchlist');
+    const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
 
     return (
         <div className='mainDivLogged'>
@@ -33,8 +34,6 @@ const HomeLogged = () => {
                                     buttonHomeClicked={buttonHomeClicked}
                                     setButtonHomeClicked={setButtonHomeClicked}
                                 />
-                            </Grid>
-                            <Grid item>
                             </Grid>
                         </div>
                     }
@@ -78,6 +77,9 @@ const HomeLogged = () => {
                         </Grid>
                         </div>
                     }
+                    <Grid item>
+                        <DataStock/>
+                    </Grid>
                 </Grid>
             </div>
         </div>

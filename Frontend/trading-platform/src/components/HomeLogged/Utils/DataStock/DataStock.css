@@ -1,0 +1,11 @@
+.dataStock {
+    height: 1000px;
+    max-height: 630px;
+    width: 1000px;
+    position: relative;
+    z-index: 1;
+    top: 23px;
+    left:20px;
+    overflow-x: hidden;
+    background-color: rgb(255, 255, 255);
+}

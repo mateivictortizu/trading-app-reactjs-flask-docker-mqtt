@@ -1,5 +1,5 @@
 import "./StockNavigation.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Typography } from "@mui/material";
 
 export default function StockNavigation({buttonStockClicked, setButtonStockClicked}) {
@@ -12,6 +12,15 @@ export default function StockNavigation({buttonStockClicked, setButtonStockClick
     var data = [{ 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'APPLE', 'symbol': 'APPL', 'price': 123 }, 
     { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'MICROSOFT', 'symbol': 'MSFT', 'price': 124 }, 
     { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'SONY', 'symbol': 'SONY', 'price': 153 }]
+    
+
+    useEffect(() => {
+        if(buttonStockClicked===null)
+        {
+            setButtonStockClicked(data[0].symbol);
+        }
+      }, []);
+
     return (
         <div className="navigationStock">
             {data.map(item =>

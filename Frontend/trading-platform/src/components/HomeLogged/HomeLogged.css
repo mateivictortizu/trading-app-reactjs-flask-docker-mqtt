@@ -8,9 +8,9 @@ body{
 
 .mainDivLogged {
     background-color: rgb(240, 237, 237);
-    position: absolute; /* needed for footer positioning*/
-    min-height: 100%; /* real browsers */
-    min-width: 800px;
+    position: absolute; 
+    min-height: 100%; 
+    min-width: 1500px;
     width: 100%;
 }
 
