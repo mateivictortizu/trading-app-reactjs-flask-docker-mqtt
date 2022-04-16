@@ -2,6 +2,7 @@ body{
     margin: 0;
     padding: 0;
     height: 100%;
+    background-color: (240, 237, 237);
 }
 
 .mainDivLogged {
@@ -10,3 +11,4 @@ body{
     height: auto !important; /* real browsers */
     min-height: 100%; /* real browsers */
 }
+
