@@ -2,13 +2,15 @@ body{
     margin: 0;
     padding: 0;
     height: 100%;
+    width: 100%;
     background-color: (240, 237, 237);
 }
 
 .mainDivLogged {
     background-color: rgb(240, 237, 237);
-    position: relative; /* needed for footer positioning*/
-    height: auto !important; /* real browsers */
+    position: absolute; /* needed for footer positioning*/
     min-height: 100%; /* real browsers */
+    min-width: 800px;
+    width: 100%;
 }
 

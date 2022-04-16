@@ -1,0 +1,61 @@
+.navigationStock {
+    height: fit-content;
+    max-height: 630px;
+    width: 300px;
+    position: relative;
+    z-index: 1;
+    top: 30px;
+    overflow-x: hidden;
+    background-color: rgb(255, 255, 255);
+
+  }
+
+#buttonNavigationStockLogged {
+    height: 70px;
+    width: 300px;
+    color: rgb(0, 0, 0);
+    border-radius: 0px;
+
+}
+
+#buttonNavigationStockLogged:hover {
+    height: 70px;
+    width: 300px;
+    background-color: rgb(228, 225, 225);
+    color: rgb(0, 0, 0);
+    border-radius: 0px;
+}
+
+#buttonClickedNavigationStockLogged {
+    height: 70px;
+    width: 300px;
+    color: rgb(0, 0, 0);
+    background-color: #d7dded;
+    border-radius: 0px;
+}
+
+#imgNavigationStockLogged {
+  left: 20px;
+  position: absolute;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
