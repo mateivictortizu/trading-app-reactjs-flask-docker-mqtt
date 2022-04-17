@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto&display=swap');
+
 .navigationStock {
     height: fit-content;
     max-height: 630px;
@@ -14,6 +16,11 @@
     width: 300px;
     color: rgb(0, 0, 0);
     border-radius: 0px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 
 }
 
@@ -23,6 +30,11 @@
     background-color: rgb(228, 225, 225);
     color: rgb(0, 0, 0);
     border-radius: 0px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 #buttonClickedNavigationStockLogged {
@@ -31,6 +43,11 @@
     color: rgb(0, 0, 0);
     background-color: #d7dded;
     border-radius: 0px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 #imgNavigationStockLogged {
@@ -39,6 +56,11 @@
   border-radius: 5px;
   width: 40px;
   height: 40px;
+  font-family: 'Assistant', sans-serif;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Inspiration', cursive;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 ::-webkit-scrollbar {

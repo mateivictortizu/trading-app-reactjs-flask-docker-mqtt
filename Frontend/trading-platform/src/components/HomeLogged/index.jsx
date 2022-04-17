@@ -14,12 +14,16 @@ const HomeLogged = () => {
     const [buttonClicked, setButtonClicked] = React.useState('home');
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
+    var data = [{ 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'APPLE', 'symbol': 'APPL', 'price': 123 },
+    { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'MICROSOFT', 'symbol': 'MSFT', 'price': 124 },
+    { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'SONY', 'symbol': 'SONY', 'price': 153 }]
+
 
     return (
         <div className='mainDivLogged'>
             <Header />
             <div className="firstDivLogged">
-                <Grid container spacing={1}>
+                <Grid direction="row" container spacing={1}>
                     <Grid item >
                         <Navigation
                             buttonClicked={buttonClicked}
@@ -37,48 +41,20 @@ const HomeLogged = () => {
                             </Grid>
                         </div>
                     }
-                    {(buttonClicked === 'home') && (buttonHomeClicked === 'mywatchlist') &&
+                    {(buttonClicked === 'home') &&
                         <div>
                             <Grid item>
                                 <StockNavigation
                                     buttonStockClicked={buttonStockClicked}
-                                    setButtonStockClicked={setButtonStockClicked} 
+                                    setButtonStockClicked={setButtonStockClicked}
+                                    data={data}
+                                    buttonHomeClicked={buttonHomeClicked}
                                 />
                             </Grid>
-                        </div>
-                    }
-                    {(buttonClicked === 'home') && (buttonHomeClicked === 'popular') &&
-                        <div>
-                            <Grid item>
-                                <StockNavigation
-                                    buttonStockClicked={buttonStockClicked}
-                                    setButtonStockClicked={setButtonStockClicked} 
-                                />
-                            </Grid>
-                        </div>
-                    }
-                    {(buttonClicked === 'home') && (buttonHomeClicked === 'us_stocks') &&
-                        <div>
-                            <Grid item>
-                                <StockNavigation
-                                    buttonStockClicked={buttonStockClicked}
-                                    setButtonStockClicked={setButtonStockClicked} 
-                                />
-                            </Grid>
-                        </div>
-                    }
-                    {(buttonClicked === 'home') && (buttonHomeClicked === 'new_on_platform') &&
-                    <div>
-                        <Grid item>
-                            <StockNavigation 
-                                buttonStockClicked={buttonStockClicked}
-                                setButtonStockClicked={setButtonStockClicked} 
-                            />
-                        </Grid>
                         </div>
                     }
                     <Grid item>
-                        <DataStock/>
+                        <DataStock />
                     </Grid>
                 </Grid>
             </div>
