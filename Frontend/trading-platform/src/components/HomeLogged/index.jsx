@@ -53,7 +53,7 @@ const HomeLogged = () => {
                             </Grid>
                         </div>
                     }
-                    <Grid item>
+                    <Grid item >
                         <DataStock />
                     </Grid>
                 </Grid>
