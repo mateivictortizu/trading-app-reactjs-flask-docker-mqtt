@@ -2,11 +2,13 @@ import React from "react";
 import './CustomOTP.css';
 import { Dialog, DialogTitle, TextField, DialogContent, Grid, Button, DialogActions, Link } from "@mui/material";
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
 
     const [OTP, setOTP] = React.useState("");
-    const [cookies, setCookie] = useCookies(['jwt_otp']);
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    const navigate = useNavigate();
 
     function resendOTP() {
         fetch("http://127.0.0.1:5000/resend-otp", {
@@ -26,6 +28,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     };
 
     function handleCloseOTP() {
+        setOTP('');
         setOpenOTP(false);
     };
 
@@ -41,9 +44,20 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
             }),
         })
             .then((data) => {
-                data.json().then((message) => {
-                    console.log(message);
-                })
+                if(data.status== 200)
+                {
+                    handleCloseOTP();
+                    removeCookie("jwt_otp");
+                    setCookie("jwt",data.headers.get("Authorization"));
+                    navigate('/home');
+
+                }
+                else
+                {
+                    data.json().then((message) => {
+                        console.log(message);
+                    })
+                }
 
             })
     };

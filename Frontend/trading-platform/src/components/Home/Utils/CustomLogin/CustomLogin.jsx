@@ -21,6 +21,8 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
     const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
     const [openOTP, setOpenOTP] = React.useState(false);
     const [cookies, setCookie] = useCookies(['jwt']);
+    const [ok,setOk]=React.useState(0);
+    const navigate = useNavigate();
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
@@ -53,13 +55,19 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                             if (message.message=="OTP send")
                             {
                                 setCookie("jwt_otp",data.headers.get("Authorization"));
+                                setOpenOTP(true);
                             }
                             else
                             {
                                 setCookie("jwt",data.headers.get("Authorization"));
+                                setOk(1);
                             }
-                            setOpenOTP(true);
+                            setLoginState(true);
                             handleCloseLogin();
+                            if(ok===1)
+                            {
+                                navigate('/home'); 
+                            }
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
@@ -74,7 +82,6 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     configAlert('Server is down', 'error')
                 });
         }
-        setLoginState(true);
     };
 
     const handleCloseLogin = () => {

@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import { Button, Stack, Toolbar, Box, AppBar, Typography } from '@mui/material';
 import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
+import { useNavigate } from 'react-router-dom';
 
 export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
@@ -11,6 +12,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
     const [funds,setFunds]=React.useState(5.00);
     const [portofolio,setPortofolio]=React.useState(1);
+    const navigate = useNavigate();
     var data = {
         datasets: [
             {
@@ -41,7 +43,15 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     };
 
     function logout() {
+        fetch("http://127.0.0.1:5000/logout", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': cookies.jwt,
+            },
+        });
         removeCookie('jwt');
+        navigate('/');
     }
 
     function deposit() {

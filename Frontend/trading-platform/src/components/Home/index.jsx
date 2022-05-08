@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import UnauthentichatedHeader from "./Utils/UnauthentichatedHeader/UnauthentichatedHeader"
 import Footer from "../../Utils/Footer/Footer"
 import Typography from '@mui/material/Typography';
@@ -7,9 +7,19 @@ import "./Home.css"
 import InfoIcon from '@mui/icons-material/Info';
 import { Grid } from '@mui/material';
 import FadeIn from 'react-fade-in';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     document.title = "Invest"
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(cookies.jwt)
+        {
+            navigate('/home');
+        }
+      });
 
     return (
         <div className="main-div">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from "./Utils/Header/Header"
 import './HomeLogged.css';
 import Navigation from './Utils/Navigation/Navigation';
@@ -6,18 +6,28 @@ import HomeNavigation from './Utils/HomeNavigation/HomeNavigation';
 import { Grid } from '@mui/material';
 import StockNavigation from './Utils/StockNavigation/StockNavigation';
 import DataStock from './Utils/DataStock/DataStock';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 
 const HomeLogged = () => {
 
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
+    const navigate = useNavigate();
     var data = [{ 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'APPLE', 'symbol': 'APPL', 'price': 123 },
     { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'MICROSOFT', 'symbol': 'MSFT', 'price': 124 },
     { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'SONY', 'symbol': 'SONY', 'price': 153 }]
 
+    useEffect(() => {
+        if(!cookies.jwt)
+        {
+            navigate('/');
+        }
+      });
 
     return (
         <div className='mainDivLogged'>
@@ -60,6 +70,7 @@ const HomeLogged = () => {
             </div>
         </div>
     );
+
 }
 
 export default HomeLogged;
