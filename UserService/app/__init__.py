@@ -29,10 +29,10 @@ application.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 100, "pool_timeo
                                                                          "execution_timeout": 5.0
                                                                          }
                                                    }
-application.config['MAIL_SERVER'] = 'smtp.gmail.com'
+application.config['MAIL_SERVER'] = 'smtp.mail.yahoo.com'
 application.config['MAIL_PORT'] = 465
-application.config['MAIL_USERNAME'] = 'tizu.licenta@gmail.com'
-application.config['MAIL_PASSWORD'] = 'Licenta2022'
+application.config['MAIL_USERNAME'] = 'victor.tizu@yahoo.ca'
+application.config['MAIL_PASSWORD'] = 'wroxjwgyoqxaiyke'
 application.config['MAIL_USE_TLS'] = False
 application.config['MAIL_USE_SSL'] = True
 application.config['CORS_EXPOSE_HEADERS'] = 'Authorization'
