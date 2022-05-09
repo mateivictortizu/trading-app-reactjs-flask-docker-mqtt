@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/ChangePass/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/ChangePass/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DAO/userDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DAO/userDAO.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/userBlueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/userBlueprint.py" afterDir="false" />

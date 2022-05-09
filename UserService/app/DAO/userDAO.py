@@ -289,7 +289,7 @@ def request_change_passwordDAO(executor, current_app, mail, db, identifier):
     link = MyConfirmation.generate_confirmation_token(email=user.email,
                                                       secret=current_app.config['JWT_SECRET_KEY'],
                                                       security_pass=current_app.config['JWT_SECRET_KEY'])
-    token = ChangePassToken(link)
+    token = ChangePassToken(str(link))
     ChangePassToken.add_to_token(token)
     try:
         message_html = "<h3> Your reset password link is <h3>" + 'http://127.0.0.1:5000/reset-pass/' + \
@@ -305,9 +305,26 @@ def request_change_passwordDAO(executor, current_app, mail, db, identifier):
 
 
 def reset_passDAO(reset_code, current_app):
+    check = ChangePassToken.check_token(reset_code)
+    if check is False:
+        return jsonify({'error': 'Token invalid or expired'}), 404
     identifier = MyConfirmation.confirm_token(reset_code, secret=current_app.config['JWT_SECRET_KEY'],
                                               security_pass=current_app.config['JWT_SECRET_KEY'])
     if identifier:
         return jsonify({'message': identifier}), 200
     else:
         return jsonify({'error': 'Token invalid or expired'}), 404
+
+
+def set_new_passDAO(changePassToken, password, current_app, db):
+    identifier = MyConfirmation.confirm_token(changePassToken, secret=current_app.config['JWT_SECRET_KEY'],
+                                              security_pass=current_app.config['JWT_SECRET_KEY'])
+    if identifier:
+        if Validator.password_check(password) is False:
+            db.session.remove()
+            return jsonify({'error': 'Bad password format'}), 400
+        change_user_pass = User.reset_pass(identifier, password)
+        ChangePassToken.delete_change_pass_token(changePassToken)
+        return jsonify({'message': 'Password was changed'}), 200
+    else:
+        return jsonify({'error': 'Bad token or expired'}), 404

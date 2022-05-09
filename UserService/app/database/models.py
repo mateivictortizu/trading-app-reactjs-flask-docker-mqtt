@@ -110,6 +110,13 @@ class User(db.Model):
         return True
 
     @staticmethod
+    def reset_pass(identifier, new_password):
+        search_user = User.get_user_by_identifier(identifier)
+        search_user.password = bcrypt.generate_password_hash(new_password)
+        db.session.commit()
+        return True
+
+    @staticmethod
     def verify_user(identifier):
         search_user = User.get_user_by_identifier(identifier)
         if search_user is None:
@@ -266,8 +273,8 @@ class OTPToken(db.Model):
         return '<id: token: {}'.format(self.token)
 
     @staticmethod
-    def check_token(auth_token):
-        res = db.session.query(OTPToken).filter_by(token=str(auth_token)).first()
+    def check_token(token):
+        res = db.session.query(OTPToken).filter_by(token=str(token)).first()
         if res is None:
             return False
         else:
@@ -298,8 +305,8 @@ class ChangePassToken(db.Model):
         return '<id: token: {}'.format(self.token)
 
     @staticmethod
-    def check_token(auth_token):
-        res = db.session.query(ChangePassToken).filter_by(token=str(auth_token)).first()
+    def check_token(token):
+        res = db.session.query(ChangePassToken).filter_by(token=str(token)).first()
         if res is None:
             return False
         else:
@@ -312,7 +319,9 @@ class ChangePassToken(db.Model):
 
     @staticmethod
     def delete_change_pass_token(token):
-        res = ChangePassToken.query.filter_by(token=str(token)).first()
+        res = db.session.query(ChangePassToken).filter_by(token=str(token)).first()
+        print(token)
+        print(res)
         if res is not None:
             db.session.delete(res)
             db.session.commit()

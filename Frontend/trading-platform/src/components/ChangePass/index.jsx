@@ -13,15 +13,11 @@ const ChangePass = () => {
     document.title = "Invest - Reset Password"
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
-    const [errorIdentifierLogin, setErrorIdentifierLogin] = React.useState(false);
     const [errorPasswordLogin, setErrorPasswordLogin] = React.useState(false);
 
-    const [identifierLogin, setIdentifierLogin] = React.useState("");
-    const handleChangeIdentifierLogin = (event) => {
-        setIdentifierLogin(event.target.value);
-        if (checkIsEmpty(event.target.value)) {
-            setErrorIdentifierLogin(false);
-        }
+    const [identifierChangePass, setIdentifierChangePass] = React.useState("");
+    const handleChangeIdentifierChangePass = (event) => {
+        setIdentifierChangePass(event.target.value);
     };
 
     const [newPassword, setNewPassword] = React.useState("");
@@ -33,13 +29,11 @@ const ChangePass = () => {
     };
 
     useEffect(() => {
-        if(cookies.jwt)
-        {
+        if (cookies.jwt) {
             navigate('/home');
         }
-        else 
-        {
-            fetch("http://127.0.0.1:5000"+window.location.pathname, {
+        else {
+            fetch("http://127.0.0.1:5000" + window.location.pathname, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -48,19 +42,51 @@ const ChangePass = () => {
                 .then((data) => {
                     if (data.status === 200) {
                         data.json().then((message) => {
-                            
+                            setIdentifierChangePass(message['message']);
+
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then((message) => {
-                            
+                            navigate('/');
                         });
                     } else {
                         throw new Error("Internal server error");
                     }
                 });
         }
-      });
+    });
+
+    function clickCancel() {
+        navigate('/');
+    };
+
+    function clickReset() {
+        fetch("http://127.0.0.1:5000/set-new-pass", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    change_pass_token: window.location.pathname.split('/')[2],
+                    password: newPassword,
+                }),
+            })
+                .then((data) => {
+                    if (data.status === 200) {
+                        data.json().then((message) => {
+                            setIdentifierChangePass(message['message']);
+                        });
+
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then((message) => {
+                            navigate('/');
+                        });
+                    } else {
+                        throw new Error("Internal server error");
+                    }
+                });
+    };
 
     return (
         <div className="main-div">
@@ -71,13 +97,13 @@ const ChangePass = () => {
                     <TextField
                         autoFocus
                         margin="dense"
-                        error={errorIdentifierLogin}
-                        helperText={errorIdentifierLogin ? "Fill identifier" : ""}
+                        id="outlined-disabled"
                         label="Email Address"
                         type="string"
-                        value={identifierLogin}
-                        onChange={handleChangeIdentifierLogin}
+                        value={identifierChangePass}
+                        onChange={handleChangeIdentifierChangePass}
                         style={{ width: '450px' }}
+                        disabled
                     />
                     <br />
                     <TextField
@@ -106,11 +132,13 @@ const ChangePass = () => {
                     <br /><br />
                     <Button
                         id="buttonResetChangePass"
+                        onClick={clickReset}
                     >Reset</Button>
                     &nbsp;
                     &nbsp;
                     <Button
                         id="buttonCancelChangePass"
+                        onClick={clickCancel}
                     >Cancel</Button>
                 </div>
             </div>

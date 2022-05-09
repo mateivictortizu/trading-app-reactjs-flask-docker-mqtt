@@ -7,7 +7,7 @@ from sqlalchemy.exc import DatabaseError
 
 from app import db, schema, mail, executor
 from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
-    resend_otpDAO, logoutDAO, change_passwordDAO, request_change_passwordDAO, reset_passDAO
+    resend_otpDAO, logoutDAO, change_passwordDAO, request_change_passwordDAO, reset_passDAO, set_new_passDAO
 from app.utils.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
     change_password_schema
 
@@ -101,3 +101,10 @@ def request_change_password():
 @userBP.route('/reset-pass/<reset_code>', methods=['GET'])
 def reset_pass(reset_code):
     return reset_passDAO(reset_code, current_app)
+
+
+@userBP.route('/set-new-pass', methods=['POST'])
+def set_new_pass():
+    changePassToken = request.json['change_pass_token']
+    password = request.json['password']
+    return set_new_passDAO(changePassToken, password, current_app, db)
