@@ -205,7 +205,8 @@ class OTP(db.Model):
     @staticmethod
     def check_otp(identifier, code):
         date_now = datetime.utcnow() + timedelta(minutes=-10)
-        search_otp = db.session.query(OTP).filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
+        search_otp = db.session.query(OTP).filter_by(username=identifier, code=code).order_by(
+            desc(OTP.issue_date)).first()
         if search_otp:
             if search_otp.issue_date > date_now:
                 return True
@@ -213,7 +214,8 @@ class OTP(db.Model):
                 db.session.delete(search_otp)
                 db.session.commit()
                 return False
-        search_otp = db.session.query(OTP).filter_by(username=identifier, code=code).order_by(desc(OTP.issue_date)).first()
+        search_otp = db.session.query(OTP).filter_by(username=identifier, code=code).order_by(
+            desc(OTP.issue_date)).first()
         if search_otp:
             if search_otp.issue_date > date_now:
                 return True
@@ -252,7 +254,7 @@ class OTP(db.Model):
 
 
 class OTPToken(db.Model):
-    __tablename__ = 'OTPtokens'
+    __tablename__ = 'otptokens'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     token = db.Column(db.String(500), unique=True, nullable=False)
@@ -279,6 +281,70 @@ class OTPToken(db.Model):
     @staticmethod
     def delete_otp_token(token):
         res = OTPToken.query.filter_by(token=str(token)).first()
+        if res is not None:
+            db.session.delete(res)
+            db.session.commit()
+
+
+class ChangePassToken(db.Model):
+    __tablename__ = 'changepasstoken'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+
+    def __init__(self, token):
+        self.token = token
+
+    def __repr__(self):
+        return '<id: token: {}'.format(self.token)
+
+    @staticmethod
+    def check_token(auth_token):
+        res = db.session.query(ChangePassToken).filter_by(token=str(auth_token)).first()
+        if res is None:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def add_to_token(token):
+        db.session.add(token)
+        db.session.commit()
+
+    @staticmethod
+    def delete_change_pass_token(token):
+        res = ChangePassToken.query.filter_by(token=str(token)).first()
+        if res is not None:
+            db.session.delete(res)
+            db.session.commit()
+
+
+class ValidateAccountToken(db.Model):
+    __tablename__ = 'validateaccounttoken'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+
+    def __init__(self, token):
+        self.token = token
+
+    def __repr__(self):
+        return '<id: token: {}'.format(self.token)
+
+    @staticmethod
+    def check_token(auth_token):
+        res = db.session.query(ValidateAccountToken).filter_by(token=str(auth_token)).first()
+        if res is None:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def add_to_token(token):
+        db.session.add(token)
+        db.session.commit()
+
+    @staticmethod
+    def delete_change_pass_token(token):
+        res = ValidateAccountToken.query.filter_by(token=str(token)).first()
         if res is not None:
             db.session.delete(res)
             db.session.commit()

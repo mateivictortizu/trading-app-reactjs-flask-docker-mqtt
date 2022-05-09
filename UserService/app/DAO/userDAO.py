@@ -5,7 +5,7 @@ import flask
 from flask import jsonify
 from flask_mail import Message
 
-from app.database.models import User, OTP, Token, OTPToken
+from app.database.models import User, OTP, Token, OTPToken, ChangePassToken
 from app.utils.myconfirmation import MyConfirmation
 from app.utils.myjwt import MyJWT
 from app.utils.validator import Validator
@@ -73,7 +73,6 @@ def registerDAO(executor, request, current_app, db, mail, username, password, em
         return jsonify({'error': 'Confirmation mail send failed'}), 500
 
 
-# TODO check if password is expired
 def loginDAO(executor, current_app, db, mail, password, identifier):
     identifier = identifier.lower()
     if User.check_if_banned(identifier):
@@ -185,7 +184,6 @@ def resend_validate_accountDAO(executor, request, current_app, db, mail, identif
         return jsonify({'error': 'Unexpected error'}), 500
 
 
-# TODO check behaviour in case of expired token
 def validate_otpDAO(current_app, db, otp_jwt, code):
     if OTPToken.check_token(otp_jwt) is False:
         db.session.remove()
@@ -280,3 +278,36 @@ def change_passwordDAO(identifier, db, password, new_password):
     elif change_user_pass is True:
         db.session.remove()
         return jsonify({'message': 'Password was changed'}), 200
+
+
+def request_change_passwordDAO(executor, current_app, mail, db, identifier):
+    identifier = identifier.lower()
+    user = User.get_user_by_identifier(identifier=identifier)
+    if user is None:
+        return jsonify({'error': 'User did not exists'}), 400
+
+    link = MyConfirmation.generate_confirmation_token(email=user.email,
+                                                      secret=current_app.config['JWT_SECRET_KEY'],
+                                                      security_pass=current_app.config['JWT_SECRET_KEY'])
+    token = ChangePassToken(link)
+    ChangePassToken.add_to_token(token)
+    try:
+        message_html = "<h3> Your reset password link is <h3>" + 'http://127.0.0.1:5000/reset-pass/' + \
+                       link
+        executor.submit(send_email, current_app, mail, [user.email], 'Reset password link',
+                        message_html)
+        db.session.remove()
+        return jsonify({'message': 'Reset password link send'}), 200
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        return jsonify({'error': 'Reset password link failed'}), 500
+
+
+def reset_passDAO(reset_code, current_app):
+    identifier = MyConfirmation.confirm_token(reset_code, secret=current_app.config['JWT_SECRET_KEY'],
+                                              security_pass=current_app.config['JWT_SECRET_KEY'])
+    if identifier:
+        return jsonify({'message': identifier}), 200
+    else:
+        return jsonify({'error': 'Token invalid or expired'}), 404

@@ -7,7 +7,7 @@ from sqlalchemy.exc import DatabaseError
 
 from app import db, schema, mail, executor
 from app.DAO.userDAO import registerDAO, loginDAO, validate_accountDAO, resend_validate_accountDAO, validate_otpDAO, \
-    resend_otpDAO, logoutDAO, change_passwordDAO
+    resend_otpDAO, logoutDAO, change_passwordDAO, request_change_passwordDAO, reset_passDAO
 from app.utils.json_schema import register_schema, login_schema, validate_otp_schema, resend_validate_schema, \
     change_password_schema
 
@@ -80,7 +80,7 @@ def resend_otp():
 
 @userBP.route('/logout', methods=['DELETE'])
 def logout():
-    return logoutDAO(request,db)
+    return logoutDAO(request, db)
 
 
 @schema.validate(change_password_schema)
@@ -90,3 +90,14 @@ def change_password():
     password = request.json['password']
     new_password = request.json['new_password']
     return change_passwordDAO(identifier, db, password, new_password)
+
+
+@userBP.route('/request-change-password', methods=['POST'])
+def request_change_password():
+    identifier = request.json['identifier']
+    return request_change_passwordDAO(executor, current_app, mail, db, identifier)
+
+
+@userBP.route('/reset-pass/<reset_code>', methods=['GET'])
+def reset_pass(reset_code):
+    return reset_passDAO(reset_code, current_app)

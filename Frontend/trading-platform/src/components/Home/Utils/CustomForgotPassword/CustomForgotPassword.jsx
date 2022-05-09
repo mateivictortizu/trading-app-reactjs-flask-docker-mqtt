@@ -38,7 +38,7 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
     const handleSendForgotPassword = () => {
         setErrorIdentifierForgotPassword(false);
         if (checkIsEmpty(identifierForgotPassword)) {
-            fetch("https://127.0.0.1:5001/forgot-password", {
+            fetch("http://127.0.0.1:5000/request-change-password", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,12 +50,11 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
                 .then((data) => {
                     if (data.status === 200) {
                         data.json().then((message) => {
-                            console.log(message);
+                            handleCloseForgotPassword();
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
-                        data.json().then((message) => {
-                        });
+                        handleCloseForgotPassword();
                     } else {
                         throw new Error("Internal server error");
                     }
