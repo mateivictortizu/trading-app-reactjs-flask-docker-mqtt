@@ -35,9 +35,11 @@ def addStockDAO(stock_symbol):
     if Stock.check_if_exists(stock_symbol, session) is False:
         new_stock = Stock(stock_symbol=stock_symbol)
         if new_stock.company_name is None:
+            session.close()
             return False
     new_price = Price(stock_symbol=stock_symbol)
     if new_price.price is None:
+        session.close()
         return False
 
     if Price.check_if_exists(stock_symbol=stock_symbol, session=session) is False:
@@ -62,8 +64,9 @@ def updateStockAsync(stock_symbol, date):
         stock = session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
         try:
             search_stock = yfinance.Ticker(stock_symbol)
-        except Exception:
+        except:
             bad_check = True
+            session.close()
             raise Exception('Cannot receive data from server')
 
         if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
@@ -122,6 +125,7 @@ def updatePriceAsync(stock_symbol, date):
     session = Session()
     if datetime.utcnow() > date + timedelta(seconds=7):
         session.close()
+        print("Data out")
         return
     stock_symbol = stock_symbol.upper()
     try:
@@ -129,42 +133,48 @@ def updatePriceAsync(stock_symbol, date):
         bad_check = False
         try:
             search_price = yfinance.Ticker(price.stock_symbol)
-        except Exception:
+        except:
+            session.close()
             bad_check = True
+            print("BAD")
             raise Exception('Cannot receive data from server')
-        if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
-            price.price = search_price.info['currentPrice']
-        else:
-            bad_check = True
+        if bad_check is False:
+            if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
+                price.price = search_price.info['currentPrice']
+            else:
+                bad_check = True
 
-        if 'recommendationKey' in search_price.info.keys() and search_price.info['recommendationKey'] is not None:
-            price.recommendation = search_price.info['recommendationKey']
-        else:
-            bad_check = True
+            if 'recommendationKey' in search_price.info.keys() and search_price.info['recommendationKey'] is not None:
+                price.recommendation = search_price.info['recommendationKey']
+            else:
+                bad_check = True
 
-        if 'targetLowPrice' in search_price.info.keys() and search_price.info['targetLowPrice'] is not None:
-            price.targetLow = search_price.info['targetLowPrice']
-        else:
-            bad_check = True
+            if 'targetLowPrice' in search_price.info.keys() and search_price.info['targetLowPrice'] is not None:
+                price.targetLow = search_price.info['targetLowPrice']
+            else:
+                bad_check = True
 
-        if 'targetMeanPrice' in search_price.info.keys() and search_price.info['targetMeanPrice'] is not None:
-            price.targetMean = search_price.info['targetMeanPrice']
-        else:
-            bad_check = True
+            if 'targetMeanPrice' in search_price.info.keys() and search_price.info['targetMeanPrice'] is not None:
+                price.targetMean = search_price.info['targetMeanPrice']
+            else:
+                bad_check = True
 
-        if 'targetHighPrice' in search_price.info.keys() and search_price.info['targetHighPrice'] is not None:
-            price.targetHigh = search_price.info['targetHighPrice']
-        else:
-            bad_check = True
-        if 'recommendationMean' in search_price.info.keys() and search_price.info['recommendationMean'] is not None:
-            price.recommendationMean = search_price.info['recommendationMean']
-        else:
-            bad_check = True
+            if 'targetHighPrice' in search_price.info.keys() and search_price.info['targetHighPrice'] is not None:
+                price.targetHigh = search_price.info['targetHighPrice']
+            else:
+                bad_check = True
+            if 'recommendationMean' in search_price.info.keys() and search_price.info['recommendationMean'] is not None:
+                price.recommendationMean = search_price.info['recommendationMean']
+            else:
+                bad_check = True
 
-        if session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:
-            price.lastModify = date
-            if bad_check is False:
-                session.commit()
+            if session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:
+                price.lastModify = date
+                if bad_check is False:
+                    session.commit()
+    except:
+        print('EXCEPT')
+        session.close()
     finally:
         session.close()
 
@@ -179,3 +189,4 @@ def updatePriceDAO():
             t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
             t.daemon = True
             t.start()
+            time.sleep(0.1)

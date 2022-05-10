@@ -4,7 +4,7 @@ import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 
-stock_host = os.getenv('STOCK_HOST', '127.0.0.1:5000')
+stock_host = os.getenv('STOCK_HOST', '127.0.0.1:5001')
 stock_protocol = os.getenv('STOCK_PROTOCOL', 'http')
 
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     scheduler = BackgroundScheduler()
     scheduler.configure(timezone=utc)
-    scheduler.add_job(update_price, 'interval', seconds=10)
+    scheduler.add_job(update_price, 'interval', seconds=5)
     scheduler.add_job(update_stocks, 'interval', days=1)
     scheduler.start()
 

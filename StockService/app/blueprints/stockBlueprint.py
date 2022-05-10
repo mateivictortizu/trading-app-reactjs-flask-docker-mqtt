@@ -54,7 +54,8 @@ def update_price():
     try:
         updatePriceDAO()
         return jsonify({'message': 'Prices updated'}), 200
-    except Exception:
+    except Exception as e:
+        print(e)
         return jsonify({'error': 'Prices not updated'}), 400
 
 
@@ -63,5 +64,6 @@ def update_stock():
     try:
         updateStockDAO()
         return jsonify({'message': 'Stocks updated'}), 200
-    except Exception:
+    except Exception as e:
+        print(e)
         return jsonify({'error': 'Stocks not updated'}), 400
