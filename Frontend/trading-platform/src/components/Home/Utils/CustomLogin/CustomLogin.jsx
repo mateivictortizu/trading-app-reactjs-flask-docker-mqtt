@@ -72,7 +72,8 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then((message) => {
-                            configAlert(message.message, 'error')
+                            setLoginState(true);
+                            configAlert(message.message, 'error');
                         });
                     } else {
                         throw new Error("Internal server error");

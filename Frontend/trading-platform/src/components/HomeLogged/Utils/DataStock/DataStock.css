@@ -4,10 +4,10 @@
 .dataStock {
     height: 700px;
     width: 1000px;
-    position: relative;
+    position: fixed;
     z-index: 1;
-    top: 22px;
-    left:40px;
+    top: 85px;
+    left:670px;
     overflow-x: hidden;
     background-color: rgb(255, 255, 255);
     font-family: 'Assistant', sans-serif;
@@ -20,12 +20,12 @@
 
 @media only screen and (max-width: 1599px){
     .dataStock {
-        height: 540px;
+        height: 700px;
         width: 800px;
-        position: relative;
+        position: fixed;
         z-index: 1;
-        top: 22px;
-        left:40px;
+        top: 85px;
+        left:670px;
         overflow-x: hidden;
         background-color: rgb(255, 255, 255);
         font-family: 'Assistant', sans-serif;

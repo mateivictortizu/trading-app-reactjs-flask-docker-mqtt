@@ -1,8 +1,6 @@
 from datetime import datetime
 
-import requests
 import yfinance as yf
-from flask import jsonify
 from sqlalchemy import CheckConstraint
 
 from app import db
@@ -13,7 +11,7 @@ class Stock(db.Model):
 
     stock_symbol = db.Column(db.String(10), primary_key=True, unique=True)
     company_name = db.Column(db.String(100), nullable=False)
-    logo = db.Column(db.LargeBinary, nullable=False)
+    logo = db.Column(db.String(255), nullable=False)
     employees = db.Column(db.Integer, nullable=True)
     sector = db.Column(db.String(40), nullable=False)
     industry = db.Column(db.String(40), nullable=False)
@@ -29,7 +27,7 @@ class Stock(db.Model):
         else:
             return
         if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-            self.logo = requests.get(search_stock.info['logo_url']).content
+            self.logo = search_stock.info['logo_url']
         else:
             return
         self.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
@@ -69,6 +67,8 @@ class Stock(db.Model):
 class Price(db.Model):
     __tablename__ = 'prices'
     stock_symbol = db.Column(db.String(10), primary_key=True, unique=True)
+    company_name = db.Column(db.String(100), nullable=False)
+    logo = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
     recommendation = db.Column(db.String(20), nullable=False)
     targetLow = db.Column(db.Float, nullable=False)
@@ -83,6 +83,14 @@ class Price(db.Model):
         try:
             search_stock = yf.Ticker(self.stock_symbol)
         except Exception:
+            return
+        if 'shortName' in search_stock.info.keys() and search_stock.info['shortName'] is not None:
+            self.company_name = search_stock.info['shortName']
+        else:
+            return
+        if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+            self.logo = search_stock.info['logo_url']
+        else:
             return
         if 'currentPrice' in search_stock.info.keys() and search_stock.info['currentPrice'] is not None:
             self.price = search_stock.info['currentPrice']
@@ -107,7 +115,8 @@ class Price(db.Model):
         self.lastModify = datetime.utcnow()
 
     def to_json(self):
-        return {'stock_symbol': self.stock_symbol, 'price': self.price, 'recommendation': self.recommendation,
+        return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'price': self.price,
+                'recommendation': self.recommendation, 'logo': self.logo,
                 'targetLow': self.targetLow, 'targetMean': self.targetMean, 'targetHigh': self.targetHigh,
                 'recommendationMean': self.recommendationMean, 'lastModify': self.lastModify}
 
@@ -120,6 +129,8 @@ class Price(db.Model):
                 return False
             else:
                 search_price.price = price_item.price
+                search_price.company_name = price_item.company_name
+                search_price.logo = price_item.logo
                 search_price.recommendation = price_item.recommendation
                 search_price.targetLow = price_item.targetLow
                 search_price.targetMean = price_item.targetMean

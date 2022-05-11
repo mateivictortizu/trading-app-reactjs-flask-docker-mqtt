@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Header from "./Utils/Header/Header"
 import './HomeLogged.css';
 import Navigation from './Utils/Navigation/Navigation';
@@ -8,7 +8,7 @@ import StockNavigation from './Utils/StockNavigation/StockNavigation';
 import DataStock from './Utils/DataStock/DataStock';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-
+import Loading from '../Loading';
 
 const HomeLogged = () => {
 
@@ -17,60 +17,90 @@ const HomeLogged = () => {
     const [buttonClicked, setButtonClicked] = React.useState('home');
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
-    const navigate = useNavigate();
-    var data = [{ 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'APPLE', 'symbol': 'APPL', 'price': 123 },
-    { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'MICROSOFT', 'symbol': 'MSFT', 'price': 124 },
-    { 'img': 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuslimxchange.com%2Fmsft%2F&psig=AOvVaw0cNj8kYrQP7PkFyjN_sW31&ust=1650205547974000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLig-u3kmPcCFQAAAAAdAAAAABAD', 'name': 'SONY', 'symbol': 'SONY', 'price': 153 }]
+    var stock_symbols = ['MSFT', 'AMZN', 'TSLA', 'NFLX','AMD','NVDA', 'INTC', 'F'];
+    const [datas, setDatas] = React.useState([]);
 
-    useEffect(() => {
-        if(!cookies.jwt)
-        {
-            navigate('/');
-        }
-      });
+    async function test() {
+        await new Promise(r => setTimeout(r, 4000));
+            fetch("http://127.0.0.1:5001/get-list-stock-price", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    stock_list:stock_symbols,
+                }),
+            })
+                .then((data) => {
+                    if (data.status === 200) {
+                        data.json().then((message) => {
+                            setDatas(message['message']);
+                        });
 
-    return (
-        <div className='mainDivLogged'>
-            <Header />
-            <div className="firstDivLogged">
-                <Grid direction="row" container spacing={1}>
-                    <Grid item >
-                        <Navigation
-                            buttonClicked={buttonClicked}
-                            setButtonClicked={setButtonClicked}
-                        />
-                    </Grid>
-
-                    {(buttonClicked === 'home') &&
-                        <div>
-                            <Grid item>
-                                <HomeNavigation
-                                    buttonHomeClicked={buttonHomeClicked}
-                                    setButtonHomeClicked={setButtonHomeClicked}
-                                />
-                            </Grid>
-                        </div>
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then(() => {
+                            console.log('Error');
+                        });
+                    } else {
+                        throw new Error("Internal server error");
                     }
-                    {(buttonClicked === 'home') &&
-                        <div>
-                            <Grid item>
-                                <StockNavigation
-                                    buttonStockClicked={buttonStockClicked}
-                                    setButtonStockClicked={setButtonStockClicked}
-                                    data={data}
-                                    buttonHomeClicked={buttonHomeClicked}
-                                />
-                            </Grid>
-                        </div>
-                    }
-                    <Grid item >
-                        <DataStock />
-                    </Grid>
-                </Grid>
+                });
+        
+    };
+
+    test();
+
+    if (datas.length===0) {
+        return (
+            <div>
+                <Loading />
             </div>
-        </div>
-    );
+        )
+    }
+    else {
+        console.log(datas[0]);
+        return (
+            <div className='mainDivLogged'>
+                <Header />
+                <div className="firstDivLogged">
+                    <Grid direction="row" container spacing={1}>
+                        <Grid item >
+                            <Navigation
+                                buttonClicked={buttonClicked}
+                                setButtonClicked={setButtonClicked}
+                            />
+                        </Grid>
 
+                        {(buttonClicked === 'home') &&
+                            <div>
+                                <Grid item>
+                                    <HomeNavigation
+                                        buttonHomeClicked={buttonHomeClicked}
+                                        setButtonHomeClicked={setButtonHomeClicked}
+                                    />
+                                </Grid>
+                            </div>
+                        }
+                        {(buttonClicked === 'home') &&
+                            <div>
+                                <Grid item>
+                                    <StockNavigation
+                                        buttonStockClicked={buttonStockClicked}
+                                        setButtonStockClicked={setButtonStockClicked}
+                                        data={datas}
+                                        buttonHomeClicked={buttonHomeClicked}
+                                    />
+                                </Grid>
+                            </div>
+                        }
+                        <Grid item >
+                            <DataStock />
+                        </Grid>
+                    </Grid>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default HomeLogged;

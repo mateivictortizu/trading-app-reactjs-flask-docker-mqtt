@@ -1,19 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto:wght@300;400&display=swap');
 
 .navigationStock {
     height: fit-content;
     max-height: 630px;
-    width: 300px;
-    position: relative;
-    z-index: 1;
-    top: 30px;
+    max-width: 370px;
+    position: fixed;
+    left: 285px;
+    top: 85px;
     overflow-x: hidden;
     background-color: rgb(255, 255, 255);
   }
 
 #buttonNavigationStockLogged {
     height: 70px;
-    width: 300px;
+    width: 370px;
     color: rgb(0, 0, 0);
     border-radius: 0px;
     font-family: 'Assistant', sans-serif;
@@ -26,7 +27,7 @@
 
 #buttonNavigationStockLogged:hover {
     height: 70px;
-    width: 300px;
+    width: 370px;
     background-color: rgb(228, 225, 225);
     color: rgb(0, 0, 0);
     border-radius: 0px;
@@ -54,8 +55,8 @@
   left: 20px;
   position: absolute;
   border-radius: 5px;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   font-family: 'Assistant', sans-serif;
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-family: 'Inspiration', cursive;
@@ -79,4 +80,16 @@
   
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
+  }
+
+  #nameStockNavigation {
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    position: absolute; 
+    color: #555;
+    left: 70px;
+    font-size: 15px;
   }

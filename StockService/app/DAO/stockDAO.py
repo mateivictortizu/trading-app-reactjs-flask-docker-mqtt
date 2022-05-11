@@ -2,12 +2,12 @@ import threading
 import time
 from datetime import datetime, timedelta
 
-import requests
 import yfinance
 from sqlalchemy.orm import sessionmaker
 
 from app import engine
 from app.database.models import Stock, Price
+import re
 
 
 def getStockInfoDAO(stock_symbol):
@@ -75,7 +75,7 @@ def updateStockAsync(stock_symbol, date):
             bad_check = True
 
         if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-            stock.logo = requests.get(search_stock.info['logo_url']).content
+            stock.logo = search_stock.info['logo_url']
         else:
             bad_check = True
 
@@ -138,6 +138,15 @@ def updatePriceAsync(stock_symbol, date):
             bad_check = True
             print("BAD")
             raise Exception('Cannot receive data from server')
+        if 'shortName' in search_price.info.keys() and search_price.info['shortName'] is not None:
+            price.company_name = re.split(' Corporation|, ', search_price.info['shortName'])[0]
+        else:
+            bad_check = True
+
+        if 'logo_url' in search_price.info.keys() and search_price.info['logo_url'] is not None:
+            price.logo = search_price.info['logo_url']
+        else:
+            bad_check = True
         if bad_check is False:
             if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
                 price.price = search_price.info['currentPrice']

@@ -45,8 +45,18 @@ def get_stock_info(stock):
 @stockBP.route('/get-stock-price/<stock>', methods=['GET'])
 def get_stock_price(stock):
     stock_price = getStockPriceDAO(stock)
-    print(stock_price.to_json())
-    return 'Ok', 200
+    return stock_price.to_json(), 200
+
+
+@stockBP.route('/get-list-stock-price', methods=['POST'])
+def get_list_stock_price():
+    stock_symbol_list = request.json['stock_list']
+    stock_list = []
+    for i in stock_symbol_list:
+        new_stock=getStockPriceDAO(i)
+        if new_stock is not None:
+            stock_list.append(new_stock.to_json())
+    return jsonify({'message': stock_list}), 200
 
 
 @stockBP.route('/update-price', methods=['POST'])

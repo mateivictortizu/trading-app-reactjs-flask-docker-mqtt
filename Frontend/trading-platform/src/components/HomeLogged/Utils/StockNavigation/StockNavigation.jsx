@@ -2,36 +2,42 @@ import "./StockNavigation.css";
 import React, { useEffect } from "react";
 import { Button, Typography } from "@mui/material";
 
-export default function StockNavigation({buttonStockClicked, setButtonStockClicked, buttonHomeClicked, data}) {
+export default function StockNavigation({ buttonStockClicked, setButtonStockClicked, buttonHomeClicked, data }) {
 
-    function clickButton(key)
-    {
+    function clickButton(key) {
         setButtonStockClicked(key);
     }
 
     useEffect(() => {
-        if(buttonStockClicked===null)
-        {
-            setButtonStockClicked(data[0].symbol);
+        if (buttonStockClicked === null) {
+            console.log(data[0]);
+            setButtonStockClicked(data[0].stock_symbol);
         }
-      }, []);
+    }, []);
 
-    return (
-        <div className="navigationStock">
-            {data.map(item =>
-            (
-                    <Button key={item.symbol} onClick={() => clickButton(item.symbol)} id={(buttonStockClicked==item.symbol)?'buttonClickedNavigationStockLogged':'buttonNavigationStockLogged'}>
-                        <img id='imgNavigationStockLogged' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAGYktHRAD/AP8A/6C9p5MAAAKKSURBVHhe7doxalZBGIbRuQGLIBZBSJMNpHILQnYQYlxPBBvXohKwlb8UQbdharVVyI3CtPfpvDbnVN9bD083y8/Ls3XwXxyN8fLJ7d3bOTfdfD0/jGVczMmO/rwRsEUgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQlh+XZ9fzZmePxvj8+Pbu25ybXn05fz6O1tM5AQAAAAAAAPiXlvH++4d5s7f1/s148fTTXJt+H45fL2N9Nic7+hvIOm/2dz2uTt7Ne9Ovj8eHZRkXc7IjnxUhCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQGDTGA8fayDpGQv7VgAAAABJRU5ErkJggg=="></img>
-                        <Typography style={{position:'absolute', left:'80px'}}>
-                            {item.name}
-                        </Typography>
-                        <Typography style={{position:'absolute', right:'20px', color:'green'}}>
-                            250$
-                        </Typography>
+    if (data.lenght != 0) {
+        return (
+            <div className="navigationStock">
+                {data.map(item =>
+                (
+                    <div key={item.symbol_stock}>
+                        {console.log(item.stock_symbol)}
+                        <Button key={item.symbol_stock} onClick={() => clickButton(item.stock_symbol)} id={(buttonStockClicked == item.symbol) ? 'buttonClickedNavigationStockLogged' : 'buttonNavigationStockLogged'}>
+                            <img id='imgNavigationStockLogged' src={item.logo}></img>
+                            <Typography id='nameStockNavigation'>
+                                {item.company_name}
+                            </Typography>
+                            <Typography style={{ position: 'absolute', right: '20px', color: 'green',fontSize:'25px' }}>
+                                {parseInt(item.price)}
+                            </Typography>
+                            <Typography style={{color: 'green', position:'relative',fontSize:'15px' }}>
+                                .{Number((item.price-parseInt(item.price)).toFixed(2))}$
+                            </Typography>
                         </Button>
-     
+                    </div>
                 )
-            )}
-        </div>
-    )
+                )}
+            </div>
+        )
+    }
 }

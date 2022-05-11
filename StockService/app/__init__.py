@@ -3,7 +3,7 @@ from flask_executor import Executor
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import os
-
+from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 
@@ -24,7 +24,11 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 151, "pool_timeout": 4,
                                                                  "execution_timeout": 1.0
                                                                  }
                                            }
+app.config['CORS_EXPOSE_HEADERS'] = 'Authorization'
+app.config['CORS_ALLOW_HEADERS'] = ['Content-Type', 'Authorization']
+app.config['CORS_ORIGINS'] = 'http://localhost:3000'
 
+cors = CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, 'app/database/migrations')
 executor = Executor(app)
