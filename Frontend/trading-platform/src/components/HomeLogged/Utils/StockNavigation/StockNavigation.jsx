@@ -2,39 +2,30 @@ import "./StockNavigation.css";
 import React, { useEffect } from "react";
 import { Button, Typography } from "@mui/material";
 
-export default function StockNavigation({ buttonStockClicked, setButtonStockClicked, buttonHomeClicked, data }) {
+export default function StockNavigation({ buttonStockClicked, setButtonStockClicked, priceClicked, setPriceClicked, data }) {
 
-    function clickButton(key) {
+    function clickButton(key, price) {
         setButtonStockClicked(key);
+        setPriceClicked(price);
     }
 
-    useEffect(() => {
-        if (buttonStockClicked === null) {
-            console.log(data[0]);
-            setButtonStockClicked(data[0].stock_symbol);
-        }
-    }, []);
-
-    if (data.lenght != 0) {
+    if (data.lenght !== 0) {
         return (
             <div className="navigationStock">
                 {data.map(item =>
                 (
-                    <div key={item.symbol_stock}>
-                        {console.log(item.stock_symbol)}
-                        <Button key={item.symbol_stock} onClick={() => clickButton(item.stock_symbol)} id={(buttonStockClicked == item.symbol) ? 'buttonClickedNavigationStockLogged' : 'buttonNavigationStockLogged'}>
-                            <img id='imgNavigationStockLogged' src={item.logo}></img>
-                            <Typography id='nameStockNavigation'>
-                                {item.company_name}
-                            </Typography>
-                            <Typography style={{ position: 'absolute', right: '20px', color: 'green',fontSize:'25px' }}>
-                                {parseInt(item.price)}
-                            </Typography>
-                            <Typography style={{color: 'green', position:'relative',fontSize:'15px' }}>
-                                .{Number((item.price-parseInt(item.price)).toFixed(2))}$
-                            </Typography>
-                        </Button>
-                    </div>
+                    <Button key={item.stock_symbol} onClick={() => clickButton(item.stock_symbol, item.price)} id={(buttonStockClicked === item.stock_symbol) ? 'buttonClickedNavigationStockLogged' : 'buttonNavigationStockLogged'}>
+                        <img id='imgNavigationStockLogged' src={item.logo} alt={item.stock_symbol} ></img>
+                        <Typography id='nameStockNavigation'>
+                            {item.company_name}
+                        </Typography>
+                        <Typography style={{ position: 'absolute', right: '50px', color: '#2AAA8A', fontSize: '25px' }}>
+                            {parseInt(item.price)}
+                        </Typography>
+                        <Typography style={{ color: '#2AAA8A', position: 'absolute', fontSize: '15px', right: '20px', bottom: '20px' }}>
+                            .{Number((item.price - parseInt(item.price))).toFixed(2).toString().split(".")[1]}$
+                        </Typography>
+                    </Button>
                 )
                 )}
             </div>

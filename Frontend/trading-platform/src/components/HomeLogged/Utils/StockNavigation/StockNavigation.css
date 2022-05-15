@@ -40,7 +40,7 @@
 
 #buttonClickedNavigationStockLogged {
     height: 70px;
-    width: 300px;
+    width: 370px;
     color: rgb(0, 0, 0);
     background-color: #d7dded;
     border-radius: 0px;
@@ -57,6 +57,7 @@
   border-radius: 5px;
   width: 35px;
   height: 35px;
+  background-color: white;
   font-family: 'Assistant', sans-serif;
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-family: 'Inspiration', cursive;
@@ -65,7 +66,7 @@
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
   }
   
 
@@ -93,3 +94,25 @@
     left: 70px;
     font-size: 15px;
   }
+
+  #imgNavigationStockLogged:before {
+    content: attr(alt);
+    display: block;
+    border-color: white;
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    border-radius: 0px;
+    background-color: rgb(255, 253, 253);
+    color: #555;
+    line-height: 35px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#imgNavigationStockLogged[alt] {
+  position: absolute;
+  font-size: 0px;
+  size: 0px;
+  margin: px;
+}

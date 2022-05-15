@@ -17,6 +17,7 @@ class Stock(db.Model):
     industry = db.Column(db.String(40), nullable=False)
     market_name = db.Column(db.String(20), nullable=False)
     currency = db.Column(db.String(5), nullable=False)
+    longBuisnessSummary = db.Column(db.Text(), nullable=False)
     isin = db.Column(db.String(50), nullable=False)
 
     def __init__(self, stock_symbol):
@@ -24,6 +25,10 @@ class Stock(db.Model):
         search_stock = yf.Ticker(self.stock_symbol)
         if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
             self.company_name = search_stock.info['longName']
+        else:
+            return
+        if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info['longBusinessSummary'] is not None:
+            self.longBuisnessSummary = search_stock.info['longBusinessSummary']
         else:
             return
         if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
@@ -53,7 +58,7 @@ class Stock(db.Model):
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'employees': self.employees,
                 'sector': self.sector, 'industry': self.industry, 'market_name': self.market_name,
-                'currency': self.currency, 'logo': self.logo}
+                'currency': self.currency, 'logo': self.logo, 'longBusinessSummary': self.longBuisnessSummary}
 
     @staticmethod
     def check_if_exists(stock_symbol, session):

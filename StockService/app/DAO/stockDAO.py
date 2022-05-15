@@ -79,6 +79,11 @@ def updateStockAsync(stock_symbol, date):
         else:
             bad_check = True
 
+        if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info['longBusinessSummary'] is not None:
+            stock.longBuisnessSummary= search_stock.info['longBusinessSummary']
+        else:
+            bad_check = True
+
         stock.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
             else None
 

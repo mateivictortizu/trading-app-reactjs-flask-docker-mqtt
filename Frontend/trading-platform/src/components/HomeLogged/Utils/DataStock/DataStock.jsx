@@ -1,36 +1,69 @@
 import './DataStock.css';
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import CustomGraphics from '../CustomGraphics/CustomGraphics';
 
-export default function DataStock({ buttonDataStockClicked, setButtonDataStockClicked }) {
-    return (
-        <div className="dataStock">
-            <div>
-                <img id='imgDataStock' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAGYktHRAD/AP8A/6C9p5MAAAKKSURBVHhe7doxalZBGIbRuQGLIBZBSJMNpHILQnYQYlxPBBvXohKwlb8UQbdharVVyI3CtPfpvDbnVN9bD083y8/Ls3XwXxyN8fLJ7d3bOTfdfD0/jGVczMmO/rwRsEUgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQBAJBIBAEAkEgEAQCQSAQlh+XZ9fzZmePxvj8+Pbu25ybXn05fz6O1tM5AQAAAAAAAPiXlvH++4d5s7f1/s148fTTXJt+H45fL2N9Nic7+hvIOm/2dz2uTt7Ne9Ovj8eHZRkXc7IjnxUhCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQGDTGA8fayDpGQv7VgAAAABJRU5ErkJggg=="></img>
-                <Typography id='stockName'>Microsoft</Typography>
-                <Typography id='stockDetails'>MSFT · STOCK · US  </Typography>
-                <div id='buttonsDivDataStock'>
-                    <Button id='buttonDataStock'>Sell</Button>
-                    <Button id='buttonDataStock'>Buy</Button>
-                </div>
-                <Typography id='priceDataStock'>$200.99</Typography>
-                <CustomGraphics />
-            </div>
-            <div style={{ backgroundColor: 'rgb(240, 237, 237)', height: '20px' }}></div>
-            <div>
-                <Typography style={{fontSize:'30px', color:'gray', left:'40px', position:'relative', top:'10px'}}>Company details</Typography>
-                <Typography style={{fontSize:'15px', color:'gray', margin:'40px', position:'relative', top:'10px'}}>Microsoft Corporation is a technology company. The Company develops and supports a range of software products, services, devices, and solutions. The Company's segments include Productivity and Business Processes, Intelligent Cloud, and More Personal Computing. The Company's products include operating systems; cross-device productivity applications; server applications; business solution applications; desktop and server management tools; software development tools; and video games. It also designs, manufactures, and sells devices, including personal computers (PCs), tablets, gaming and entertainment consoles, other intelligent devices, and related accessories. It offers an array of services, including cloud-based solutions that provide customers with software, services, platforms, and content, and it provides solution support and consulting services. It markets and distributes its products and services through original equipment manufacturers, direct, and distributors and resellers.</Typography>
-            </div>
-            <div style={{ backgroundColor: 'rgb(240, 237, 237)', height: '20px' }}></div>
-            <div>
-                <Typography style={{fontSize:'30px', color:'gray', left:'40px', position:'relative', top:'10px',marginBottom:'20px'}}>Instrument details</Typography>
+export default function DataStock({ buttonStockClicked, priceClicked }) {
+    const [stockInfo, setStockInfo] = React.useState(null);
+
+    useEffect(() => {
+        if (buttonStockClicked !== null) {
+            fetch("http://127.0.0.1:5001/get-stock-info/" + buttonStockClicked, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then((data) => {
+                    if (data.status === 200) {
+                        data.json().then((message) => {
+                            console.log(message);
+                            setStockInfo(message);
+                        });
+
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then(() => {
+                            console.log('Error');
+                        });
+                    } else {
+                        throw new Error("Internal server error");
+                    }
+                });
+        }
+    }, [buttonStockClicked, priceClicked]);
+
+    if (stockInfo === null) {
+        return (<div></div>)
+    }
+    else {
+        return (
+            <div className="dataStock">
                 <div>
-                    <hr style={{backgroundColor:'gray', color:'gray', height: 1, width:'95%', margin: 'auto'}} />
-                    <Typography style={{}}>Name</Typography>
+                    <img id='imgDataStock' src={stockInfo.logo} alt={stockInfo.company_name}></img>
+                    <Typography id='stockName'>{stockInfo.company_name}</Typography>
+                    <Typography id='stockDetails'>{stockInfo.stock_symbol} · STOCK · US  </Typography>
+                    <div id='buttonsDivDataStock'>
+                        <Button id='buttonDataStock'>Sell</Button>
+                        <Button id='buttonDataStock'>Buy</Button>
+                    </div>
+                    <Typography id='priceDataStock'>${priceClicked}</Typography>
+                    <CustomGraphics />
+                </div>
+                <div style={{ backgroundColor: 'rgb(240, 237, 237)', height: '20px' }}></div>
+                <div>
+                    <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px' }}>Company details</Typography>
+                    <Typography style={{ fontSize: '15px', color: 'gray', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
+                </div>
+                <div style={{ backgroundColor: 'rgb(240, 237, 237)', height: '20px' }}></div>
+                <div>
+                    <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Instrument details</Typography>
+                    <div>
+                        <hr style={{ backgroundColor: 'gray', color: 'gray', height: 1, width: '95%', margin: 'auto' }} />
+                        <Typography style={{}}>Name</Typography>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }

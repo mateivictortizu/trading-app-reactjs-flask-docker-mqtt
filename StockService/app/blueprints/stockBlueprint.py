@@ -38,8 +38,7 @@ def add_stock():
 @stockBP.route('/get-stock-info/<stock>', methods=['GET'])
 def get_stock_info(stock):
     stock_info = getStockInfoDAO(stock)
-    print(stock_info.to_json())
-    return 'Ok', 200
+    return stock_info.to_json(), 200
 
 
 @stockBP.route('/get-stock-price/<stock>', methods=['GET'])
