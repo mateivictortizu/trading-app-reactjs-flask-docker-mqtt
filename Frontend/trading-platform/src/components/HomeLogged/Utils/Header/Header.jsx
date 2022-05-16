@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function Header() {
+export default function Header({accountValue}) {
     const [openDeposit, setOpenDeposit] = React.useState(false);
     const [openManageFunds, setOpenManageFunds] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
@@ -36,6 +36,7 @@ export default function Header() {
                     handleClickOpenDeposit={handleClickOpenDeposit}
                     handleClickOpenManageFunds={handleClickOpenManageFunds}
                     handleClickOpenHistory={handleClickOpenHistory}
+                    accountValue={accountValue}
                 />
                 <CustomDeposit
                     openDeposit={openDeposit}

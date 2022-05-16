@@ -17,11 +17,11 @@ db_database = os.getenv('DB_DATABASE', 'stock')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(db_user, db_password, db_host, db_database)
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 151, "pool_timeout": 4,
-                                           'connect_args': {'connect_timeout': 2},
-                                           'execution_options': {"timeout": 1.0,
-                                                                 "statement_timeout": 1.0,
-                                                                 "query_timeout": 1.0,
-                                                                 "execution_timeout": 1.0
+                                           'connect_args': {'connect_timeout': 4},
+                                           'execution_options': {"timeout": 2.0,
+                                                                 "statement_timeout": 2.0,
+                                                                 "query_timeout": 2.0,
+                                                                 "execution_timeout": 2.0
                                                                  }
                                            }
 app.config['CORS_EXPOSE_HEADERS'] = 'Authorization'

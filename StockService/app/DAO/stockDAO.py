@@ -80,7 +80,7 @@ def updateStockAsync(stock_symbol, date):
             bad_check = True
 
         if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info['longBusinessSummary'] is not None:
-            stock.longBuisnessSummary= search_stock.info['longBusinessSummary']
+            stock.longBuisnessSummary = search_stock.info['longBusinessSummary']
         else:
             bad_check = True
 
@@ -122,7 +122,7 @@ def updateStockDAO():
         t = threading.Thread(target=updateStockAsync, args=(stock.stock_symbol, datetime.utcnow()))
         t.daemon = True
         t.start()
-        time.sleep(300)
+        # time.sleep(300)
 
 
 def updatePriceAsync(stock_symbol, date):
@@ -130,7 +130,6 @@ def updatePriceAsync(stock_symbol, date):
     session = Session()
     if datetime.utcnow() > date + timedelta(seconds=7):
         session.close()
-        print("Data out")
         return
     stock_symbol = stock_symbol.upper()
     try:
@@ -144,7 +143,7 @@ def updatePriceAsync(stock_symbol, date):
             print("BAD")
             raise Exception('Cannot receive data from server')
         if 'shortName' in search_price.info.keys() and search_price.info['shortName'] is not None:
-            price.company_name = re.split(' Corporation|, ', search_price.info['shortName'])[0]
+            price.company_name = re.split(' Corporation|,|Group ', search_price.info['shortName'])[0]
         else:
             bad_check = True
 
@@ -154,6 +153,10 @@ def updatePriceAsync(stock_symbol, date):
             bad_check = True
         if bad_check is False:
             if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
+                if price.price > search_price.info['currentPrice']:
+                    price.updown = False
+                else:
+                    price.updown = True
                 price.price = search_price.info['currentPrice']
             else:
                 bad_check = True

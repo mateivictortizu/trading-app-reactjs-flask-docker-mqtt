@@ -18,43 +18,69 @@ const HomeLogged = () => {
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
     const [priceClicked, setPriceClicked] = React.useState(null);
-    var stock_symbols = ['MSFT', 'AMZN', 'TSLA', 'NFLX', 'AMD', 'NVDA', 'INTC', 'FB', 'F', 'NIO'];
+    var stock_symbols = ['MSFT', 'AMZN', 'TSLA', 'NFLX', 'AMD', 'NVDA', 'INTC', 'FB', 'F', 'NIO', 'BABA'];
     const [datas, setDatas] = React.useState([]);
+    const [valueAccount, setValueAccount] = React.useState(0.0);
+
 
     async function get_stocks() {
-        await new Promise(r => setTimeout(r, 4000));
-        fetch("http://127.0.0.1:5001/get-list-stock-price", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                stock_list: stock_symbols,
-            }),
-        })
-            .then((data) => {
-                if (data.status === 200) {
-                    data.json().then((message) => {
-                        setDatas(message['message']);
-                        if (buttonStockClicked === null) {
-                            setButtonStockClicked(message['message'][0].stock_symbol);
-                            setPriceClicked(message['message'][0].price);
-                        }
-                    });
-
-                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
-                    data.json().then(() => {
+        setTimeout(() => {
+            fetch("http://127.0.0.1:5001/get-list-stock-price", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    stock_list: stock_symbols,
+                }),
+            })
+                .then((data) => {
+                    if (data.status === 200) {
+                        data.json().then((message) => {
+                            setDatas(message['message']);
+                        });
+        
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then(() => {
+                            console.log('Error');
+                        });
+                    } else {
                         console.log('Error');
-                    });
-                } else {
-                    throw new Error("Internal server error");
-                }
-            });
+                    }
+                });
+            get_stocks();
+        }, 4000);
     };
 
-    get_stocks();
+    async function get_funds() {
+        setTimeout(() => {
+            fetch("http://127.0.0.1:5002/get-funds/matteovkt@gmail.com", {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then((data) => {
+                    if (data.status === 200) {
+                        data.json().then((message) => {
+                            setValueAccount(message['value']);
+                        });
+        
+                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                        data.json().then(() => {
+                            console.log('Error');
+                        });
+                    } else {
+                        console.log('Error');
+                    }
+                });
+            get_funds();
+        }, 2000);
+    };
 
     if (datas.length === 0) {
+        get_stocks();
+        get_funds();
         return (
             <div>
                 <Loading />
@@ -64,7 +90,9 @@ const HomeLogged = () => {
     else {
         return (
             <div className='mainDivLogged'>
-                <Header />
+                <Header
+                    accountValue={valueAccount}
+                />
                 <div className="firstDivLogged">
                     <Grid direction="row" container spacing={1}>
                         <Grid item >

@@ -80,6 +80,7 @@ class Price(db.Model):
     targetMean = db.Column(db.Float, nullable=False)
     targetHigh = db.Column(db.Float, nullable=False)
     recommendationMean = db.Column(db.Float, nullable=False)
+    updown = db.Column(db.Boolean, default=True)
     lastModify = db.Column(db.DateTime)
     CheckConstraint('price >=0', name='priceChecking')
 

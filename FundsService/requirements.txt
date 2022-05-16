@@ -8,3 +8,5 @@ requests
 alembic
 apscheduler
 pyOpenSSL
+flask_cors
+mysqlclient

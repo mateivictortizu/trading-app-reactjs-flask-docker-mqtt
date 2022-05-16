@@ -6,7 +6,7 @@ import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 import { useNavigate } from 'react-router-dom';
 
-export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory }) {
+export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory, accountValue }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
@@ -16,7 +16,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     var data = {
         datasets: [
             {
-                data: [funds, portofolio],
+                data: [accountValue, portofolio],
                 backgroundColor: [
                     '#32CD32',
                     '#0066cc'
@@ -88,7 +88,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                                 id='appBarButtonAccountValue'
                                 onClick={handleClickAccountStats}
                             >
-                                Account value: ${funds+portofolio}
+                                Account value: ${accountValue+portofolio}
                             </Button>
                             <Button
                                 aria-controls="simple-menu"
@@ -124,7 +124,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                             anchorAccountStats={anchorAccountStats}
                             handleCloseAccountStats={handleCloseAccountStats}
                             data={data}
-                            funds={funds}
+                            funds={accountValue}
                             portofolio={portofolio}/>
 
                     </Toolbar>

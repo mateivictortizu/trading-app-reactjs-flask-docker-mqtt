@@ -1,12 +1,14 @@
 .navigationHome {
     height: 220px;
     width: 200px;
-    position: relative;
+    position: absolute;
     z-index: 1;
-    top: 25px;
+    top: 85px;
+    left: 90px;
     overflow-x: hidden;
     padding-top: 25px;
     text-align: center;
+    
   }
 
 #buttonNavigationHomeLogged {

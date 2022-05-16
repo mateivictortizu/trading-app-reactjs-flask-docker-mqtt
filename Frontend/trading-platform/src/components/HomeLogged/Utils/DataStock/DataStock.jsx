@@ -18,7 +18,6 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                 .then((data) => {
                     if (data.status === 200) {
                         data.json().then((message) => {
-                            console.log(message);
                             setStockInfo(message);
                         });
 
@@ -27,7 +26,7 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                             console.log('Error');
                         });
                     } else {
-                        throw new Error("Internal server error");
+                        console.log('Error');
                     }
                 });
         }
@@ -39,7 +38,7 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
     else {
         return (
             <div className="dataStock">
-                <div>
+                <div id="firstDivDataStock">
                     <img id='imgDataStock' src={stockInfo.logo} alt={stockInfo.company_name}></img>
                     <Typography id='stockName'>{stockInfo.company_name}</Typography>
                     <Typography id='stockDetails'>{stockInfo.stock_symbol} · STOCK · US  </Typography>
@@ -47,21 +46,22 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                         <Button id='buttonDataStock'>Sell</Button>
                         <Button id='buttonDataStock'>Buy</Button>
                     </div>
-                    <Typography id='priceDataStock'>${priceClicked}</Typography>
+                    <Typography id='priceDataStock'>${priceClicked.toFixed(2)}</Typography>
                     <CustomGraphics />
                 </div>
-                <div style={{ backgroundColor: 'rgb(240, 237, 237)', height: '20px' }}></div>
-                <div>
-                    <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px' }}>Company details</Typography>
+                <div style={{ backgroundColor: '#ecedf1', height: '20px' }}></div>
+                <div id="otherDivDataStock">
+                    <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Company details</Typography>
+                    <hr style={{ backgroundColor: 'gray', color: 'gray', height: 1, width: '95%', margin: 'auto' }} />
                     <Typography style={{ fontSize: '15px', color: 'gray', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
                 </div>
-                <div style={{ backgroundColor: 'rgb(240, 237, 237)', height: '20px' }}></div>
-                <div>
+                <div style={{ backgroundColor: '#ecedf1', height: '20px' }}></div>
+                <div id="otherDivDataStock">
                     <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Instrument details</Typography>
-                    <div>
-                        <hr style={{ backgroundColor: 'gray', color: 'gray', height: 1, width: '95%', margin: 'auto' }} />
-                        <Typography style={{}}>Name</Typography>
-                    </div>
+
+                    <hr style={{ backgroundColor: 'gray', color: 'gray', height: 1, width: '95%', margin: 'auto' }} />
+                    <Typography style={{ fontSize: '15px', color: 'gray', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
+
                 </div>
             </div>
         )

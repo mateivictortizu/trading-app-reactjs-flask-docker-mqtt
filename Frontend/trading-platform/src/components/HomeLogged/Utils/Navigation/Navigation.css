@@ -2,9 +2,12 @@
     height: 220px;
     width: 90px;
     border-radius: 10px;
-    position: relative;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #bdbebe;
+    position: absolute;
     z-index: 1;
-    top: 25px;
+    top: 85px;
     left: 10px;
     background-color: rgb(255, 255, 255);
     overflow-x: hidden;

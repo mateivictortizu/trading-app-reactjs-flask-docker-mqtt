@@ -3,14 +3,23 @@
 
 .navigationStock {
     height: fit-content;
-    max-height: 630px;
+    max-height: 702px;
     max-width: 370px;
-    position: fixed;
+    position: absolute;
     left: 285px;
     top: 85px;
-    overflow-x: hidden;
     background-color: rgb(255, 255, 255);
+
   }
+
+#firstDivNavigationStock{
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bdbebe;
+  max-height: 702px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
 
 #buttonNavigationStockLogged {
     height: 70px;
@@ -71,16 +80,18 @@
   
 
   ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #ecedf1;
   }
    
   
   ::-webkit-scrollbar-thumb {
     background: #888; 
+    border-radius: 10px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
+    border-radius: 10px;
   }
 
   #nameStockNavigation {

@@ -1,22 +1,38 @@
 import './CustomCardDialog.css';
+import React from "react";
 import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transition }) {
+
+    const [sumAdd,setSumAdd]=React.useState(0.0);
+
     function handleCloseCard() {
         setOpenCard(false);
     }
 
     function pay() {
-        setOpenCard(false);
-        //Add a request to add money in account
+        fetch("http://127.0.0.1:5002/add-money", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user: "matteovkt@gmail.com",
+                    value: parseInt(sumAdd),
+                }),
+            }).then(setOpenCard(false));
     }
 
     function back(){
         setOpenCard(false);
         setOpenDeposit(true);
     }
+
+    const handleChangeSumAdd = (event) => {
+        setSumAdd(event.target.value);
+    };
 
 
     return (
@@ -85,6 +101,8 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                             id="Sum"
                             label="Sum"
                             type="string"
+                            value={sumAdd}
+                            onChange={handleChangeSumAdd}
                             style={{ width: '90%', marginTop: '20px' }}
                         />
 

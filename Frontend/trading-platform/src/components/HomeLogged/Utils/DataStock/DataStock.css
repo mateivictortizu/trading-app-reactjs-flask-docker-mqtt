@@ -4,12 +4,12 @@
 .dataStock {
     height: 700px;
     width: 1000px;
-    position: fixed;
+    position: absolute;
     z-index: 1;
     top: 85px;
     left:670px;
     overflow-x: hidden;
-    background-color: rgb(255, 255, 255);
+    background-color: #ecedf1;
     font-family: 'Assistant', sans-serif;
     font-family: 'Barlow Semi Condensed', sans-serif;
     font-family: 'Inspiration', cursive;
@@ -22,12 +22,12 @@
     .dataStock {
         height: 700px;
         width: 800px;
-        position: fixed;
+        position: absolute;
         z-index: 1;
         top: 85px;
         left:670px;
         overflow-x: hidden;
-        background-color: rgb(255, 255, 255);
+        background-color: #ecedf1;
         font-family: 'Assistant', sans-serif;
         font-family: 'Barlow Semi Condensed', sans-serif;
         font-family: 'Inspiration', cursive;
@@ -71,6 +71,50 @@
     font-family: 'Inspiration', cursive;
     font-family: 'Open Sans', sans-serif;
     font-family: 'Roboto', sans-serif;
+}
+
+@media only screen and (min-width: 1600px){
+    #firstDivDataStock{
+        background-color: white;
+        height: 520px;
+        width: 990px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #bdbebe;
+    }
+}
+
+@media only screen and (max-width: 1599px){
+    #firstDivDataStock{
+        background-color: white;
+        height: 520px;
+        width: 790px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #bdbebe;
+    }
+}
+
+@media only screen and (min-width: 1600px){
+    #otherDivDataStock{
+        background-color: white;
+        height: fit-content;
+        width: 990px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #bdbebe;
+    }
+}
+
+@media only screen and (max-width: 1599px){
+    #otherDivDataStock{
+        background-color: white;
+        height: fit-content;
+        width: 790px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #bdbebe;
+    }
 }
 
 #buttonDataStock
