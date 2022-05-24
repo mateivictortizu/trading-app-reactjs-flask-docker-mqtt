@@ -47,20 +47,20 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                         <Button id='buttonDataStock'>Buy</Button>
                     </div>
                     <Typography id='priceDataStock'>${priceClicked.toFixed(2)}</Typography>
-                    <CustomGraphics />
+                    <CustomGraphics margin={'200px'} />
                 </div>
                 <div style={{ backgroundColor: '#ecedf1', height: '20px' }}></div>
                 <div id="otherDivDataStock">
-                    <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Company details</Typography>
-                    <hr style={{ backgroundColor: 'gray', color: 'gray', height: 1, width: '95%', margin: 'auto' }} />
-                    <Typography style={{ fontSize: '15px', color: 'gray', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
+                    <Typography style={{ fontSize: '30px', color: '#282827', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Company details</Typography>
+                    <hr style={{ backgroundColor: 'gray', color: '#282827', height: 1, width: '95%', margin: 'auto' }} />
+                    <Typography style={{ fontSize: '15px', color: '#282827', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
                 </div>
                 <div style={{ backgroundColor: '#ecedf1', height: '20px' }}></div>
                 <div id="otherDivDataStock">
-                    <Typography style={{ fontSize: '30px', color: 'gray', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Instrument details</Typography>
+                    <Typography style={{ fontSize: '30px', color: '#282827', left: '40px', position: 'relative', top: '10px', marginBottom: '20px' }}>Instrument details</Typography>
 
-                    <hr style={{ backgroundColor: 'gray', color: 'gray', height: 1, width: '95%', margin: 'auto' }} />
-                    <Typography style={{ fontSize: '15px', color: 'gray', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
+                    <hr style={{ backgroundColor: 'gray', color: '#282827', height: 1, width: '95%', margin: 'auto' }} />
+                    <Typography style={{ fontSize: '15px', color: '#282827', margin: '40px', position: 'relative', top: '10px' }}>{stockInfo.longBusinessSummary}</Typography>
 
                 </div>
             </div>

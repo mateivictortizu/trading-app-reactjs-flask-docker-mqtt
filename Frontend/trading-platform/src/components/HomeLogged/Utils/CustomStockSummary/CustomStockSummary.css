@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto&display=swap');
+
+.navigationCustomStockSummary{
+    height: fit-content;
+    max-height: 702px;
+    width: 500px;
+    position: absolute;
+    left: 140px;
+    top: 85px;
+    background-color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-color: #bdbebe;
+}
+
+#priceCustomStockSummary{
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    font-size: 35px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}

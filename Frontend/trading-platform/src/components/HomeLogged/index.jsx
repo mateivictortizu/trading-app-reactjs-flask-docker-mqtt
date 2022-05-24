@@ -9,9 +9,12 @@ import DataStock from './Utils/DataStock/DataStock';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
+import CustomStockSummary from './Utils/CustomStockSummary/CustomStockSummary';
 
 const HomeLogged = () => {
 
+    var popular = ['TSLA', 'APPL', 'NIO', 'COIN', 'PTON', 'NFLX', 'FB', 'GOOGL', 'PLTR', 'NVDA', 'AMAZON', 'MSFT', 'RIVN'];
+    var us_stocks = ['PLTR', 'NKE', 'MCD', 'KO', 'DIS', 'WMT', 'IBM', 'VZ', 'CRM', 'FDX'];
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
@@ -22,9 +25,31 @@ const HomeLogged = () => {
     const [datas, setDatas] = React.useState([]);
     const [valueAccount, setValueAccount] = React.useState(0.0);
 
+    function get_values() {
+        fetch("http://127.0.0.1:5002/get-funds/matteovkt@gmail.com", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then((data) => {
+                if (data.status === 200) {
+                    data.json().then((message) => {
+                        setValueAccount(message['value']);
+                    });
 
-    async function get_stocks() {
-        setTimeout(() => {
+                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                    data.json().then(() => {
+                        console.log('Error');
+                    });
+                } else {
+                    console.log('Error');
+                }
+            });
+    }
+
+    function get_stocks() {
+        if (buttonHomeClicked == 'mywatchlist') {
             fetch("http://127.0.0.1:5001/get-list-stock-price", {
                 method: "POST",
                 headers: {
@@ -38,8 +63,12 @@ const HomeLogged = () => {
                     if (data.status === 200) {
                         data.json().then((message) => {
                             setDatas(message['message']);
+                            if (buttonStockClicked === null) {
+                                setButtonStockClicked('MSFT');
+                                setPriceClicked(20);
+                            }
                         });
-        
+
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then(() => {
                             console.log('Error');
@@ -48,24 +77,28 @@ const HomeLogged = () => {
                         console.log('Error');
                     }
                 });
-            get_stocks();
-        }, 4000);
-    };
+        }
 
-    async function get_funds() {
-        setTimeout(() => {
-            fetch("http://127.0.0.1:5002/get-funds/matteovkt@gmail.com", {
-                method: "GET",
+        if (buttonHomeClicked == 'popular') {
+            fetch("http://127.0.0.1:5001/get-list-stock-price", {
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                body: JSON.stringify({
+                    stock_list: popular,
+                }),
             })
                 .then((data) => {
                     if (data.status === 200) {
                         data.json().then((message) => {
-                            setValueAccount(message['value']);
+                            setDatas(message['message']);
+                            if (buttonStockClicked === null) {
+                                setButtonStockClicked('MSFT');
+                                setPriceClicked(20);
+                            }
                         });
-        
+
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then(() => {
                             console.log('Error');
@@ -74,13 +107,23 @@ const HomeLogged = () => {
                         console.log('Error');
                     }
                 });
-            get_funds();
-        }, 2000);
-    };
+        }
+    }
+
+    const [time, setTime] = React.useState(0);
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            setTime(time + 1);
+            get_stocks();
+            get_values();
+        }, 100);
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [time]);
+
 
     if (datas.length === 0) {
-        get_stocks();
-        get_funds();
         return (
             <div>
                 <Loading />
@@ -101,7 +144,6 @@ const HomeLogged = () => {
                                 setButtonClicked={setButtonClicked}
                             />
                         </Grid>
-
                         {(buttonClicked === 'home') &&
                             <div>
                                 <Grid item>
@@ -110,10 +152,6 @@ const HomeLogged = () => {
                                         setButtonHomeClicked={setButtonHomeClicked}
                                     />
                                 </Grid>
-                            </div>
-                        }
-                        {(buttonClicked === 'home') &&
-                            <div>
                                 <Grid item>
                                     <StockNavigation
                                         buttonStockClicked={buttonStockClicked}
@@ -124,14 +162,40 @@ const HomeLogged = () => {
                                         buttonHomeClicked={buttonHomeClicked}
                                     />
                                 </Grid>
+                                <Grid item >
+                                    <DataStock
+                                        buttonStockClicked={buttonStockClicked}
+                                        priceClicked={priceClicked}
+                                    />
+                                </Grid>
                             </div>
                         }
-                        <Grid item >
-                            <DataStock
-                                buttonStockClicked={buttonStockClicked}
-                                priceClicked={priceClicked}
-                            />
-                        </Grid>
+
+                        {(buttonClicked === 'pie') &&
+                            <div>
+                                <Grid item>
+                                <CustomStockSummary data={datas}></CustomStockSummary>
+                                </Grid>
+                                <Grid item >
+                                    <DataStock
+                                        buttonStockClicked={buttonStockClicked}
+                                        priceClicked={priceClicked}
+                                    />
+                                </Grid>
+                            </div>
+                        }
+
+                        {(buttonClicked === 'search') &&
+                            <div>
+                            </div>
+                        }
+
+                        {(buttonClicked === 'notification') &&
+                            <div>
+                            </div>
+                        }
+
+
                     </Grid>
                 </div>
             </div>

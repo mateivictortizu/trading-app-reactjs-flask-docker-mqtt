@@ -1,8 +1,8 @@
-import { Button, ButtonGroup } from "@mui/material";
+import { Button } from "@mui/material";
 import React from "react";
 import Chart from "react-apexcharts";
 
-export default function CustomGraphics() {
+export default function CustomGraphics({ margin }) {
     var state = {
 
         options: {
@@ -10,7 +10,7 @@ export default function CustomGraphics() {
                 toolbar: {
                     show: false
                 },
-                type: 'line',
+                type: 'area',
                 stacked: false,
                 parentHeightOffset: 0,
                 zoom: {
@@ -20,7 +20,7 @@ export default function CustomGraphics() {
                 },
             },
             grid: {
-                show: false
+                show: true
             },
             dataLabels: {
                 enabled: false
@@ -30,8 +30,8 @@ export default function CustomGraphics() {
                 gradient: {
                     shadeIntensity: 1,
                     inverseColors: false,
-                    opacityFrom: 0.5,
-                    opacityTo: 0.5,
+                    opacityFrom: 0,
+                    opacityTo: 0,
                     stops: [100]
                 },
             },
@@ -39,8 +39,20 @@ export default function CustomGraphics() {
                 size: 0,
             },
             xaxis: {
-                categories: ['Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie', 'Ianuarie']
+                show: false,
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                }
             },
+            yaxis:{
+                opposite: true,
+            }
         },
         series: [
             {
@@ -58,7 +70,7 @@ export default function CustomGraphics() {
                 series={state.series}
                 type="area"
                 height='270px'
-                style={{ marginTop: '200px' }}
+                style={{ marginTop: margin }}
             />
             <Button style={{ margin: '5px' }}>1D</Button>
             <Button style={{ margin: '5px' }}>1W</Button>
