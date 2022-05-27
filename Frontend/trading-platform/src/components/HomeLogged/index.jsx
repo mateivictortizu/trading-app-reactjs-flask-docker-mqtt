@@ -10,6 +10,8 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
 import CustomStockSummary from './Utils/CustomStockSummary/CustomStockSummary';
+import CustomInvested from './Utils/CustomInvested/CustomInvested';
+import CustomTable from './Utils/CustomTable/CustomTable';
 
 const HomeLogged = () => {
 
@@ -174,7 +176,17 @@ const HomeLogged = () => {
                         {(buttonClicked === 'pie') &&
                             <div>
                                 <Grid item>
-                                <CustomStockSummary data={datas}></CustomStockSummary>
+                                    <CustomStockSummary data={datas}></CustomStockSummary>
+                                </Grid>
+                                <Grid item>
+                                <CustomInvested
+                                        buttonStockClicked={buttonStockClicked}
+                                        setButtonStockClicked={setButtonStockClicked}
+                                        priceClicked={priceClicked}
+                                        setPriceClicked={setPriceClicked}
+                                        data={datas}
+                                        buttonHomeClicked={buttonHomeClicked}
+                                    />
                                 </Grid>
                                 <Grid item >
                                     <DataStock
@@ -187,6 +199,7 @@ const HomeLogged = () => {
 
                         {(buttonClicked === 'search') &&
                             <div>
+                                <CustomTable></CustomTable>
                             </div>
                         }
 

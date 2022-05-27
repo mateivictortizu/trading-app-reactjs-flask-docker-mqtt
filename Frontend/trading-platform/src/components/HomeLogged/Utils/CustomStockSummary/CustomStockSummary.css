@@ -16,11 +16,65 @@
 #priceCustomStockSummary{
     position: absolute;
     left: 30px;
-    top: 30px;
+    top: 15px;
     font-size: 35px;
     font-family: 'Assistant', sans-serif;
     font-family: 'Barlow Semi Condensed', sans-serif;
     font-family: 'Inspiration', cursive;
     font-family: 'Open Sans', sans-serif;
     font-family: 'Roboto', sans-serif;
+}
+
+#investedCustomStockSummary{
+    position: absolute;
+    left: 30px;
+    top: 70px;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #7c7e7e;
+}
+
+#returnCustomStockSummary{
+    position: absolute;
+    left: 130px;
+    top: 70px;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #7c7e7e;
+}
+
+#valueinvestedCustomStockSummary{
+    position: absolute;
+    left: 30px;
+    top: 90px;
+    font-size: 17px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #7c7e7e;
+}
+
+#valuereturnCustomStockSummary{
+    position: absolute;
+    left: 130px;
+    top: 90px;
+    font-size: 17px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #7c7e7e;
 }
