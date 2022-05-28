@@ -1,7 +1,20 @@
 #customTable {
     position: absolute;
     top:90px;
-    left:130px;
-    width: 1550px;
+    left:200px;
+    width: 1400px;
     max-height: 682px;
+}
+
+#imgCustomTable {
+    border-radius: 5px;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }

@@ -1,22 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto:wght@300;400&display=swap');
 
-.navigationInvested {
-    height: fit-content;
-    max-height: 702px;
-    max-width: 500px;
-    position: absolute;
-    left: 140px;
-    top: 530px;
-    background-color: rgb(255, 255, 255);
+#customInvested
+{
+  height: 700px;
+  width: 500px;
+  position: absolute;
+  z-index: 1;
+  overflow-x: hidden;
+  left: 140px;
+  top: 85px;
 
-  }
+}
 
 #firstDivNavigationInvested{
   border-width: 1px;
   border-style: solid;
   border-color: #bdbebe;
-  max-height: 702px;
+  background-color: white;
+  width: 500px;
+  top:450px;
+  position: absolute;
   overflow-x: hidden;
   overflow-y: scroll;
 }

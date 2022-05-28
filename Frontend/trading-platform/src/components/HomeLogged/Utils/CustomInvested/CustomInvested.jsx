@@ -1,6 +1,7 @@
 import "./CustomInvested.css";
 import React from "react";
 import { Button, Typography } from "@mui/material";
+import CustomStockSummary from "../CustomStockSummary/CustomStockSummary";
 
 export default function CustomInvested({ buttonStockClicked, setButtonStockClicked, setPriceClicked, data }) {
 
@@ -11,7 +12,10 @@ export default function CustomInvested({ buttonStockClicked, setButtonStockClick
 
     if (data.lenght !== 0) {
         return (
-            <div className="navigationInvested">
+            <div id='customInvested'>
+                <CustomStockSummary data={data}></CustomStockSummary>
+
+                
                 <div id="firstDivNavigationInvested">
                     {data.map(item =>
                     (
@@ -30,6 +34,7 @@ export default function CustomInvested({ buttonStockClicked, setButtonStockClick
                     )
                     )}
                 </div>
+
             </div>
         )
     }

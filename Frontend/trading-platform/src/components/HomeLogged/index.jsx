@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Header from "./Utils/Header/Header"
 import './HomeLogged.css';
 import Navigation from './Utils/Navigation/Navigation';
@@ -7,16 +7,13 @@ import { Grid } from '@mui/material';
 import StockNavigation from './Utils/StockNavigation/StockNavigation';
 import DataStock from './Utils/DataStock/DataStock';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
-import CustomStockSummary from './Utils/CustomStockSummary/CustomStockSummary';
 import CustomInvested from './Utils/CustomInvested/CustomInvested';
 import CustomTable from './Utils/CustomTable/CustomTable';
 
 const HomeLogged = () => {
 
     var popular = ['TSLA', 'APPL', 'NIO', 'COIN', 'PTON', 'NFLX', 'FB', 'GOOGL', 'PLTR', 'NVDA', 'AMAZON', 'MSFT', 'RIVN'];
-    var us_stocks = ['PLTR', 'NKE', 'MCD', 'KO', 'DIS', 'WMT', 'IBM', 'VZ', 'CRM', 'FDX'];
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
@@ -51,7 +48,7 @@ const HomeLogged = () => {
     }
 
     function get_stocks() {
-        if (buttonHomeClicked == 'mywatchlist') {
+        if (buttonHomeClicked === 'mywatchlist') {
             fetch("http://127.0.0.1:5001/get-list-stock-price", {
                 method: "POST",
                 headers: {
@@ -81,7 +78,7 @@ const HomeLogged = () => {
                 });
         }
 
-        if (buttonHomeClicked == 'popular') {
+        if (buttonHomeClicked === 'popular') {
             fetch("http://127.0.0.1:5001/get-list-stock-price", {
                 method: "POST",
                 headers: {
@@ -114,14 +111,28 @@ const HomeLogged = () => {
 
     const [time, setTime] = React.useState(0);
     React.useEffect(() => {
-        const timer = setTimeout(() => {
-            setTime(time + 1);
-            get_stocks();
-            get_values();
-        }, 100);
-        return () => {
-            clearTimeout(timer);
-        };
+        if(time === 0)
+        {
+            const timer = setTimeout(() => {
+                setTime(time + 1);
+                get_stocks();
+                get_values();
+            }, 100);
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+        else
+        {
+            const timer = setTimeout(() => {
+                setTime(time + 1);
+                get_stocks();
+                get_values();
+            }, 5000);
+            return () => {
+                clearTimeout(timer);
+            };
+        }
     }, [time]);
 
 
@@ -150,6 +161,7 @@ const HomeLogged = () => {
                             <div>
                                 <Grid item>
                                     <HomeNavigation
+                                        setTime={setTime}
                                         buttonHomeClicked={buttonHomeClicked}
                                         setButtonHomeClicked={setButtonHomeClicked}
                                     />
@@ -175,9 +187,6 @@ const HomeLogged = () => {
 
                         {(buttonClicked === 'pie') &&
                             <div>
-                                <Grid item>
-                                    <CustomStockSummary data={datas}></CustomStockSummary>
-                                </Grid>
                                 <Grid item>
                                 <CustomInvested
                                         buttonStockClicked={buttonStockClicked}

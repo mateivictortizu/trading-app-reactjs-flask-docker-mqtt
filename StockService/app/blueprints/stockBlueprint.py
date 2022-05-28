@@ -3,7 +3,8 @@ from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
 from app import executor
-from app.DAO.stockDAO import addStockDAO, updateStockDAO, updatePriceDAO, getStockInfoDAO, getStockPriceDAO
+from app.DAO.stockDAO import addStockDAO, updateStockDAO, updatePriceDAO, getStockInfoDAO, getStockPriceDAO, \
+    get_all_stocksDAO
 
 stockBP = Blueprint('stockBlueprint', __name__)
 
@@ -52,7 +53,7 @@ def get_list_stock_price():
     stock_symbol_list = request.json['stock_list']
     stock_list = []
     for i in stock_symbol_list:
-        new_stock=getStockPriceDAO(i)
+        new_stock = getStockPriceDAO(i)
         if new_stock is not None:
             stock_list.append(new_stock.to_json())
     return jsonify({'message': stock_list}), 200
@@ -76,3 +77,13 @@ def update_stock():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Stocks not updated'}), 400
+
+
+@stockBP.route('/get-all-stocks', methods=['GET'])
+def get_all_stocks():
+    stocks_list=[]
+    stocks=get_all_stocksDAO()
+    if stocks is not None:
+        for i in stocks:
+            stocks_list.append(i.to_json())
+    return jsonify({'message': stocks_list}), 200

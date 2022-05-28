@@ -207,3 +207,11 @@ def updatePriceDAO():
             t.daemon = True
             t.start()
             time.sleep(0.1)
+
+
+def get_all_stocksDAO():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stock = session.query(Price).all()
+    session.close()
+    return stock

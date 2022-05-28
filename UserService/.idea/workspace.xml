@@ -2,13 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/StockNavigation/StockNavigation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/StockNavigation/StockNavigation.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gateway/.idea/Gateway.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomInvested/CustomInvested.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomInvested/CustomInvested.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomInvested/CustomInvested.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomInvested/CustomInvested.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomStockSummary/CustomStockSummary.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomStockSummary/CustomStockSummary.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/HomeNavigation/HomeNavigation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/HomeNavigation/HomeNavigation.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/app/DAO/stockDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/DAO/stockDAO.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../StockService/app/blueprints/stockBlueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/blueprints/stockBlueprint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StockService/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/text.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
