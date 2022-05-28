@@ -19,6 +19,7 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                     if (data.status === 200) {
                         data.json().then((message) => {
                             setStockInfo(message);
+                            console.log(message);
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
@@ -47,7 +48,7 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                         <Button id='buttonDataStock'>Buy</Button>
                     </div>
                     <Typography id='priceDataStock'>${priceClicked.toFixed(2)}</Typography>
-                    <CustomGraphics margin={'200px'} />
+                    <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.one_month)} />
                 </div>
                 <div style={{ backgroundColor: '#ecedf1', height: '20px' }}></div>
                 <div id="otherDivDataStock">

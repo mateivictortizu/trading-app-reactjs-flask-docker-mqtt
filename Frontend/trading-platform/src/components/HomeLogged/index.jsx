@@ -13,7 +13,7 @@ import CustomTable from './Utils/CustomTable/CustomTable';
 
 const HomeLogged = () => {
 
-    var popular = ['TSLA', 'APPL', 'NIO', 'COIN', 'PTON', 'NFLX', 'FB', 'GOOGL', 'PLTR', 'NVDA', 'AMAZON', 'MSFT', 'RIVN'];
+    var popular = ['AAPL', 'TSLA', 'APPL', 'NIO', 'COIN', 'PTON', 'NFLX', 'FB', 'GOOGL', 'PLTR', 'NVDA', 'AMAZON', 'MSFT', 'RIVN'];
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
