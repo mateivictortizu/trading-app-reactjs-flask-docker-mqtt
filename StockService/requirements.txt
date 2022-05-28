@@ -13,3 +13,4 @@ thread6
 mysqlclient
 gunicorn
 flask_cors
+pandas

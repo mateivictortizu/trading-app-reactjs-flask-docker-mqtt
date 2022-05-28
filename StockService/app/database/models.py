@@ -1,9 +1,25 @@
+import json
+import math
 from datetime import datetime
 
+import pandas as pd
 import yfinance as yf
 from sqlalchemy import CheckConstraint
 
 from app import db
+
+
+def stock_data(ticker, period, interval, observation):
+    ticker_history = ticker.history(period, interval)
+    sf = ticker_history[observation]
+    df = pd.DataFrame({'Date': sf.index, 'Values': sf.values})
+
+    print(df)
+    lista = []
+    for i in range(0, len(df['Date'].tolist())):
+        values = {"x": df['Date'].tolist()[i].strftime("%d-%m-%Y"), "y": round(df['Values'].tolist()[i], 2)}
+        lista.append(values)
+    return lista
 
 
 class Stock(db.Model):
@@ -19,6 +35,11 @@ class Stock(db.Model):
     currency = db.Column(db.String(5), nullable=False)
     longBuisnessSummary = db.Column(db.Text(), nullable=False)
     isin = db.Column(db.String(50), nullable=False)
+    one_day = db.Column(db.JSON, nullable=True)
+    one_month = db.Column(db.JSON, nullable=True)
+    three_month = db.Column(db.JSON, nullable=True)
+    six_month = db.Column(db.JSON, nullable=True)
+    max = db.Column(db.JSON, nullable=True)
 
     def __init__(self, stock_symbol):
         self.stock_symbol = stock_symbol.upper()
@@ -55,10 +76,18 @@ class Stock(db.Model):
             return
         self.isin = search_stock.isin
 
+        self.one_day = json.dumps(stock_data(search_stock, '1d', '30m', 'Open'))
+        self.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Open'))
+        self.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Open'))
+        self.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Open'))
+        self.max = json.dumps(stock_data(search_stock, 'max', '5d', 'Open'))
+
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'employees': self.employees,
                 'sector': self.sector, 'industry': self.industry, 'market_name': self.market_name,
-                'currency': self.currency, 'logo': self.logo, 'longBusinessSummary': self.longBuisnessSummary}
+                'currency': self.currency, 'logo': self.logo, 'longBusinessSummary': self.longBuisnessSummary,
+                'one_day': self.one_day, 'one_month': self.one_month, 'three_month': self.three_month,
+                'six_month': self.six_month, 'max': self.max}
 
     @staticmethod
     def check_if_exists(stock_symbol, session):

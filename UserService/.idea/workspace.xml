@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/trading-platform/src/components/HomeLogged/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/app/blueprints/stockBlueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/blueprints/stockBlueprint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/app/database/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StockService/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/../StockService/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
