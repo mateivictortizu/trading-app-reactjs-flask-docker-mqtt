@@ -13,7 +13,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
     }
 
     function pay() {
-        fetch("http://127.0.0.1:5002/add-money", {
+        fetch("http://127.0.0.1:5000/add-money", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

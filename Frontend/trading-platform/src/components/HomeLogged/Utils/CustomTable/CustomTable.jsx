@@ -14,7 +14,7 @@ export default function CustomTable() {
   const [rows,setRows]=React.useState([]);
   
   function get_all_stocks() {
-    fetch("http://127.0.0.1:5001/get-all-stocks", {
+    fetch("http://127.0.0.1:5000/get-all-stocks", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'

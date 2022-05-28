@@ -25,7 +25,7 @@ const HomeLogged = () => {
     const [valueAccount, setValueAccount] = React.useState(0.0);
 
     function get_values() {
-        fetch("http://127.0.0.1:5002/get-funds/matteovkt@gmail.com", {
+        fetch("http://127.0.0.1:5000/get-funds/matteovkt@gmail.com", {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ const HomeLogged = () => {
 
     function get_stocks() {
         if (buttonHomeClicked === 'mywatchlist') {
-            fetch("http://127.0.0.1:5001/get-list-stock-price", {
+            fetch("http://127.0.0.1:5000/get-list-stock-price", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ const HomeLogged = () => {
         }
 
         if (buttonHomeClicked === 'popular') {
-            fetch("http://127.0.0.1:5001/get-list-stock-price", {
+            fetch("http://127.0.0.1:5000/get-list-stock-price", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
