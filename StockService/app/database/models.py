@@ -1,5 +1,6 @@
 import json
 import math
+import re
 from datetime import datetime
 
 import pandas as pd
@@ -80,14 +81,14 @@ class Stock(db.Model):
         self.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Open'))
         self.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Open'))
         self.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Open'))
-        self.max = json.dumps(stock_data(search_stock, 'max', '5d', 'Open'))
+        self.max = json.dumps(stock_data(search_stock, 'max', '3mo', 'Open'))
 
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'employees': self.employees,
                 'sector': self.sector, 'industry': self.industry, 'market_name': self.market_name,
                 'currency': self.currency, 'logo': self.logo, 'longBusinessSummary': self.longBuisnessSummary,
                 'one_day': self.one_day, 'one_month': self.one_month, 'three_month': self.three_month,
-                'six_month': self.six_month, 'max': self.max}
+                'six_month': self.six_month, 'maxim': self.max}
 
     @staticmethod
     def check_if_exists(stock_symbol, session):
@@ -120,7 +121,7 @@ class Price(db.Model):
         except Exception:
             return
         if 'shortName' in search_stock.info.keys() and search_stock.info['shortName'] is not None:
-            self.company_name = search_stock.info['shortName']
+            self.company_name = re.split(' Corporation|,|Group ', search_stock.info['shortName'])[0]
         else:
             return
         if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:

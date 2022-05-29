@@ -1,3 +1,4 @@
+import json
 import threading
 import time
 from datetime import datetime, timedelta
@@ -6,7 +7,7 @@ import yfinance
 from sqlalchemy.orm import sessionmaker
 
 from app import engine
-from app.database.models import Stock, Price
+from app.database.models import Stock, Price, stock_data
 import re
 
 
@@ -106,6 +107,12 @@ def updateStockAsync(stock_symbol, date):
             stock.currency = search_stock.info['financialCurrency']
         else:
             bad_check = True
+
+        stock.one_day = json.dumps(stock_data(search_stock, '1d', '30m', 'Open'))
+        stock.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Open'))
+        stock.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Open'))
+        stock.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Open'))
+        stock.max = json.dumps(stock_data(search_stock, 'max', '3mo', 'Open'))
         stock.isin = search_stock.isin
         if bad_check is False:
             session.commit()

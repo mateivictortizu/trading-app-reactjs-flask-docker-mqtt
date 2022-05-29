@@ -1,25 +1,44 @@
-element.style {
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto:wght@300;400&display=swap');
 
-}
-
-#appBarLogged
-{
+#appBarLogged {
     background-color: white;
     color: rgb(255, 255, 255);
-    position: static; 
+    position: static;
 }
 
-#appBarButtonAccountValue
-{
-    color: #0066cc;
+#appBarButtonAccountValue {
+    color: #000000;
+    font-size: 15px;
+    text-transform: none;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
 }
 
-#appBarButtonDeposit{
+#appBarButtonDeposit {
     background-color: #0066cc;
     color: white;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    width: 200px;
 }
 
-#appBarButtonInvesting{
+#appBarButtonInvesting {
     color: #0066cc;
     width: 350px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 13px;
 }

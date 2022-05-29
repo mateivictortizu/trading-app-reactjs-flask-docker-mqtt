@@ -10,7 +10,6 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
-    const [funds,setFunds]=React.useState(5.00);
     const [portofolio,setPortofolio]=React.useState(1);
     const navigate = useNavigate();
     var data = {
@@ -88,7 +87,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                                 id='appBarButtonAccountValue'
                                 onClick={handleClickAccountStats}
                             >
-                                Account value: ${accountValue+portofolio}
+                                <Typography style={{color:'#808080', fontSize:'15px', fontWeight:'bold'}}>Account value &nbsp;</Typography>${accountValue+portofolio}
                             </Button>
                             <Button
                                 aria-controls="simple-menu"

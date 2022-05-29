@@ -6,6 +6,8 @@ import CustomGraphics from '../CustomGraphics/CustomGraphics';
 
 export default function DataStock({ buttonStockClicked, priceClicked }) {
     const [stockInfo, setStockInfo] = React.useState(null);
+    const [period, setPeriod] = React.useState('1D');
+    var graphics = null;
 
     useEffect(() => {
         if (buttonStockClicked !== null) {
@@ -20,6 +22,7 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                         data.json().then((message) => {
                             setStockInfo(message);
                             console.log(message);
+
                         });
 
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
@@ -33,10 +36,26 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
         }
     }, [buttonStockClicked, priceClicked]);
 
+
     if (stockInfo === null) {
         return (<div></div>)
     }
     else {
+        if (period === '1D') {
+            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.one_day)} setPeriod={setPeriod} period={period} />;
+        }
+        else if (period === '1M') {
+            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.one_month)} setPeriod={setPeriod} period={period} />;
+        }
+        else if (period === '3M') {
+            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.three_month)} setPeriod={setPeriod} period={period} />;
+        }
+        else if (period === '6M') {
+            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.six_month)} setPeriod={setPeriod} period={period} />;
+        }
+        else if (period === 'max') {
+            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.six_month)} setPeriod={setPeriod} period={period} />;
+        }
         return (
             <div className="dataStock">
                 <div id="firstDivDataStock">
@@ -48,7 +67,7 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
                         <Button id='buttonDataStock'>Buy</Button>
                     </div>
                     <Typography id='priceDataStock'>${priceClicked.toFixed(2)}</Typography>
-                    <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.one_month)} />
+                    {graphics}
                 </div>
                 <div style={{ backgroundColor: '#ecedf1', height: '20px' }}></div>
                 <div id="otherDivDataStock">

@@ -1,8 +1,31 @@
 import { Button } from "@mui/material";
 import React from "react";
 import Chart from "react-apexcharts";
+import './CustomGraphics.css';
 
-export default function CustomGraphics({ margin, datas }) {
+
+export default function CustomGraphics({ margin, datas, setPeriod, period }) {
+
+    function click_1D(){
+        setPeriod('1D');
+    };
+
+    function click_1M(){
+        setPeriod('1M');
+    };
+
+    function click_3M(){
+        setPeriod('3M');
+    };
+
+    function click_6M(){
+        setPeriod('6M');
+    };
+
+    function click_max(){
+        setPeriod('max');
+    };
+
     var state = {
 
         options: {
@@ -74,11 +97,11 @@ export default function CustomGraphics({ margin, datas }) {
                 height='270px'
                 style={{ marginTop: margin }}
             />
-            <Button style={{ margin: '5px' }}>1D</Button>
-            <Button style={{ margin: '5px' }}>1M</Button>
-            <Button style={{ margin: '5px' }}>3M</Button>
-            <Button style={{ margin: '5px' }}>6M</Button>
-            <Button style={{ margin: '5px' }}>MAX</Button>
+            <Button id={(period=='1D')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_1D} disableRipple >1D</Button>
+            <Button disableRipple id={(period=='1M')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_1M}>1M</Button>
+            <Button disableRipple id={(period=='3M')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_3M}>3M</Button>
+            <Button disableRipple id={(period=='6M')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_6M}>6M</Button>
+            <Button disableRipple id={(period=='max')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_max}>MAX</Button>
 
         </div>
     );

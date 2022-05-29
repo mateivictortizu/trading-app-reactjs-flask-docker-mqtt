@@ -32,8 +32,7 @@ def general_exception_error(e):
 @stockBP.route('/add-stock', methods=['POST'])
 def add_stock():
     symbol_stock = request.json['stock_symbol']
-    addStockDAO(symbol_stock)
-    #executor.submit(addStockDAO, symbol_stock)
+    executor.submit(addStockDAO, symbol_stock)
     return jsonify({'message': 'Stock was added to db'}), 200
 
 
@@ -82,8 +81,8 @@ def update_stock():
 
 @stockBP.route('/get-all-stocks', methods=['GET'])
 def get_all_stocks():
-    stocks_list=[]
-    stocks=get_all_stocksDAO()
+    stocks_list = []
+    stocks = get_all_stocksDAO()
     if stocks is not None:
         for i in stocks:
             stocks_list.append(i.to_json())

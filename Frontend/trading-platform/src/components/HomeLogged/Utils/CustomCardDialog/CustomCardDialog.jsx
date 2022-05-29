@@ -7,12 +7,24 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transition }) {
 
     const [sumAdd,setSumAdd]=React.useState(0.0);
+    const [cardNumber, setCardNumber]=React.useState("");
+    const [expiry, setExpiry]=React.useState("");
+    const [cvc,setCvc]=React.useState("");
+    const [cardName,setCardName]=React.useState("");
+
 
     function handleCloseCard() {
         setOpenCard(false);
-    }
+        setSumAdd(0.0);
+        setCardName("");
+        setExpiry("");
+        setCvc("");
+        setCardNumber("");
+    };
 
     function pay() {
+        if(cvc.length===3 && cardNumber.length===20)
+        {
         fetch("http://127.0.0.1:5000/add-money", {
                 method: "POST",
                 headers: {
@@ -23,15 +35,63 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                     value: parseInt(sumAdd),
                 }),
             }).then(setOpenCard(false));
-    }
+        }
+    };
 
     function back(){
         setOpenCard(false);
         setOpenDeposit(true);
-    }
+    };
 
     const handleChangeSumAdd = (event) => {
         setSumAdd(event.target.value);
+
+    };
+
+    const handleChangecardNumber = (event) => {
+
+        if (event.target.value.length === 9 && cardNumber.length === 8)
+        {
+            setCardNumber(event.target.value+' ');
+        }
+        else if (event.target.value.length === 14 && cardNumber.length === 13)
+        {
+            setCardNumber(event.target.value+' ');
+        }
+        else if (event.target.value.length === 5 && cardNumber.length === 4)
+        {
+            setCardNumber(event.target.value.substring(0,4)+' '+event.target.value.charAt(4));
+        }
+        else if (event.target.value.length === 10 && cardNumber.length === 9)
+        {
+            setCardNumber(event.target.value.substring(0,9)+' '+event.target.value.charAt(9));
+        }
+        else if (event.target.value.length === 10 && cardNumber.length === 9)
+        {
+            setCardNumber(event.target.value.substring(0,9)+' '+event.target.value.charAt(9));
+        }
+        else if(event.target.value.length < 20)
+        {
+            setCardNumber(event.target.value);
+        }
+    };
+
+    const handleCVC = (event) => {
+        if(event.target.value.length<=3)
+        {
+            setCvc(event.target.value);
+        }
+    };
+
+    const handleExpiry = (event) => {
+        if(event.target.value.length===2 && expiry.length===1)
+        {
+            setExpiry(event.target.value+'/');
+        }
+        else if (event.target.value.lenght<6)
+        {
+            setExpiry(event.target.value);
+        }
     };
 
 
@@ -69,6 +129,8 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                             id="Card number"
                             label="Card number"
                             type="string"
+                            value={cardNumber}
+                            onChange={handleChangecardNumber}
                             style={{ width: '90%', marginTop: '20px' }}
                         />
                         <TextField
@@ -77,6 +139,8 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                             id="Expiry date"
                             label="Expiry date"
                             type="string"
+                            value={expiry}
+                            onChange={handleExpiry}
                             style={{ width: '90%', marginTop: '20px' }}
                         />
                         <TextField
@@ -85,6 +149,8 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                             id="CVC/CVV"
                             label="CVC/CVV"
                             type="string"
+                            value={cvc}
+                            onChange={handleCVC}
                             style={{ width: '90%', marginTop: '20px' }}
                         />
                         <TextField
@@ -93,6 +159,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                             id="Name on card"
                             label="Name on card"
                             type="string"
+                            value={cardName}
                             style={{ width: '90%', marginTop: '20px' }}
                         />
                         <TextField

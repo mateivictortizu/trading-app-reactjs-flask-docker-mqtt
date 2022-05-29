@@ -45,7 +45,7 @@ const HomeLogged = () => {
                     console.log('Error');
                 }
             });
-    }
+    };
 
     function get_stocks() {
         if (buttonHomeClicked === 'mywatchlist') {
@@ -107,7 +107,7 @@ const HomeLogged = () => {
                     }
                 });
         }
-    }
+    };
 
     const [time, setTime] = React.useState(0);
     React.useEffect(() => {

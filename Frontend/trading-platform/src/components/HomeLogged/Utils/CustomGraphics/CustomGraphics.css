@@ -1,0 +1,15 @@
+#buttonClickedPeriod {
+    margin: 5px; 
+    color: #ffffff;
+    background-color: #2AAA8A;
+    font-weight: bold;
+    font-size: 12px;
+
+}
+
+#buttonPeriod {
+    margin: 5px; 
+    color: #808080;
+    font-weight: bold;
+    font-size: 12px;
+}

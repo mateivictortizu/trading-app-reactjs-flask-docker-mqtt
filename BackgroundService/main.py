@@ -4,7 +4,7 @@ import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 
-stock_host = os.getenv('STOCK_HOST', '127.0.0.1:5001')
+stock_host = os.getenv('STOCK_HOST', '127.0.0.1:5000')
 stock_protocol = os.getenv('STOCK_PROTOCOL', 'http')
 
 
