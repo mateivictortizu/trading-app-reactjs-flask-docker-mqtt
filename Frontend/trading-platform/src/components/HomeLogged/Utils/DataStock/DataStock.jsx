@@ -42,19 +42,19 @@ export default function DataStock({ buttonStockClicked, priceClicked }) {
     }
     else {
         if (period === '1D') {
-            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.one_day)} setPeriod={setPeriod} period={period} />;
+            graphics = <CustomGraphics name={stockInfo.stock_symbol} margin={'200px'} datas={JSON.parse(stockInfo.one_day)} setPeriod={setPeriod} period={period} />;
         }
         else if (period === '1M') {
-            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.one_month)} setPeriod={setPeriod} period={period} />;
+            graphics = <CustomGraphics name={stockInfo.stock_symbol} margin={'200px'} datas={JSON.parse(stockInfo.one_month)} setPeriod={setPeriod} period={period} />;
         }
         else if (period === '3M') {
-            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.three_month)} setPeriod={setPeriod} period={period} />;
+            graphics = <CustomGraphics name={stockInfo.stock_symbol} margin={'200px'} datas={JSON.parse(stockInfo.three_month)} setPeriod={setPeriod} period={period} />;
         }
         else if (period === '6M') {
-            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.six_month)} setPeriod={setPeriod} period={period} />;
+            graphics = <CustomGraphics name={stockInfo.stock_symbol} margin={'200px'} datas={JSON.parse(stockInfo.six_month)} setPeriod={setPeriod} period={period} />;
         }
         else if (period === 'max') {
-            graphics = <CustomGraphics margin={'200px'} datas={JSON.parse(stockInfo.six_month)} setPeriod={setPeriod} period={period} />;
+            graphics = <CustomGraphics name={stockInfo.stock_symbol} margin={'200px'} datas={JSON.parse(stockInfo.maxim)} setPeriod={setPeriod} period={period} />;
         }
         return (
             <div className="dataStock">

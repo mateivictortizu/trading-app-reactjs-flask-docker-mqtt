@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 import './CustomGraphics.css';
 
 
-export default function CustomGraphics({ margin, datas, setPeriod, period }) {
+export default function CustomGraphics({ name, margin, datas, setPeriod, period }) {
 
     function click_1D(){
         setPeriod('1D');
@@ -81,7 +81,7 @@ export default function CustomGraphics({ margin, datas, setPeriod, period }) {
         },
         series: [
             {
-                name: "Apple",
+                name: name,
                 data: datas
             }
         ]

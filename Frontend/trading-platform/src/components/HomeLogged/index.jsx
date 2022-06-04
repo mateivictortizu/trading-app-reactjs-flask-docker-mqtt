@@ -47,7 +47,7 @@ const HomeLogged = () => {
             });
     };
 
-    function get_stocks() {
+    function get_stocks(time) {
         if (buttonHomeClicked === 'mywatchlist') {
             fetch("http://127.0.0.1:5000/get-list-stock-price", {
                 method: "POST",
@@ -62,7 +62,7 @@ const HomeLogged = () => {
                     if (data.status === 200) {
                         data.json().then((message) => {
                             setDatas(message['message']);
-                            if (buttonStockClicked === null) {
+                            if (time===0) {
                                 setButtonStockClicked('MSFT');
                                 setPriceClicked(20);
                             }
@@ -115,9 +115,9 @@ const HomeLogged = () => {
         {
             const timer = setTimeout(() => {
                 setTime(time + 1);
-                get_stocks();
+                get_stocks(time);
                 get_values();
-            }, 100);
+            }, 0);
             return () => {
                 clearTimeout(timer);
             };
@@ -126,7 +126,7 @@ const HomeLogged = () => {
         {
             const timer = setTimeout(() => {
                 setTime(time + 1);
-                get_stocks();
+                get_stocks(time);
                 get_values();
             }, 5000);
             return () => {

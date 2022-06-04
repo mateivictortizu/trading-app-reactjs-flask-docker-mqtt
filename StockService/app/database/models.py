@@ -18,8 +18,9 @@ def stock_data(ticker, period, interval, observation):
     print(df)
     lista = []
     for i in range(0, len(df['Date'].tolist())):
-        values = {"x": df['Date'].tolist()[i].strftime("%d-%m-%Y"), "y": round(df['Values'].tolist()[i], 2)}
-        lista.append(values)
+        values = {"x": df['Date'].tolist()[i].strftime("%d-%m-%Y %H:%M"), "y": round(df['Values'].tolist()[i], 2)}
+        if math.isnan(values['y']) is False:
+            lista.append(values)
     return lista
 
 
