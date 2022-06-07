@@ -1,12 +1,12 @@
 import './CustomManageFunds.css';
-import { Button,Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 
-export function CustomManageFunds({openManageFunds, setOpenManageFunds, setOpenDeposit, Transition }) {
+export function CustomManageFunds({ openManageFunds, setOpenManageFunds, setOpenDeposit, Transition }) {
     const handleCloseManageFunds = () => {
         setOpenManageFunds(false);
     };
 
-    function handleOpenDeposit () {
+    function handleOpenDeposit() {
         handleCloseManageFunds();
         setOpenDeposit(true);
     }
@@ -27,17 +27,17 @@ export function CustomManageFunds({openManageFunds, setOpenManageFunds, setOpenD
                 <DialogTitle> Manage funds
                 </DialogTitle>
                 <DialogContent dividers id='dialogContentManageFunds'>
-                <Button id='buttonDepositFundsManageFunds' onClick={handleOpenDeposit}>
+                    <Button id='buttonDepositFundsManageFunds' onClick={handleOpenDeposit}>
 
-                    Deposit funds
+                        Deposit funds
 
-                </Button>
-                <div id='divBetweenButtonsManageFunds'></div>
-                <Button id='buttonWithdrawFundsManageFunds'>
+                    </Button>
+                    <div id='divBetweenButtonsManageFunds'></div>
+                    <Button id='buttonWithdrawFundsManageFunds'>
 
-                    Withdraw funds
+                        Withdraw funds
 
-                </Button>
+                    </Button>
                 </DialogContent>
             </Dialog>
         </div>

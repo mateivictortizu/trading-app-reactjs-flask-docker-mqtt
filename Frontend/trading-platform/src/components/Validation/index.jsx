@@ -10,14 +10,14 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { USER_HOST } from "../../Utils/Extra/Hosts";
 
 function ConditionalRenderingValidation({ responseCode, messageResponse }) {
-    function ResendValidateAccountFuncton(){
+    function ResendValidateAccountFuncton() {
         fetch("http://" + USER_HOST + "/resend-validate-account", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                identifier:"matteovkt@gmail.com"
+                identifier: "matteovkt@gmail.com"
             }),
         })
             .then((data) => {
@@ -53,7 +53,7 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
                         id="typographyValidation"
                     >
 
-                        <CheckCircleOutlineIcon id="iconCheck" style={{color:"green"}}></CheckCircleOutlineIcon>
+                        <CheckCircleOutlineIcon id="iconCheck" style={{ color: "green" }}></CheckCircleOutlineIcon>
                         <br></br>
                         {messageResponse}
 
@@ -99,7 +99,7 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
                         id="typographyValidation"
                     >
 
-                        <ErrorOutlineIcon id="iconCheck" style={{color:"orange"}}></ErrorOutlineIcon>
+                        <ErrorOutlineIcon id="iconCheck" style={{ color: "orange" }}></ErrorOutlineIcon>
                         <br></br>
                         {messageResponse}
 
@@ -118,8 +118,8 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
 
 
 const Validation = () => {
-    
-    function ValidateAccountFuncton(){
+
+    function ValidateAccountFuncton() {
         fetch("http://" + USER_HOST + "/validate-account/" + id, {
             method: "GET",
             headers: {
@@ -153,8 +153,7 @@ const Validation = () => {
     let { id } = useParams();
     const [messageResponse, setMessageResponse] = React.useState("");
     const [codeResponse, setCodeResponse] = React.useState("");
-    if (messageResponse == "" && codeResponse === "")
-    {
+    if (messageResponse == "" && codeResponse === "") {
         ValidateAccountFuncton();
     }
     return (

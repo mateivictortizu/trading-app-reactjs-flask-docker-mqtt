@@ -1,5 +1,5 @@
-#buttonClickedPeriod {
-    margin: 5px; 
+#buttonClickedPeriodUp {
+    margin: 5px;
     color: #ffffff;
     background-color: #2AAA8A;
     font-weight: bold;
@@ -7,8 +7,17 @@
 
 }
 
+#buttonClickedPeriodDown {
+    margin: 5px;
+    color: #ffffff;
+    background-color: #7F0000;
+    font-weight: bold;
+    font-size: 12px;
+
+}
+
 #buttonPeriod {
-    margin: 5px; 
+    margin: 5px;
     color: #808080;
     font-weight: bold;
     font-size: 12px;

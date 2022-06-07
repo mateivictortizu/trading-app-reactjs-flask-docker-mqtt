@@ -3,10 +3,10 @@ import React from "react";
 import { Typography } from '@mui/material';
 import CustomGraphics from '../CustomGraphics/CustomGraphics';
 
-export default function CustomStockSummary({data}) {
+export default function CustomStockSummary({ data }) {
 
-    var price=500;
-    var invested= 600;
+    var price = 500;
+    var invested = 600;
     var returned = -143;
 
     if (data.lenght !== 0) {

@@ -11,28 +11,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function Header({accountValue}) {
+export default function Header({ accountValue }) {
     const [openDeposit, setOpenDeposit] = React.useState(false);
     const [openManageFunds, setOpenManageFunds] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
     const [openCard, setOpenCard] = React.useState(false);
 
-    function handleClickOpenDeposit(){
+    function handleClickOpenDeposit() {
         setOpenDeposit(true)
     }
 
-    function handleClickOpenManageFunds(){
+    function handleClickOpenManageFunds() {
         setOpenManageFunds(true)
     }
 
-    function handleClickOpenHistory(){
+    function handleClickOpenHistory() {
         setOpenHistory(true)
     }
 
     return (
         <header className="headerLogged">
             <div className="header_header-container-logged">
-                <CustomAppBarLogged 
+                <CustomAppBarLogged
                     handleClickOpenDeposit={handleClickOpenDeposit}
                     handleClickOpenManageFunds={handleClickOpenManageFunds}
                     handleClickOpenHistory={handleClickOpenHistory}
@@ -53,7 +53,7 @@ export default function Header({accountValue}) {
                 />
 
                 <CustomCardDialog
-                    openCard={openCard} 
+                    openCard={openCard}
                     setOpenCard={setOpenCard}
                     setOpenDeposit={setOpenDeposit}
                     Transition={Transition}

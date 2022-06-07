@@ -6,7 +6,7 @@ import './CustomMenuStats.css';
 
 ChartJS.register(ArcElement);
 
-export function CustomMenuStats({anchorAccountStats, handleCloseAccountStats,data,funds, portofolio}) {
+export function CustomMenuStats({ anchorAccountStats, handleCloseAccountStats, data, funds, portofolio }) {
     return (
         <Menu
             keepMounted

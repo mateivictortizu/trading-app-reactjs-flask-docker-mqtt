@@ -32,4 +32,5 @@ def stock_data(ticker, period, interval, observation):
 
 
 if __name__ == '__main__':
-    stock_data('GOOGL', '6mo', '1d', 'Open')
+    icker = yf.Ticker('GOOGL')
+    print(icker.isin)

@@ -63,29 +63,29 @@ const ChangePass = () => {
 
     function clickReset() {
         fetch("http://127.0.0.1:5000/set-new-pass", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    change_pass_token: window.location.pathname.split('/')[2],
-                    password: newPassword,
-                }),
-            })
-                .then((data) => {
-                    if (data.status === 200) {
-                        data.json().then((message) => {
-                            setIdentifierChangePass(message['message']);
-                        });
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                change_pass_token: window.location.pathname.split('/')[2],
+                password: newPassword,
+            }),
+        })
+            .then((data) => {
+                if (data.status === 200) {
+                    data.json().then((message) => {
+                        setIdentifierChangePass(message['message']);
+                    });
 
-                    } else if (data.status === 404 || data.status === 400 | data.status === 401) {
-                        data.json().then((message) => {
-                            navigate('/');
-                        });
-                    } else {
-                        throw new Error("Internal server error");
-                    }
-                });
+                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                    data.json().then((message) => {
+                        navigate('/');
+                    });
+                } else {
+                    throw new Error("Internal server error");
+                }
+            });
     };
 
     return (

@@ -1,6 +1,4 @@
-element.style {
-
-}
+element.style {}
 
 .header_header-container.header_accent {
     background: #0066cc;
@@ -29,11 +27,10 @@ header {
 }
 
 @media screen and (max-width: 375px) {
-    .warning
-    {
+    .warning {
         font-size: 5px;
     }
-    
+
 }
 
 @media screen and (max-width: 980px) {
@@ -42,11 +39,11 @@ header {
         padding-right: 0px;
         padding-bottom: 0px;
         padding-left: 0px;
-        
+
     }
 }
 
-@media screen and (max-width: 1440px){
+@media screen and (max-width: 1440px) {
     .warning {
         font-size: 5px;
     }
@@ -58,7 +55,7 @@ header {
     }
 }
 
-@media screen and (max-width: 1795px){
+@media screen and (max-width: 1795px) {
     .warning {
         font-size: 5px;
     }
@@ -68,19 +65,30 @@ header {
     font-size: 0.6rem;
 }
 
-:not(input,textarea,img)
-{
+:not(input, textarea, img) {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
 
-article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
-    display: block;   
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
 }
 
-*,::after,::before{
+*,
+::after,
+::before {
     margin: 0;
     padding: 0;
     border: 0;
@@ -144,13 +152,12 @@ div {
     }
 }
 
-.warning .warningDiv .warningText
-{
+.warning .warningDiv .warningText {
     font-size: 1.6em;
     line-height: 1.8rem;
     color: black;
     text-align: center;
-    max-width:188rem;
+    max-width: 188rem;
 }
 
 p {
@@ -161,10 +168,8 @@ p {
     margin-inline-end: 0px;
 }
 
-@media screen and (max-width: 980px)
-{
-    .header_header-container .header-content 
-    {
+@media screen and (max-width: 980px) {
+    .header_header-container .header-content {
         justify-content: space-between;
         width: 100%;
         height: 6rem;
@@ -174,14 +179,12 @@ p {
 }
 
 @media screen and (max-width: 1024px) {
-    .header_header-container .header-content
-    {
+    .header_header-container .header-content {
         padding: 0 5rem;
     }
 }
 
-.header_header-container .header-content
-{
+.header_header-container .header-content {
     height: 7rem;
     display: -moz-box;
     display: flex;
@@ -194,8 +197,7 @@ p {
     cursor: pointer;
 }
 
-.header_header-container.header_accent .header-content .header-logo svg path
-{
+.header_header-container.header_accent .header-content .header-logo svg path {
     fill: #fff
 }
 
@@ -217,4 +219,3 @@ p {
 .header_header-container .header-content .header_main-navigation {
     margin-left: 4rem;
 }
-

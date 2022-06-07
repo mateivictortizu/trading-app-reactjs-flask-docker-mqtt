@@ -1,31 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto&display=swap');
 
-@media only screen and (min-width: 1600px){
-.dataStock {
-    height: 700px;
-    width: 1000px;
-    position: absolute;
-    z-index: 1;
-    top: 85px;
-    left:670px;
-    overflow-x: hidden;
-    background-color: #ecedf1;
-    font-family: 'Assistant', sans-serif;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-family: 'Inspiration', cursive;
-    font-family: 'Open Sans', sans-serif;
-    font-family: 'Roboto', sans-serif;
-}
-}
-
-@media only screen and (max-width: 1599px){
+@media only screen and (min-width: 1600px) {
     .dataStock {
         height: 700px;
-        width: 800px;
+        width: 1000px;
         position: absolute;
         z-index: 1;
         top: 85px;
-        left:670px;
+        left: 670px;
         overflow-x: hidden;
         background-color: #ecedf1;
         font-family: 'Assistant', sans-serif;
@@ -34,24 +16,40 @@
         font-family: 'Open Sans', sans-serif;
         font-family: 'Roboto', sans-serif;
     }
-    }
+}
 
-#imgDataStock 
-{
+@media only screen and (max-width: 1599px) {
+    .dataStock {
+        height: 700px;
+        width: 800px;
+        position: absolute;
+        z-index: 1;
+        top: 85px;
+        left: 670px;
+        overflow-x: hidden;
+        background-color: #ecedf1;
+        font-family: 'Assistant', sans-serif;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-family: 'Inspiration', cursive;
+        font-family: 'Open Sans', sans-serif;
+        font-family: 'Roboto', sans-serif;
+    }
+}
+
+#imgDataStock {
     position: absolute;
-    left:30px;
-    top:30px;
+    left: 30px;
+    top: 30px;
     width: 80px;
     height: 80px;
     border-radius: 10px;
     border: 2px solid #ececec;
 }
 
-#stockName 
-{
+#stockName {
     position: absolute;
-    left:130px;
-    top:40px;
+    left: 130px;
+    top: 40px;
     font-size: 25px;
     font-family: 'Assistant', sans-serif;
     font-family: 'Barlow Semi Condensed', sans-serif;
@@ -60,11 +58,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
-#stockDetails 
-{
+#stockDetails {
     position: absolute;
-    left:130px;
-    top:75px;
+    left: 130px;
+    top: 75px;
     color: gray;
     font-size: 15px;
     font-family: 'Assistant', sans-serif;
@@ -74,8 +71,8 @@
     font-family: 'Roboto', sans-serif;
 }
 
-@media only screen and (min-width: 1600px){
-    #firstDivDataStock{
+@media only screen and (min-width: 1600px) {
+    #firstDivDataStock {
         background-color: white;
         height: 520px;
         width: 990px;
@@ -85,8 +82,8 @@
     }
 }
 
-@media only screen and (max-width: 1599px){
-    #firstDivDataStock{
+@media only screen and (max-width: 1599px) {
+    #firstDivDataStock {
         background-color: white;
         height: 520px;
         width: 790px;
@@ -96,8 +93,8 @@
     }
 }
 
-@media only screen and (min-width: 1600px){
-    #otherDivDataStock{
+@media only screen and (min-width: 1600px) {
+    #otherDivDataStock {
         background-color: white;
         height: fit-content;
         width: 990px;
@@ -107,8 +104,8 @@
     }
 }
 
-@media only screen and (max-width: 1599px){
-    #otherDivDataStock{
+@media only screen and (max-width: 1599px) {
+    #otherDivDataStock {
         background-color: white;
         height: fit-content;
         width: 790px;
@@ -118,8 +115,7 @@
     }
 }
 
-#buttonDataStock
-{
+#buttonDataStock {
     color: white;
     background-color: #0066cc;
     margin: 10px;
@@ -132,16 +128,13 @@
 }
 
 
-#buttonsDivDataStock
-{
+#buttonsDivDataStock {
     position: absolute;
-    left:20px;
-    top:120px;
-
+    left: 20px;
+    top: 120px;
 }
 
-#priceDataStock
-{
+#priceDataStock {
     position: absolute;
     right: 30px;
     top: 30px;
@@ -151,4 +144,62 @@
     font-family: 'Inspiration', cursive;
     font-family: 'Open Sans', sans-serif;
     font-family: 'Roboto', sans-serif;
+}
+
+#changeDataStock {
+    position: absolute;
+    right: 30px;
+    top: 75px;
+    font-size: 15px;
+    color: #656565;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+#detailsDataStock {
+    font-size: 15px;
+    color: #8e8e8e;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+}
+
+#buttonHistory {
+    background-color: white;
+    color:#4E4F50;
+    border-color:#bdbebe;
+    border-radius:0;
+}
+
+#titleDivDataStock{
+    font-size: 30px;
+    color: #4E4F50;
+    left: 40px;
+    position: relative;
+    top: 10px;
+    margin-bottom: 20px;
+}
+
+#instrumentDetailsRightDataStock {
+    margin-right: 30px;
+    right: 30px; 
+    position: absolute;
+}
+
+#instrumentInvestmentsRightDataStock {
+    margin-left: 120px;
+    left: 120px; 
+    position: absolute;
+}
+
+#brDivDataStock {
+    background-color: #ecedf1; 
+    height: 20px;
 }

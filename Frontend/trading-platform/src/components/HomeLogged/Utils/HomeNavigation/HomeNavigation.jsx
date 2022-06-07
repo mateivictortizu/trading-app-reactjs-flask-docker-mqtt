@@ -2,7 +2,7 @@ import "./HomeNavigation.css";
 import React from "react";
 import { Button } from "@mui/material";
 
-export default function HomeNavigation({setTime, buttonHomeClicked, setButtonHomeClicked }) {
+export default function HomeNavigation({ setTime, buttonHomeClicked, setButtonHomeClicked }) {
 
     function clickMyWatchlist() {
         setTime(0);

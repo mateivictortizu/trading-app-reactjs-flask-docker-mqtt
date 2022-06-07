@@ -11,12 +11,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function UnauthentichatedHeader() {
-    
+
     const [openLogin, setOpenLogin] = React.useState(false);
     const handleClickOpenLogin = () => {
         setOpenLogin(true);
     };
-    
+
     const [openRegister, setOpenRegister] = React.useState(false);
     const handleClickOpenRegister = () => {
         setOpenRegister(true);
@@ -27,7 +27,7 @@ export default function UnauthentichatedHeader() {
         setOpenRegisterCompleted(true);
     };
 
-    const [messageRegister,setMessageRegister]=React.useState('');
+    const [messageRegister, setMessageRegister] = React.useState('');
 
     return (
         <header className="header">

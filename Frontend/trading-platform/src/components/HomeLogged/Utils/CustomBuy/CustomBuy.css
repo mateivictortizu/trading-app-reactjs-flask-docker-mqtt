@@ -1,0 +1,14 @@
+#imgCustomBuy {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 2px solid #ececec;
+    color: white;
+}
+
+#priceCustomBuy{
+    font-size: 60px;
+}

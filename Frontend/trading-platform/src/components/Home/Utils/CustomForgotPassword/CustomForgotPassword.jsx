@@ -62,8 +62,7 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
                 .catch(() => {
                 });
         }
-        else
-        {
+        else {
             setErrorIdentifierForgotPassword(true);
         }
     };

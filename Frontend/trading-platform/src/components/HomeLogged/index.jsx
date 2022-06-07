@@ -62,7 +62,7 @@ const HomeLogged = () => {
                     if (data.status === 200) {
                         data.json().then((message) => {
                             setDatas(message['message']);
-                            if (time===0) {
+                            if (time === 0) {
                                 setButtonStockClicked('MSFT');
                                 setPriceClicked(20);
                             }
@@ -111,8 +111,7 @@ const HomeLogged = () => {
 
     const [time, setTime] = React.useState(0);
     React.useEffect(() => {
-        if(time === 0)
-        {
+        if (time === 0) {
             const timer = setTimeout(() => {
                 setTime(time + 1);
                 get_stocks(time);
@@ -122,8 +121,7 @@ const HomeLogged = () => {
                 clearTimeout(timer);
             };
         }
-        else
-        {
+        else {
             const timer = setTimeout(() => {
                 setTime(time + 1);
                 get_stocks(time);
@@ -188,7 +186,7 @@ const HomeLogged = () => {
                         {(buttonClicked === 'pie') &&
                             <div>
                                 <Grid item>
-                                <CustomInvested
+                                    <CustomInvested
                                         buttonStockClicked={buttonStockClicked}
                                         setButtonStockClicked={setButtonStockClicked}
                                         priceClicked={priceClicked}

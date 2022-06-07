@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import UnauthentichatedHeader from "./Utils/UnauthentichatedHeader/UnauthentichatedHeader"
 import Footer from "../../Utils/Footer/Footer"
 import Typography from '@mui/material/Typography';
@@ -15,11 +15,10 @@ const Home = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
     useEffect(() => {
-        if(cookies.jwt)
-        {
+        if (cookies.jwt) {
             navigate('/home');
         }
-      });
+    });
 
     return (
         <div className="main-div">

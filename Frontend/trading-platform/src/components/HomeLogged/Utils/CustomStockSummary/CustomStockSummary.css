@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto&display=swap');
 
-.navigationCustomStockSummary{
+.navigationCustomStockSummary {
     height: fit-content;
     max-height: 702px;
     width: 500px;
@@ -13,7 +13,7 @@
     border-color: #bdbebe;
 }
 
-#priceCustomStockSummary{
+#priceCustomStockSummary {
     position: absolute;
     left: 30px;
     top: 15px;
@@ -25,7 +25,7 @@
     font-family: 'Roboto', sans-serif;
 }
 
-#investedCustomStockSummary{
+#investedCustomStockSummary {
     position: absolute;
     left: 30px;
     top: 70px;
@@ -39,7 +39,7 @@
     color: #7c7e7e;
 }
 
-#returnCustomStockSummary{
+#returnCustomStockSummary {
     position: absolute;
     left: 130px;
     top: 70px;
@@ -53,7 +53,7 @@
     color: #7c7e7e;
 }
 
-#valueinvestedCustomStockSummary{
+#valueinvestedCustomStockSummary {
     position: absolute;
     left: 30px;
     top: 90px;
@@ -66,7 +66,7 @@
     color: #7c7e7e;
 }
 
-#valuereturnCustomStockSummary{
+#valuereturnCustomStockSummary {
     position: absolute;
     left: 130px;
     top: 90px;

@@ -6,11 +6,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transition }) {
 
-    const [sumAdd,setSumAdd]=React.useState(0.0);
-    const [cardNumber, setCardNumber]=React.useState("");
-    const [expiry, setExpiry]=React.useState("");
-    const [cvc,setCvc]=React.useState("");
-    const [cardName,setCardName]=React.useState("");
+    const [sumAdd, setSumAdd] = React.useState(0.0);
+    const [cardNumber, setCardNumber] = React.useState("");
+    const [expiry, setExpiry] = React.useState("");
+    const [cvc, setCvc] = React.useState("");
+    const [cardName, setCardName] = React.useState("");
 
 
     function handleCloseCard() {
@@ -23,9 +23,8 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
     };
 
     function pay() {
-        if(cvc.length===3 && cardNumber.length===20)
-        {
-        fetch("http://127.0.0.1:5000/add-money", {
+        if (cvc.length === 3 && cardNumber.length === 20) {
+            fetch("http://127.0.0.1:5000/add-money", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,7 +37,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
         }
     };
 
-    function back(){
+    function back() {
         setOpenCard(false);
         setOpenDeposit(true);
     };
@@ -50,46 +49,37 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
 
     const handleChangecardNumber = (event) => {
 
-        if (event.target.value.length === 9 && cardNumber.length === 8)
-        {
-            setCardNumber(event.target.value+' ');
+        if (event.target.value.length === 9 && cardNumber.length === 8) {
+            setCardNumber(event.target.value + ' ');
         }
-        else if (event.target.value.length === 14 && cardNumber.length === 13)
-        {
-            setCardNumber(event.target.value+' ');
+        else if (event.target.value.length === 14 && cardNumber.length === 13) {
+            setCardNumber(event.target.value + ' ');
         }
-        else if (event.target.value.length === 5 && cardNumber.length === 4)
-        {
-            setCardNumber(event.target.value.substring(0,4)+' '+event.target.value.charAt(4));
+        else if (event.target.value.length === 5 && cardNumber.length === 4) {
+            setCardNumber(event.target.value.substring(0, 4) + ' ' + event.target.value.charAt(4));
         }
-        else if (event.target.value.length === 10 && cardNumber.length === 9)
-        {
-            setCardNumber(event.target.value.substring(0,9)+' '+event.target.value.charAt(9));
+        else if (event.target.value.length === 10 && cardNumber.length === 9) {
+            setCardNumber(event.target.value.substring(0, 9) + ' ' + event.target.value.charAt(9));
         }
-        else if (event.target.value.length === 10 && cardNumber.length === 9)
-        {
-            setCardNumber(event.target.value.substring(0,9)+' '+event.target.value.charAt(9));
+        else if (event.target.value.length === 10 && cardNumber.length === 9) {
+            setCardNumber(event.target.value.substring(0, 9) + ' ' + event.target.value.charAt(9));
         }
-        else if(event.target.value.length < 20)
-        {
+        else if (event.target.value.length < 20) {
             setCardNumber(event.target.value);
         }
     };
 
     const handleCVC = (event) => {
-        if(event.target.value.length<=3)
-        {
+        if (event.target.value.length <= 3) {
             setCvc(event.target.value);
         }
     };
 
     const handleExpiry = (event) => {
-        if(event.target.value.length===2 && expiry.length===1)
-        {
-            setExpiry(event.target.value+'/');
+        if (event.target.value.length === 2 && expiry.length === 1) {
+            setExpiry(event.target.value + '/');
         }
-        else if (event.target.value.lenght<6)
-        {
+        else if (event.target.value.lenght < 6) {
             setExpiry(event.target.value);
         }
     };

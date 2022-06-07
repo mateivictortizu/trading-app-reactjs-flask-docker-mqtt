@@ -6,7 +6,7 @@ import PieChartIcon from '@mui/icons-material/PieChart';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
-export default function Navigation({buttonClicked,setButtonClicked}) {
+export default function Navigation({ buttonClicked, setButtonClicked }) {
 
     function clickHome() {
         setButtonClicked('home');
@@ -26,19 +26,19 @@ export default function Navigation({buttonClicked,setButtonClicked}) {
 
     return (
         <div className="sidebar">
-            <Button title='Home' onClick={clickHome} id={(buttonClicked==='home') ? 'buttonClickedSidebarLogged':'buttonSidebarLogged'}>
+            <Button title='Home' onClick={clickHome} id={(buttonClicked === 'home') ? 'buttonClickedSidebarLogged' : 'buttonSidebarLogged'}>
                 <HomeIcon />
             </Button>
 
-            <Button title='Portofolio' onClick={clickPie} id={(buttonClicked==='pie') ? 'buttonClickedSidebarLogged':'buttonSidebarLogged'}>
+            <Button title='Portofolio' onClick={clickPie} id={(buttonClicked === 'pie') ? 'buttonClickedSidebarLogged' : 'buttonSidebarLogged'}>
                 <PieChartIcon />
             </Button>
-         
-            <Button title='Search' onClick={clickSearch} id={(buttonClicked==='search') ?'buttonClickedSidebarLogged':'buttonSidebarLogged'}>
+
+            <Button title='Search' onClick={clickSearch} id={(buttonClicked === 'search') ? 'buttonClickedSidebarLogged' : 'buttonSidebarLogged'}>
                 <SearchIcon />
             </Button>
-         
-            <Button title='Notification' onClick={clickNotification} id={(buttonClicked==='notification') ?'buttonClickedSidebarLogged':'buttonSidebarLogged'}>
+
+            <Button title='Notification' onClick={clickNotification} id={(buttonClicked === 'notification') ? 'buttonClickedSidebarLogged' : 'buttonSidebarLogged'}>
                 <NotificationsIcon />
             </Button>
         </div>

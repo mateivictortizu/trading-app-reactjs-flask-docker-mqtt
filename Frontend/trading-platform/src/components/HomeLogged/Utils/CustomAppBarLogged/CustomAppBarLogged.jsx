@@ -10,7 +10,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
-    const [portofolio,setPortofolio]=React.useState(1);
+    const [portofolio, setPortofolio] = React.useState(1);
     const navigate = useNavigate();
     var data = {
         datasets: [
@@ -23,7 +23,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
             },
         ],
     };
-    
+
 
     const handleCloseUser = () => {
         setAnchorUser(null);
@@ -87,7 +87,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                                 id='appBarButtonAccountValue'
                                 onClick={handleClickAccountStats}
                             >
-                                <Typography style={{color:'#808080', fontSize:'15px', fontWeight:'bold'}}>Account value &nbsp;</Typography>${accountValue+portofolio}
+                                <Typography style={{ color: '#808080', fontSize: '15px', fontWeight: 'bold' }}>Account value &nbsp;</Typography>${accountValue + portofolio}
                             </Button>
                             <Button
                                 aria-controls="simple-menu"
@@ -111,7 +111,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                         </Stack>
 
                         <CustomMenuUser
-                            anchorUser={anchorUser} 
+                            anchorUser={anchorUser}
                             handleCloseUser={handleCloseUser}
                             deposit={deposit}
                             manageFunds={manageFunds}
@@ -124,7 +124,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                             handleCloseAccountStats={handleCloseAccountStats}
                             data={data}
                             funds={accountValue}
-                            portofolio={portofolio}/>
+                            portofolio={portofolio} />
 
                     </Toolbar>
                 </AppBar>

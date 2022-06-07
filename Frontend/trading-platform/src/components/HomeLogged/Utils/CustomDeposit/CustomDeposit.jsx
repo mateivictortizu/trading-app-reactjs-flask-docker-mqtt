@@ -7,11 +7,11 @@ export function CustomDeposit({ openDeposit, setOpenDeposit, setOpenCard, Transi
         setOpenDeposit(false);
     };
 
-    function handleOpenCard () {
+    function handleOpenCard() {
         setOpenDeposit(false);
         setOpenCard(true);
     }
-    
+
     return (
         <div>
             <Dialog
@@ -25,7 +25,7 @@ export function CustomDeposit({ openDeposit, setOpenDeposit, setOpenCard, Transi
                     style: { borderRadius: 10 }
                 }}
             >
-                <DialogTitle style={{backgroundColor: '#E8E8E8'}}>Deposit funds
+                <DialogTitle style={{ backgroundColor: '#E8E8E8' }}>Deposit funds
                 </DialogTitle>
                 <DialogContent dividers id='dialogContentDeposit'>
                     Select deposit method

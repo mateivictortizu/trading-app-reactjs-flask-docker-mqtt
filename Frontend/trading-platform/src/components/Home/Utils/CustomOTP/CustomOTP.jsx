@@ -44,16 +44,14 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
             }),
         })
             .then((data) => {
-                if(data.status== 200)
-                {
+                if (data.status == 200) {
                     handleCloseOTP();
                     removeCookie("jwt_otp");
-                    setCookie("jwt",data.headers.get("Authorization"));
+                    setCookie("jwt", data.headers.get("Authorization"));
                     navigate('/home');
 
                 }
-                else
-                {
+                else {
                     data.json().then((message) => {
                         console.log(message);
                     })

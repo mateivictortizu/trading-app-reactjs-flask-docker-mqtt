@@ -1,27 +1,27 @@
 #linkLogin {
-    color:gray;
+    color: gray;
     text-decoration: none;
     text-decoration-color: gray;
 }
 
-#linkLogin:hover{
-    color:gray;
+#linkLogin:hover {
+    color: gray;
     text-decoration: underline;
     text-decoration-color: gray;
 }
 
-.dialog{
+.dialog {
     border-radius: 50px;
 }
 
-#buttonLogin{
-    background-color:#0066cc;
-    color:white;
+#buttonLogin {
+    background-color: #0066cc;
+    color: white;
 
 }
 
-#buttonLogin:hover{
-    background-color:#205385;
-    color:white;
+#buttonLogin:hover {
+    background-color: #205385;
+    color: white;
 
 }

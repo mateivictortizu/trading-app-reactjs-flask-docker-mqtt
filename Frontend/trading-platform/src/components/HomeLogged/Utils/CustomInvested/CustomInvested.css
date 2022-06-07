@@ -2,8 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&family=Roboto:wght@300;400&display=swap');
 
 
-#customInvested
-{
+#customInvested {
   height: 700px;
   width: 507px;
   position: absolute;
@@ -14,55 +13,55 @@
 
 }
 
-#firstDivNavigationInvested{
+#firstDivNavigationInvested {
   border-width: 1px;
   border-style: solid;
   border-color: #bdbebe;
   background-color: white;
   width: 500px;
-  top:450px;
+  top: 450px;
   position: absolute;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #buttonNavigationInvestedLogged {
-    height: 70px;
-    width: 500px;
-    color: rgb(0, 0, 0);
-    border-radius: 0px;
-    font-family: 'Assistant', sans-serif;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-family: 'Inspiration', cursive;
-    font-family: 'Open Sans', sans-serif;
-    font-family: 'Roboto', sans-serif;
+  height: 70px;
+  width: 500px;
+  color: rgb(0, 0, 0);
+  border-radius: 0px;
+  font-family: 'Assistant', sans-serif;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Inspiration', cursive;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 
 }
 
 #buttonNavigationInvestedLogged:hover {
-    height: 70px;
-    width: 500px;
-    background-color: rgb(228, 225, 225);
-    color: rgb(0, 0, 0);
-    border-radius: 0px;
-    font-family: 'Assistant', sans-serif;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-family: 'Inspiration', cursive;
-    font-family: 'Open Sans', sans-serif;
-    font-family: 'Roboto', sans-serif;
+  height: 70px;
+  width: 500px;
+  background-color: rgb(228, 225, 225);
+  color: rgb(0, 0, 0);
+  border-radius: 0px;
+  font-family: 'Assistant', sans-serif;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Inspiration', cursive;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #buttonClickedNavigationInvestedLogged {
-    height: 70px;
-    width: 500px;
-    color: rgb(0, 0, 0);
-    background-color: #d7dded;
-    border-radius: 0px;
-    font-family: 'Assistant', sans-serif;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-family: 'Inspiration', cursive;
-    font-family: 'Open Sans', sans-serif;
-    font-family: 'Roboto', sans-serif;
+  height: 70px;
+  width: 500px;
+  color: rgb(0, 0, 0);
+  background-color: #d7dded;
+  border-radius: 0px;
+  font-family: 'Assistant', sans-serif;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Inspiration', cursive;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #imgNavigationInvestedLogged {
@@ -80,51 +79,51 @@
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
-  }
-  
+  width: 4px;
+}
 
-  ::-webkit-scrollbar-track {
-    background: #ecedf1;
-  }
-   
-  
-  ::-webkit-scrollbar-thumb {
-    background: #888; 
-    border-radius: 10px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-    border-radius: 10px;
-  }
 
-  #nameInvestedNavigation {
-    font-family: 'Assistant', sans-serif;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-family: 'Inspiration', cursive;
-    font-family: 'Open Sans', sans-serif;
-    font-family: 'Roboto', sans-serif;
-    position: absolute; 
-    color: #555;
-    left: 70px;
-    font-size: 16px;
-    text-transform: none;
-  }
+::-webkit-scrollbar-track {
+  background: #ecedf1;
+}
 
-  #imgNavigationInvestedLogged:before {
-    content: attr(alt);
-    display: block;
-    border-color: white;
-    position: absolute;
-    height: 35px;
-    width: 35px;
-    border-radius: 0px;
-    background-color: rgb(255, 253, 253);
-    color: #555;
-    line-height: 35px;
-    font-size: 20px;
-    text-align: center;
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  border-radius: 10px;
+}
+
+#nameInvestedNavigation {
+  font-family: 'Assistant', sans-serif;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Inspiration', cursive;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  position: absolute;
+  color: #555;
+  left: 70px;
+  font-size: 16px;
+  text-transform: none;
+}
+
+#imgNavigationInvestedLogged:before {
+  content: attr(alt);
+  display: block;
+  border-color: white;
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  border-radius: 0px;
+  background-color: rgb(255, 253, 253);
+  color: #555;
+  line-height: 35px;
+  font-size: 20px;
+  text-align: center;
 }
 
 #imgNavigationInvestedLogged[alt] {

@@ -14,8 +14,6 @@ def stock_data(ticker, period, interval, observation):
     ticker_history = ticker.history(period, interval)
     sf = ticker_history[observation]
     df = pd.DataFrame({'Date': sf.index, 'Values': sf.values})
-
-    print(df)
     lista = []
     for i in range(0, len(df['Date'].tolist())):
         values = {"x": df['Date'].tolist()[i].strftime("%d-%m-%Y %H:%M"), "y": round(df['Values'].tolist()[i], 2)}
@@ -78,15 +76,15 @@ class Stock(db.Model):
             return
         self.isin = search_stock.isin
 
-        self.one_day = json.dumps(stock_data(search_stock, '1d', '30m', 'Open'))
-        self.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Open'))
-        self.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Open'))
-        self.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Open'))
-        self.max = json.dumps(stock_data(search_stock, 'max', '3mo', 'Open'))
+        self.one_day = json.dumps(stock_data(search_stock, '1d', '30m', 'Close'))
+        self.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Close'))
+        self.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Close'))
+        self.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Close'))
+        self.max = json.dumps(stock_data(search_stock, 'max', '3mo', 'Close'))
 
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'employees': self.employees,
-                'sector': self.sector, 'industry': self.industry, 'market_name': self.market_name,
+                'sector': self.sector, 'industry': self.industry, 'isin': self.isin, 'market_name': self.market_name,
                 'currency': self.currency, 'logo': self.logo, 'longBusinessSummary': self.longBuisnessSummary,
                 'one_day': self.one_day, 'one_month': self.one_month, 'three_month': self.three_month,
                 'six_month': self.six_month, 'maxim': self.max}

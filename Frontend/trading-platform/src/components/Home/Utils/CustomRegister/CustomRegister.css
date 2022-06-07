@@ -1,9 +1,9 @@
-#buttonRegister{
-    background-color:#0066cc;
-    color:white;
+#buttonRegister {
+    background-color: #0066cc;
+    color: white;
 }
 
-#buttonRegister:hover{
-    background-color:#205385;
-    color:white;
+#buttonRegister:hover {
+    background-color: #205385;
+    color: white;
 }

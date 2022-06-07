@@ -1,27 +1,22 @@
-#firstDivMenuStats
-{
+#firstDivMenuStats {
     width: 250px;
     text-align: center;
 }
 
-#secondDivMenuStats
-{
-    width: 200px; 
+#secondDivMenuStats {
+    width: 200px;
     margin: 25px;
 }
 
-#textDivMenuStats
-{
-    text-align: center; 
+#textDivMenuStats {
+    text-align: center;
     margin: 20px;
 }
 
-#fundsTypographyMenuStats
-{
+#fundsTypographyMenuStats {
     color: #32CD32;
 }
 
-#portofolioTypographyMenuStats
-{
+#portofolioTypographyMenuStats {
     color: #0066cc;
 }

@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inspiration&family=Open+Sans:wght@700&family=Secular+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Barlow+Semi+Condensed:ital,wght@1,300&family=Inspiration&family=Open+Sans:wght@700&display=swap');
+
 .content {
     min-height: 760px;
 }
 
 #firstDivValidation {
-    background:#0066cc;
+    background: #0066cc;
     justify-items: center;
     color: rgb(255, 255, 255);
 }
@@ -23,16 +24,16 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-#secondDivValidation{
+#secondDivValidation {
     padding: 40px;
 }
 
-#thirdDivValidation{
+#thirdDivValidation {
     text-align: center;
 }
 
-#buttonValidation{
-    background:#0066cc;
+#buttonValidation {
+    background: #0066cc;
     color: white;
     width: 500px;
     height: 50px;
@@ -41,7 +42,7 @@
 
 #footerDivValidation {
     position: absolute;
-    bottom:auto;
+    bottom: auto;
     width: 100%;
 }
 
@@ -55,4 +56,3 @@
     color: white;
     font-size: 100px;
 }
-

@@ -7,32 +7,32 @@
     width: 700px;
 }
 
-#textFieldChangePass{
+#textFieldChangePass {
     text-align: center;
     margin: 30px;
 }
 
-#buttonResetChangePass{
-    width:220px;
-    background-color:#0066cc;
-    color:#FFFFFF;
+#buttonResetChangePass {
+    width: 220px;
+    background-color: #0066cc;
+    color: #FFFFFF;
 }
 
-#buttonResetChangePass:hover{
-    background-color:#205385;
+#buttonResetChangePass:hover {
+    background-color: #205385;
 }
 
-#buttonCancelChangePass{
-    width:220px;
-    background-color:#787879;
-    color:#FFFFFF;
+#buttonCancelChangePass {
+    width: 220px;
+    background-color: #787879;
+    color: #FFFFFF;
 }
 
-#buttonCancelChangePass:hover{
-    background-color:#b8b8ba;
+#buttonCancelChangePass:hover {
+    background-color: #b8b8ba;
 }
 
-.footerChangePass{
+.footerChangePass {
     bottom: 0;
     position: fixed;
     width: 100%;

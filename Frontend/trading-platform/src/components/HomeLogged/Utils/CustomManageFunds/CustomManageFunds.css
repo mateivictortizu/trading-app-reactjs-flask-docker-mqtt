@@ -1,4 +1,4 @@
-#buttonDepositFundsManageFunds{
+#buttonDepositFundsManageFunds {
     background-color: #0066cc;
     color: white;
     width: 90%;
@@ -6,11 +6,11 @@
     align-self: center;
 }
 
-#buttonDepositFundsManageFunds:hover{
+#buttonDepositFundsManageFunds:hover {
     background-color: #205385;
 }
 
-#buttonWithdrawFundsManageFunds{
+#buttonWithdrawFundsManageFunds {
     background-color: #0066cc;
     color: white;
     width: 90%;
@@ -18,11 +18,11 @@
     align-self: center;
 }
 
-#buttonWithdrawFundsManageFunds:hover{
+#buttonWithdrawFundsManageFunds:hover {
     background-color: #205385;
 }
 
-#dialogContentManageFunds{
+#dialogContentManageFunds {
     text-align: center;
 
 }

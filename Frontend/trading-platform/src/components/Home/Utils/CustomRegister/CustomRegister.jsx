@@ -105,20 +105,20 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     };
 
 
-    const [errorUsernameRegisterMessage, setErrorUsernameRegisterMessage]=React.useState("");
-    const [errorPasswordRegisterMessage, setErrorPasswordRegisterMessage]=React.useState("");
-    const [errorEmailRegisterMessage, setErrorEmailRegisterMessage]=React.useState("");
-    const [errorPhoneRegisterMessage, setErrorPhoneRegisterMessage]=React.useState("");
-    const [errorPhoneCodeRegisterMessage, setErrorPhoneCodeRegisterMessage]=React.useState("");
-    const [errorNameRegisterMessage, setErrorNameRegisterMessage]=React.useState("");
-    const [errorSurnameRegisterMessage, setErrorSurnameRegisterMessage]=React.useState("");
-    const [errorCountryRegisterMessage, setErrorCountryRegisterMessage]=React.useState("");
-    const [errorAddressRegisterMessage, setErrorAddressRegisterMessage]=React.useState("");
-    const [errorNationalityRegisterMessage, setErrorNationalityRegisterMessage]=React.useState("");
-    const [errorDateRegisterMessage, setErrorDateRegisterMessage]=React.useState("");
+    const [errorUsernameRegisterMessage, setErrorUsernameRegisterMessage] = React.useState("");
+    const [errorPasswordRegisterMessage, setErrorPasswordRegisterMessage] = React.useState("");
+    const [errorEmailRegisterMessage, setErrorEmailRegisterMessage] = React.useState("");
+    const [errorPhoneRegisterMessage, setErrorPhoneRegisterMessage] = React.useState("");
+    const [errorPhoneCodeRegisterMessage, setErrorPhoneCodeRegisterMessage] = React.useState("");
+    const [errorNameRegisterMessage, setErrorNameRegisterMessage] = React.useState("");
+    const [errorSurnameRegisterMessage, setErrorSurnameRegisterMessage] = React.useState("");
+    const [errorCountryRegisterMessage, setErrorCountryRegisterMessage] = React.useState("");
+    const [errorAddressRegisterMessage, setErrorAddressRegisterMessage] = React.useState("");
+    const [errorNationalityRegisterMessage, setErrorNationalityRegisterMessage] = React.useState("");
+    const [errorDateRegisterMessage, setErrorDateRegisterMessage] = React.useState("");
 
 
-    function resetAllErrorsMessage(){
+    function resetAllErrorsMessage() {
         setErrorUsernameRegisterMessage("");
         setErrorPasswordRegisterMessage("");
         setErrorEmailRegisterMessage("");
@@ -217,7 +217,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
 
         if (checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateRegister)) {
             var dateBirthRegister = dateRegister.toLocaleDateString("en-US", { year: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { month: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { day: 'numeric' });
-            fetch("http://"+USER_HOST+"/register", {
+            fetch("http://" + USER_HOST + "/register", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -246,16 +246,13 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     } else if (data.status === 409) {
                         data.json().then((message) => {
                             console.log(message.error);
-                            if(message.error==='User already exists')
-                            {
+                            if (message.error === 'User already exists') {
                                 setErrorUsernameRegisterMessage(message.error);
                             }
-                            if(message.error==='Email already exists')
-                            {
+                            if (message.error === 'Email already exists') {
                                 setErrorEmailRegisterMessage(message.error);
                             }
-                            if(message.error==='Phone already exists')
-                            {
+                            if (message.error === 'Phone already exists') {
                                 setErrorPhoneRegisterMessage(message.error);
                             }
                         });
@@ -280,7 +277,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
             keepMounted
             PaperProps={{
                 style: { borderRadius: 10 }
-              }}
+            }}
         >
             <DialogTitle>Register</DialogTitle>
             <DialogContent>
@@ -288,7 +285,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="username"
-                    error={errorUsernameRegisterMessage!==""}
+                    error={errorUsernameRegisterMessage !== ""}
                     helperText={errorUsernameRegisterMessage}
                     label="Username"
                     type="string"
@@ -300,7 +297,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="password"
-                    error={errorPasswordRegisterMessage!==""}
+                    error={errorPasswordRegisterMessage !== ""}
                     helperText={errorPasswordRegisterMessage}
                     label="Password"
                     type="password"
@@ -312,7 +309,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="email"
-                    error={errorEmailRegisterMessage!==""}
+                    error={errorEmailRegisterMessage !== ""}
                     helperText={errorEmailRegisterMessage}
                     label="Email"
                     type="email"
@@ -325,7 +322,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                 >
                     <Grid item xs={7}>
                         <FormControl
-                            error={errorPhoneCodeRegisterMessage!==""}
+                            error={errorPhoneCodeRegisterMessage !== ""}
                             margin="dense"
                             fullWidth>
                             <InputLabel id="countryphone-label">Country Phone</InputLabel>
@@ -364,7 +361,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                 margin="dense"
                                 id="phone"
                                 type='numeric'
-                                error={errorPhoneRegisterMessage!==""}
+                                error={errorPhoneRegisterMessage !== ""}
                                 helperText={errorPhoneRegisterMessage}
                                 label="Phone"
                                 value={phoneRegister}
@@ -382,7 +379,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                             autoFocus
                             margin="dense"
                             id="name"
-                            error={errorNameRegisterMessage!==""}
+                            error={errorNameRegisterMessage !== ""}
                             helperText={errorNameRegisterMessage}
                             label="Name"
                             type="string"
@@ -396,7 +393,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                             autoFocus
                             margin="dense"
                             id="surname"
-                            error={errorSurnameRegisterMessage!==""}
+                            error={errorSurnameRegisterMessage !== ""}
                             helperText={errorSurnameRegisterMessage}
                             label="Surname"
                             type="string"
@@ -410,7 +407,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     autoFocus
                     margin="dense"
                     id="address"
-                    error={errorAddressRegisterMessage!==""}
+                    error={errorAddressRegisterMessage !== ""}
                     helperText={errorAddressRegisterMessage}
                     label="Address"
                     type="string"
@@ -424,7 +421,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                 >
                     <Grid item xs={6}>
                         <FormControl
-                            error={errorCountryRegisterMessage!==""}
+                            error={errorCountryRegisterMessage !== ""}
                             margin="dense"
                             fullWidth>
                             <InputLabel id="country-label">Country</InputLabel>
@@ -459,7 +456,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl
-                            error={errorNationalityRegisterMessage!==""}
+                            error={errorNationalityRegisterMessage !== ""}
                             margin="dense"
                             fullWidth>
                             <InputLabel id="nationality-lable">Nationality</InputLabel>
@@ -503,7 +500,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                                 onChange={handleChangeDateRegister}
                                 renderInput={(params) =>
                                     <TextField {...params}
-                                        error={errorDateRegisterMessage!==""}
+                                        error={errorDateRegisterMessage !== ""}
                                         helperText={errorDateRegisterMessage} />}
                             />
                         </Stack>

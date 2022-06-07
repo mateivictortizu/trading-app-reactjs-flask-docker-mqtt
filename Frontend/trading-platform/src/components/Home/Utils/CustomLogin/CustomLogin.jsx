@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { CustomSnackbarAlert } from "../CustomSnackbarAlert/CustomSnackbarAlert";
 import { Oval } from 'react-loader-spinner';
 import { CustomForgotPassword } from "../CustomForgotPassword/CustomForgotPassword";
-import { CustomOTP} from "../CustomOTP/CustomOTP";
+import { CustomOTP } from "../CustomOTP/CustomOTP";
 import { useCookies } from 'react-cookie';
 
 export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
@@ -21,13 +21,13 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
     const [openForgotPassword, setOpenForgotPassword] = React.useState(false);
     const [openOTP, setOpenOTP] = React.useState(false);
     const [cookies, setCookie] = useCookies(['jwt']);
-    const [ok,setOk]=React.useState(0);
+    const [ok, setOk] = React.useState(0);
     const navigate = useNavigate();
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
-    function handleCloseLoginOpenRegister(){
+    function handleCloseLoginOpenRegister() {
         handleCloseLogin();
         handleOpenRegister();
 
@@ -52,21 +52,18 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                     if (data.status === 200) {
                         data.json().then((message) => {
                             console.log(message);
-                            if (message.message=="OTP send")
-                            {
-                                setCookie("jwt_otp",data.headers.get("Authorization"));
+                            if (message.message == "OTP send") {
+                                setCookie("jwt_otp", data.headers.get("Authorization"));
                                 setOpenOTP(true);
                             }
-                            else
-                            {
-                                setCookie("jwt",data.headers.get("Authorization"));
+                            else {
+                                setCookie("jwt", data.headers.get("Authorization"));
                                 setOk(1);
                             }
                             setLoginState(true);
                             handleCloseLogin();
-                            if(ok===1)
-                            {
-                                navigate('/home'); 
+                            if (ok === 1) {
+                                navigate('/home');
                             }
                         });
 

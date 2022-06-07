@@ -4,32 +4,32 @@ import Chart from "react-apexcharts";
 import './CustomGraphics.css';
 
 
-export default function CustomGraphics({ name, margin, datas, setPeriod, period }) {
+export default function CustomGraphics({ name, margin, datas, setPeriod, period, color }) {
 
-    function click_1D(){
+    function click_1D() {
         setPeriod('1D');
     };
 
-    function click_1M(){
+    function click_1M() {
         setPeriod('1M');
     };
 
-    function click_3M(){
+    function click_3M() {
         setPeriod('3M');
     };
 
-    function click_6M(){
+    function click_6M() {
         setPeriod('6M');
     };
 
-    function click_max(){
+    function click_max() {
         setPeriod('max');
     };
 
     var state = {
 
         options: {
-            colors : ['#2AAA8A'],
+            colors: [color],
             chart: {
                 toolbar: {
                     show: false
@@ -73,9 +73,12 @@ export default function CustomGraphics({ name, margin, datas, setPeriod, period 
                 },
                 axisTicks: {
                     show: false
+                },
+                tooltip: {
+                    enabled: false
                 }
             },
-            yaxis:{
+            yaxis: {
                 opposite: true,
             }
         },
@@ -87,9 +90,16 @@ export default function CustomGraphics({ name, margin, datas, setPeriod, period 
         ]
     };
 
+    var typeClick = null;
+    if (color === '#2AAA8A') {
+        typeClick = 'buttonClickedPeriodUp';
+    }
+    else {
+        typeClick = 'buttonClickedPeriodDown';
+    }
 
     return (
-        <div>
+        <div style={{ marginLeft: '15px', marginRight: '15px' }}>
             <Chart
                 options={state.options}
                 series={state.series}
@@ -97,11 +107,11 @@ export default function CustomGraphics({ name, margin, datas, setPeriod, period 
                 height='270px'
                 style={{ marginTop: margin }}
             />
-            <Button id={(period=='1D')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_1D} disableRipple >1D</Button>
-            <Button disableRipple id={(period=='1M')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_1M}>1M</Button>
-            <Button disableRipple id={(period=='3M')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_3M}>3M</Button>
-            <Button disableRipple id={(period=='6M')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_6M}>6M</Button>
-            <Button disableRipple id={(period=='max')?'buttonClickedPeriod':'buttonPeriod'} onClick={click_max}>MAX</Button>
+            <Button id={(period === '1D') ? typeClick : 'buttonPeriod'} onClick={click_1D} disableRipple >1D</Button>
+            <Button disableRipple id={(period === '1M') ? typeClick : 'buttonPeriod'} onClick={click_1M}>1M</Button>
+            <Button disableRipple id={(period === '3M') ? typeClick : 'buttonPeriod'} onClick={click_3M}>3M</Button>
+            <Button disableRipple id={(period === '6M') ? typeClick : 'buttonPeriod'} onClick={click_6M}>6M</Button>
+            <Button disableRipple id={(period === 'max') ? typeClick : 'buttonPeriod'} onClick={click_max}>MAX</Button>
 
         </div>
     );

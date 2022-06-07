@@ -7,7 +7,7 @@ export function CustomAppBar({ handleClickOpenRegister, handleClickOpenLogin }) 
         <div className="appBar">
 
             <Box sx={{ flexGrow: 1 }}>
-                <AppBar style={{backgroundColor:'#0066cc'}} position="static">
+                <AppBar style={{ backgroundColor: '#0066cc' }} position="static">
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             <div className="svg-icon">
