@@ -35,8 +35,4 @@ migrate = Migrate(app, db, 'app/database/migrations')
 executor = Executor(app)
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], poolclass=NullPool)
 
-from app.blueprints import investBlueprint
-
-app.register_blueprint(investBlueprint.investBP)
-
 from app.database import models

@@ -1,12 +1,13 @@
-flask
+flask~=2.1.2
 flask_executor
 flask_migrate
 flask_sqlalchemy
 flask_json_schema
-SQLAlchemy
+SQLAlchemy~=1.4.37
 requests
-alembic
+alembic~=1.8.0
 apscheduler
 pyOpenSSL
 flask_cors
 mysqlclient
+pika~=1.2.1

@@ -1,7 +1,7 @@
 from urllib import parse
 
-from flask import Blueprint, request
 import requests
+from flask import Blueprint, request
 
 stock = Blueprint('stock', __name__)
 
@@ -26,7 +26,7 @@ def get_stock_info(stock_symbol):
 @stock.route('/get-stock-price/<stock_symbol>', methods=['GET'])
 def get_stock_price(stock_symbol):
     headers = request.headers
-    r = requests.get(parse.urljoin(URL, "get-stock-price/"+stock_symbol), headers=headers)
+    r = requests.get(parse.urljoin(URL, "get-stock-price/" + stock_symbol), headers=headers)
     return r.content, r.status_code
 
 
