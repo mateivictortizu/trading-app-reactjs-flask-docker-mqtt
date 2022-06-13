@@ -1,9 +1,6 @@
 import json
 from urllib import parse
-from flask import jsonify
-
 import requests
-
 import pika
 
 URL = "http://127.0.0.1:5002/"
@@ -79,5 +76,3 @@ def start():
 
 if __name__ == '__main__':
     start()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
