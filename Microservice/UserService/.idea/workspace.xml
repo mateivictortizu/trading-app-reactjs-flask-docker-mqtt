@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="26bab341-d4f6-4442-b59c-23f499c61f00" name="Changes" comment="">
+    <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/../../FundsService/.dockerignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../FundsService/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../FundsService/.idea/.gitignore" beforeDir="false" />
@@ -23,7 +23,6 @@
       <change beforePath="$PROJECT_DIR$/../../FundsService/nginx.conf" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../FundsService/requirements.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../FundsService/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/stockService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/stockService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../InvestService/.dockerignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../InvestService/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../InvestService/.idea/.gitignore" beforeDir="false" />
@@ -43,8 +42,8 @@
       <change beforePath="$PROJECT_DIR$/../../InvestService/nginx.conf" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../InvestService/requirements.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../InvestService/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Reapers/FundsReaper/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Reapers/FundsReaper/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Reapers/FundsReaper/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Reapers/FundsReaper/wsgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../StockService/.dockerignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../StockService/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../StockService/.idea/.gitignore" beforeDir="false" />
@@ -109,7 +108,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2AXGiaJIGukqVSj9ZF9YvNe7Ike" />
+  <component name="ProjectId" id="264aETgtU8isivaQpDqtRvwIbMW" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -118,10 +117,19 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Anul IV\LICENTA\UserService" />
+      <recent name="D:\Anul IV\LICENTA\UserService\app" />
+    </key>
   </component>
   <component name="RunManager">
-    <configuration name="wsgi" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="FundsReaper" />
+    <configuration name="wsgi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="UserService" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -132,7 +140,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="E:\Anul IV\LICENTA\Reapers\FundsReaper\wsgi.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wsgi.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -141,16 +149,75 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="wsgi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="UserService" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="D:\Anul IV\LICENTA\UserService\wsgi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.wsgi" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="26bab341-d4f6-4442-b59c-23f499c61f00" name="Changes" comment="" />
-      <created>1655148644278</created>
+      <changelist id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="" />
+      <created>1646685203987</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1655148644278</updated>
+      <updated>1646685203987</updated>
+      <workItem from="1646685206204" duration="479000" />
+      <workItem from="1646694801863" duration="848000" />
+      <workItem from="1647440545765" duration="2490000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/utils/myjwt.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="request" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
