@@ -23,10 +23,10 @@ def add_money():
         user = request.json['user']
         value = request.json['value']
         addFundsDAO(user, value)
-        return jsonify({'message': 'Funds added'}), 200
+        return jsonify({"message": "Funds added"}), 200
     except Exception as e:
         print(e)
-        return jsonify({'error': 'Funds did not added'}), 400
+        return jsonify({"message": "Funds did not added"}), 400
 
 
 @fundsBP.route('/withdraw-money', methods=['POST'])
@@ -38,7 +38,7 @@ def withdraw_money():
         return jsonify({'message': 'Funds withdraw'}), 200
     except Exception as e:
         print(e)
-        return jsonify({'error': 'Funds did not added'}), 500
+        return jsonify({'message': 'Funds did not added'}), 500
 
 
 @fundsBP.route('/get-funds/<user>')
@@ -46,8 +46,8 @@ def get_funds(user):
     try:
         value = get_fundsDAO(user)
         if value is False:
-            return jsonify({'error': 'User did not exists'}), 400
+            return jsonify({'message': 'User did not exists'}), 400
         else:
             return jsonify({'message': 'Works', 'value': value}), 200
     except Exception as e:
-        return jsonify({'error': 'Internal error'}), 500
+        return jsonify({'message': 'Internal error'}), 500

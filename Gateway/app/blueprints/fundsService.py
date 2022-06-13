@@ -1,31 +1,63 @@
-from urllib import parse
+import json
 
-from flask import Blueprint, request
-import requests
+from flask import Blueprint, request, jsonify
+
+from app.RabbitMQClients.FundsRabbitMQ import AddMoneyClient, WithdrawMoneyClient, GetFundsClient
 
 funds = Blueprint('funds', __name__)
 
-URL = "http://127.0.0.1:5002/"
+add_money_client = None
+withdraw_money_client = None
+get_funds_client = None
 
 
 @funds.route('/add-money', methods=['POST'])
 def add_money():
-    json_body = request.json
-    headers = request.headers
-    r = requests.post(parse.urljoin(URL, "add-money"), json=json_body, headers=headers)
-    return r.content, r.status_code
+    global add_money_client
+    if add_money_client is None:
+        add_money_client = AddMoneyClient()
+    try:
+        response = json.loads(add_money_client.call(request.json))
+        print(response)
+        return response, response['code']
+    except Exception:
+        try:
+            add_money_client = AddMoneyClient()
+            response = json.loads(add_money_client.call(request.json))
+            return response, response['code']
+        except Exception:
+            return jsonify({'error': 'Add money server error', 'code': 500}), 500
 
 
 @funds.route('/withdraw-money', methods=['POST'])
 def withdraw_money():
-    json_body = request.json
-    headers = request.headers
-    r = requests.post(parse.urljoin(URL, "withdraw-money"), json=json_body, headers=headers)
-    return r.content, r.status_code
+    global withdraw_money_client
+    if withdraw_money_client is None:
+        withdraw_money_client = WithdrawMoneyClient()
+    try:
+        response = json.loads(withdraw_money_client.call(request.json))
+        return response, response['code']
+    except Exception:
+        try:
+            withdraw_money_client = WithdrawMoneyClient()
+            response = json.loads(withdraw_money_client.call(request.json))
+            return response, response['code']
+        except Exception:
+            return jsonify({'error': 'Withdraw money server error', 'code': 500}), 500
 
 
 @funds.route('/get-funds/<user>')
 def get_funds(user):
-    headers = request.headers
-    r = requests.get(parse.urljoin(URL, "get-funds/"+user), headers=headers)
-    return r.content, r.status_code
+    global get_funds_client
+    if get_funds_client is None:
+        get_funds_client = GetFundsClient()
+    try:
+        response = json.loads(get_funds_client.call({'user': user}))
+        return response, response['code']
+    except Exception:
+        try:
+            get_funds_client = GetFundsClient()
+            response = json.loads(get_funds_client.call({'user': user}))
+            return response, response['code']
+        except Exception:
+            return jsonify({'error': 'Get Funds server error', 'code': 500}), 500
