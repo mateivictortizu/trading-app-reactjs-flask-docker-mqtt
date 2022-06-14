@@ -28,7 +28,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
 
     useEffect(() => {
         if (buttonStockClicked !== null) {
-            fetch("http://127.0.0.1:5001/get-stock-info/" + buttonStockClicked, {
+            fetch("http://127.0.0.1:5000/get-stock-info/" + buttonStockClicked, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'

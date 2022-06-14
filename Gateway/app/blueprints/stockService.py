@@ -1,9 +1,11 @@
 import json
+import uuid
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 
 from app.RabbitMQClients.StocksRabbitMQ import AddStockClient, GetStockInfoClient, GetStockPriceClient, \
     GetListStockPriceClient, UpdatePriceClient, UpdateStockClient, GetAllStocksClient
+from app.blueprints import users_connections
 
 stock = Blueprint('stock', __name__)
 

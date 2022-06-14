@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/stockService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/stockService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/userService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/userService.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Reapers/UserReaper/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Reapers/UserReaper/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Reapers/UserReaper/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Reapers/UserReaper/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +31,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.DirectoryMappings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">

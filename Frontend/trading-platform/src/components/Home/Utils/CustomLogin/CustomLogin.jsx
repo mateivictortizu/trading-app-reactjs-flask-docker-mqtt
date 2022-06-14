@@ -53,11 +53,11 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                         data.json().then((message) => {
                             console.log(message);
                             if (message.message == "OTP send") {
-                                setCookie("jwt_otp", data.headers.get("Authorization"));
+                                setCookie("jwt_otp", message["Authorization"]);
                                 setOpenOTP(true);
                             }
                             else {
-                                setCookie("jwt", data.headers.get("Authorization"));
+                                setCookie("jwt", message["Authorization"]);
                                 setOk(1);
                             }
                             setLoginState(true);

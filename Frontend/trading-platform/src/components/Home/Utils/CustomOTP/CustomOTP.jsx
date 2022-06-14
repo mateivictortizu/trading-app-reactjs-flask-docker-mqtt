@@ -15,8 +15,10 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': cookies.jwt_otp,
             },
+            body: JSON.stringify({
+                Authorization: cookies.jwt_otp
+            }),
         })
             .then((data) => {
                 if (data.status == 200) {
@@ -37,17 +39,17 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': cookies.jwt_otp,
             },
             body: JSON.stringify({
-                code: parseInt(OTP)
+                code: parseInt(OTP),
+                Authorization: cookies.jwt_otp
             }),
         })
             .then((data) => {
                 if (data.status == 200) {
                     handleCloseOTP();
                     removeCookie("jwt_otp");
-                    setCookie("jwt", data.headers.get("Authorization"));
+                    setCookie("jwt", data["Authorization"]);
                     navigate('/home');
 
                 }

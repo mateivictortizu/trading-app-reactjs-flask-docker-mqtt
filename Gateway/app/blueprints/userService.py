@@ -1,14 +1,11 @@
 import json
 
 from flask import Blueprint, request, jsonify
-
 from app.RabbitMQClients.UserRabbitMQ import ResendOTPClient, BanClient, VerifyUserClient, CheckTokenClient, \
     RegisterClient, LoginClient, ResendValidateAccountClient, ValidateOTPClient, LogoutClient, ChangePasswordClient, \
-    RequestChangePasswordClient, ResetPassClient, SetNewPassClient
+    RequestChangePasswordClient, ResetPassClient, SetNewPassClient, ValidateAccountClient
 
 user = Blueprint('user', __name__)
-
-URL = "http://127.0.0.1:5003/"
 
 ban_client = None
 verify_user_client = None
@@ -115,13 +112,13 @@ def login():
 def validate_account(validation_code):
     global validate_account_client
     if validate_account_client is None:
-        validate_account_client = LoginClient()
+        validate_account_client = ValidateAccountClient()
     try:
         response = json.loads(validate_account_client.call({'validation_code': validation_code}))
         return response, response['code']
     except Exception:
         try:
-            validate_account_client = LoginClient()
+            validate_account_client = ValidateAccountClient()
             response = json.loads(validate_account_client.call({'validation_code': validation_code}))
             return response, response['code']
         except Exception:
