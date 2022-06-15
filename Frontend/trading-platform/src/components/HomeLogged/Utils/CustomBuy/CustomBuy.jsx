@@ -1,29 +1,34 @@
 import './CustomBuy.css';
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, Button, Input} from '@mui/material';
 
-export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, logo }) {
+export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, logo, stock_symbol }) {
 
     const [value, setValue] = React.useState(0.0);
 
 
     function handleCloseBuy() {
         setOpenBuy(false);
+        setValue(0.0);
+    };
+
+    const handleValueChange = (event) => {
+        setValue(event.target.value);
     };
 
     function buy_invested() {
-        fetch("http://127.0.0.1:5004/buy-invested", {
+        fetch("http://127.0.0.1:5000/buy", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 user: "matteovkt@gmail.com",
-                stock_symbol: "MSFT",
-                cantitate: parseFloat(1.6),
-                price: parseFloat(180.3)
+                stock_symbol: stock_symbol,
+                cantitate: value,
+                price: price
             }),
-        }).then(setOpenBuy(false));
+        }).then(setOpenBuy(false)).then(setValue(0.0));
 
     };
 
@@ -41,12 +46,22 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                 }}
             >
                 <DialogTitle style={{ backgroundColor: '#E8E8E8', textAlign: 'center' }}>
-                <img id='imgCustomBuy' src={logo}></img>
+                    <img id='imgCustomBuy' src={logo}></img>
                     Buy {stockName}
                     <Typography id='priceCustomBuy'>${price}</Typography>
                 </DialogTitle>
-                <DialogContent>
-
+                <DialogContent style={{ height: '250px' }}>
+                    <Typography id='valueBuy'>Value</Typography>
+                    <Input
+                        id='insertBuy'
+                        disableUnderline={true}
+                        variant="standard"
+                        autoFocus
+                        fullWidth
+                        onChange={handleValueChange}
+                        value={value}
+                    />
+                    <Button id='buttonBuy' onClick={buy_invested}>BUY</Button>
                 </DialogContent>
             </Dialog>
         </div>

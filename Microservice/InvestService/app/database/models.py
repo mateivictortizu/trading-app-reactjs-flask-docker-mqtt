@@ -39,3 +39,22 @@ class Invest(db.Model):
         session.add(new_invest)
         session.commit()
         session.close()
+
+    @staticmethod
+    def get_stock_invest_by_user(user, stock_symbol):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        list_of_invest = session.query(Invest).filter_by(user=user, stock_symbol=stock_symbol)
+        session.commit()
+        session.close()
+        return list_of_invest
+
+    @staticmethod
+    def get_invest_by_user(user):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        list_of_invest = session.query(Invest).filter_by(user=user)
+        session.commit()
+        session.close()
+        return list_of_invest
+

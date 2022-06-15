@@ -10,5 +10,30 @@
 }
 
 #priceCustomBuy{
+    font-size: 40px;
+}
+
+#buttonBuy{
+    color:white;
+    background-color: #0066cc;
+    top: 300px;
+    width: 300px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+#valueBuy{
+    font-size: 30px;
+    text-align:center;
+    top:190px;
+}
+
+#insertBuy {
+    top: 50px;
+    text-align: center;
     font-size: 60px;
+    color: #0066cc;
 }

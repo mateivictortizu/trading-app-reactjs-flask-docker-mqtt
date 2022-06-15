@@ -8,6 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './CustomTable.css';
 import { Button, Typography } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 export default function CustomTable() {
 
@@ -73,8 +75,8 @@ export default function CustomTable() {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow>
-              <TableCell style={{ width: '5px' }}><Button style={{ color: 'white', backgroundColor: '#0066cc', width: '5px' }}>+</Button></TableCell>
+            <TableRow key={row.stock_symbol}>
+              <TableCell style={{ width: '5px' }}><Button style={{ color: '#0066cc', backgroundColor: 'white', minHeight:'0px', height:'40px', minWidth:'0px', width:'40px'}}><AddCircleIcon style={{fontSize:'40px'}}/></Button></TableCell>
               <TableCell style={{ width: '10px' }}><img id='imgCustomTable' src={row.logo} alt={row.stock_symbol} ></img></TableCell>
               <TableCell style={{ top: '10px' }}><Typography>{row.company_name}</Typography></TableCell>
               <TableCell align="right"><Typography>{row.stock_symbol}</Typography></TableCell>
