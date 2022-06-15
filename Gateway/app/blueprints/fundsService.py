@@ -4,6 +4,8 @@ from flask import Blueprint, request, jsonify
 
 from app.RabbitMQClients.FundsRabbitMQ import AddMoneyClient, WithdrawMoneyClient, GetFundsClient
 
+from app import socketio
+
 funds = Blueprint('funds', __name__)
 
 add_money_client = None
@@ -18,7 +20,6 @@ def add_money():
         add_money_client = AddMoneyClient()
     try:
         response = json.loads(add_money_client.call(request.json))
-        print(response)
         return response, response['code']
     except Exception:
         try:

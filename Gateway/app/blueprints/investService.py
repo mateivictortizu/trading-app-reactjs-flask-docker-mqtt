@@ -2,8 +2,8 @@ import json
 
 from flask import Blueprint, request
 
-from app.RabbitMQClients.InvestRabbitMQ import BuyClient, SellClient, GetStockInvestByUserClient, \
-    GetAllInvestByUserClient
+from app.RabbitMQClients.InvestRabbitMQ import BuyClient, GetStockInvestByUserClient, \
+    GetAllInvestByUserClient, SellClient
 
 invest = Blueprint('invest', __name__)
 buy = None
@@ -44,6 +44,8 @@ def sell_invested():
             return response, response['code']
         except Exception:
             return 'Sell server error', 500
+
+
 
 
 @invest.route('/get-stock-invest-by-user', methods=['POST'])

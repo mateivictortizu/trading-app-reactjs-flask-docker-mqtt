@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 
 import pika
@@ -37,8 +38,11 @@ class AddMoneyClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -75,8 +79,11 @@ class WithdrawMoneyClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -113,6 +120,9 @@ class GetFundsClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response

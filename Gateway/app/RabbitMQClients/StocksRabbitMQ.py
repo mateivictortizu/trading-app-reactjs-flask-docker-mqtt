@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 
 import pika
@@ -37,8 +38,11 @@ class AddStockClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -75,8 +79,11 @@ class GetStockInfoClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -113,8 +120,11 @@ class GetStockPriceClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -151,8 +161,11 @@ class GetListStockPriceClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -189,8 +202,11 @@ class UpdatePriceClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -227,8 +243,11 @@ class UpdateStockClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -265,6 +284,9 @@ class GetAllStocksClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response

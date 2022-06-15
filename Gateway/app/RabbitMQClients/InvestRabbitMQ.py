@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 
 import pika
@@ -37,8 +38,11 @@ class BuyClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -75,8 +79,11 @@ class SellClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -113,8 +120,11 @@ class GetAllInvestByUserClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -151,6 +161,9 @@ class GetStockInvestByUserClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response

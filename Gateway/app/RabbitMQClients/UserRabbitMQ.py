@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 
 import pika
@@ -37,8 +38,11 @@ class BanClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -75,8 +79,11 @@ class VerifyUserClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -113,8 +120,11 @@ class CheckTokenClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -151,8 +161,11 @@ class RegisterClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -189,8 +202,11 @@ class LoginClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -227,8 +243,11 @@ class ValidateAccountClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -265,8 +284,11 @@ class ResendValidateAccountClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -303,8 +325,11 @@ class ValidateOTPClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -341,8 +366,11 @@ class ResendOTPClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -379,8 +407,11 @@ class LogoutClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -417,8 +448,11 @@ class ChangePasswordClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -455,8 +489,11 @@ class RequestChangePasswordClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -493,8 +530,11 @@ class ResetPassClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response
 
 
@@ -531,6 +571,9 @@ class SetNewPassClient(object):
                 correlation_id=self.corr_id,
             ),
             body=json.dumps(body))
+        timeout = time.time() + 5
         while self.response is None:
             self.connection.process_data_events()
+            if time.time() > timeout:
+                break
         return self.response

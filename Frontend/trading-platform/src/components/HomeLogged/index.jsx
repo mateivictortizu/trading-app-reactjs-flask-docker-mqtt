@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from "./Utils/Header/Header"
 import './HomeLogged.css';
 import Navigation from './Utils/Navigation/Navigation';
@@ -10,6 +10,7 @@ import { useCookies } from 'react-cookie';
 import Loading from '../Loading';
 import CustomInvested from './Utils/CustomInvested/CustomInvested';
 import CustomTable from './Utils/CustomTable/CustomTable';
+import socketIOClient from "socket.io-client";
 
 const HomeLogged = () => {
 
@@ -22,9 +23,13 @@ const HomeLogged = () => {
     const [priceClicked, setPriceClicked] = React.useState(null);
     var stock_symbols = ['MSFT', 'AMZN', 'TSLA', 'NFLX', 'AMD', 'NVDA', 'INTC', 'FB', 'F', 'NIO', 'BABA'];
     const [datas, setDatas] = React.useState([]);
+    const [datasPopular, setDatasPopular] = React.useState([]);
     const [valueAccount, setValueAccount] = React.useState(0.0);
+    const [time, setTime] = React.useState(0);
+    const [stockInfo, setStockInfo] = React.useState(null);
 
-    function get_values() {
+
+   function get_values() {
         fetch("http://127.0.0.1:5000/get-funds/matteovkt@gmail.com", {
             method: "GET",
             headers: {
@@ -143,8 +148,7 @@ const HomeLogged = () => {
         
     }
 };
-
-const [time, setTime] = React.useState(0);
+/*
 React.useEffect(() => {
     if (time === 0) {
         const timer = setTimeout(() => {
@@ -168,6 +172,29 @@ React.useEffect(() => {
     }
 }, [time]);
 
+*/
+
+React.useEffect(()=>{
+
+    const socket = socketIOClient('http://localhost:5000');
+    socket.on("stock_popular", (data) => {
+        console.log("Stock_popular");
+        console.log(data['message']);
+        setDatasPopular(data['message']);
+        setButtonStockClicked(data['message'][0]['stock_symbol']);
+        setPriceClicked(data['message'][0]['price']);
+    });
+    socket.on("stock_wishlist",(data) => {
+        console.log("stock_wishlist");
+        setDatas(data['message']);
+        setButtonStockClicked(data['message'][0]['stock_symbol']);
+        setPriceClicked(data['message'][0]['price']);
+    });
+    socket.on("get_funds", (data) => {
+        console.log("get_funds")
+        setValueAccount(data['value']);    
+    });
+},[])
 
 if (datas.length === 0) {
     return (
@@ -202,10 +229,12 @@ else {
                             <Grid item>
                                 <StockNavigation
                                     buttonStockClicked={buttonStockClicked}
+                                    setStockInfo={setStockInfo}
                                     setButtonStockClicked={setButtonStockClicked}
                                     priceClicked={priceClicked}
                                     setPriceClicked={setPriceClicked}
                                     data={datas}
+                                    datasPopular={datasPopular}
                                     buttonHomeClicked={buttonHomeClicked}
                                 />
                             </Grid>
