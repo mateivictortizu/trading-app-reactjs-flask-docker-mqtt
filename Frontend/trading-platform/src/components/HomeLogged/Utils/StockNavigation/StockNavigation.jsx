@@ -10,7 +10,6 @@ export default function StockNavigation({ buttonStockClicked, setButtonStockClic
     }
 
     if (data.lenght !== 0 && buttonHomeClicked==='mywatchlist') {
-        console.log('Da');
         return (
             <div className="navigationStock">
                 <div id="firstDivNavigationStock">

@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
-from app.DAO.fundsDAO import addFundsDAO, withdrawFundsDAO, get_fundsDAO
+from app.DAO.fundsDAO import addFundsDAO, withdrawFundsDAO, get_fundsDAO, withdrawFundsAfterBuyDAO, addFundsAfterSellDAO
 
 fundsBP = Blueprint('fundsBlueprint', __name__)
 
@@ -51,3 +51,27 @@ def get_funds(user):
             return jsonify({'message': 'Works', 'value': value}), 200
     except Exception as e:
         return jsonify({'message': 'Internal error'}), 500
+
+
+@fundsBP.route('/add-money-after-sell', methods=['POST'])
+def add_money_after_sell():
+    try:
+        user = request.json['user']
+        value = request.json['value']
+        addFundsAfterSellDAO(user, value)
+        return jsonify({"message": "Funds modified after sell"}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Funds did not modified after sell"}), 400
+
+
+@fundsBP.route('/withdraw-money-after-buy', methods=['POST'])
+def withdraw_money_after_buy():
+    try:
+        user = request.json['user']
+        value = request.json['value']
+        withdrawFundsAfterBuyDAO(user, value)
+        return jsonify({'message': 'Funds modified after buy'}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'Funds did not modified after buy'}), 500

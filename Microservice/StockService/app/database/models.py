@@ -186,3 +186,18 @@ class Price(db.Model):
         if search_price is None:
             return False
         return True
+
+
+class Wishlist(db.Model):
+    __tablename__ = 'wishlist'
+
+    wishlist_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user = db.Column(db.String(35), nullable=False)
+    stock_symbol = db.Column(db.String(10), nullable=False)
+
+    def __init__(self, user, stock_symbol):
+        self.user = user
+        self.stock_symbol = stock_symbol
+
+    def to_json(self):
+        return {'stock_symbol': self.stock_symbol, 'user': self.user}

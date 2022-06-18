@@ -23,7 +23,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
     };
 
     function pay() {
-        if (cvc.length === 3 && cardNumber.length === 20) {
+        if (cvc.length === 3 && sumAdd>0 && expiry.length>0 && cardName.length>0 && cardNumber.length>0) {
             fetch("http://127.0.0.1:5000/add-money", {
                 method: "POST",
                 headers: {
@@ -33,7 +33,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                     user: "matteovkt@gmail.com",
                     value: parseInt(sumAdd),
                 }),
-            }).then(setOpenCard(false));
+            }).then(handleCloseCard());
         }
     };
 
@@ -75,13 +75,12 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
         }
     };
 
+    const handleChangeCardName = (event) => {
+        setCardName(event.target.value);
+    };
+
     const handleExpiry = (event) => {
-        if (event.target.value.length === 2 && expiry.length === 1) {
-            setExpiry(event.target.value + '/');
-        }
-        else if (event.target.value.lenght < 6) {
-            setExpiry(event.target.value);
-        }
+        setExpiry(event.target.value);
     };
 
 
@@ -150,6 +149,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                             label="Name on card"
                             type="string"
                             value={cardName}
+                            onChange={handleChangeCardName}
                             style={{ width: '90%', marginTop: '20px' }}
                         />
                         <TextField

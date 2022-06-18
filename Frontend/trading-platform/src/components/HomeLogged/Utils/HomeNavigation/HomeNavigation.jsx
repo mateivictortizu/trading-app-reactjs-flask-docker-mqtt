@@ -2,16 +2,18 @@ import "./HomeNavigation.css";
 import React from "react";
 import { Button } from "@mui/material";
 
-export default function HomeNavigation({ setTime, buttonHomeClicked, setButtonHomeClicked }) {
+export default function HomeNavigation({ buttonHomeClicked, setButtonHomeClicked, datas, datasPopular, setPriceClicked,setButtonStockClicked}) {
 
     function clickMyWatchlist() {
-        setTime(0);
         setButtonHomeClicked('mywatchlist');
+        setPriceClicked(datas[0]['price']);
+        setButtonStockClicked(datas[0]['stock_symbol']);
     }
 
     function clickPopular() {
-        setTime(0);
         setButtonHomeClicked('popular');
+        setPriceClicked(datasPopular[0]['price']);
+        setButtonStockClicked(datasPopular[0]['stock_symbol']);
     }
 
     return (

@@ -8,14 +8,13 @@ import { CustomBuy } from '../CustomBuy/CustomBuy';
 import { CustomSell } from '../CustomSell/CustomSell';
 import { CustomHistory } from '../CustomHistory/CustomHistory';
 
-export default function DataStock({ buttonStockClicked, priceClicked, Transition }) {
+export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData }) {
     const [stockInfo, setStockInfo] = React.useState(null);
     const [period, setPeriod] = React.useState('1D');
     const [openBuy, setOpenBuy] = React.useState(false);
     const [openSell, setOpenSell] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
     const [invested, setInvested] = React.useState(0);
-    const [statisticData, setStatisticData]=React.useState([0,0]);
     var graphics = null;
     var change = null;
     var stock = null;
@@ -47,12 +46,13 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 identifier:"matteovkt@gmail.com",
                 stock_symbol:stock_name
             }),
+            credentials: "include"
         })
             .then((data) => {
                 if (data.status === 200) {
-                    setInvested(1);
                     data.json().then((message) => {
-                        setStatisticData([message['medie'], message['cantitate']])
+                        setStatisticData([message['medie'], message['cantitate']]);
+                        setInvested(1);
                     });
 
                 } else if (data.status === 404 || data.status === 400 | data.status === 401) {
@@ -70,6 +70,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     };
 
     useEffect(() => {
+        setInvested(0);
         if (buttonStockClicked !== null) {
             fetch("http://127.0.0.1:5000/get-stock-info/" + buttonStockClicked , {
                 method: "GET",
@@ -80,8 +81,8 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 .then((data) => {
                     if (data.status === 200) {
                         data.json().then((message) => {
-                            setStockInfo(message);
                             get_investment(buttonStockClicked);
+                            setStockInfo(message);
      
                         });
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
@@ -203,7 +204,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 {invested ? (<div id='otherDivDataStock'>
                     <Typography id='titleDivDataStock'>Your investment</Typography>
                     <br />
-                    <Typography style={{ fontSize: '18px', fontWeight: 'bold', color: 'black', position: 'relative' }}> <span style={{ marginLeft: '40px' }}>{statisticData[1]} shares</span> <span style={{ fontSize: '18px', color: 'black', fontWeight: 'bold', marginRight: '30px', right: '30px', position: 'absolute' }}>${Number(priceClicked * statisticData[1]).toFixed(2)}</span></Typography>
+                    <Typography style={{ fontSize: '18px', fontWeight: 'bold', color: 'black', position: 'relative' }}> <span style={{ marginLeft: '40px' }}>{statisticData[1].toFixed(2)} shares</span> <span style={{ fontSize: '18px', color: 'black', fontWeight: 'bold', marginRight: '30px', right: '30px', position: 'absolute' }}>${Number(priceClicked * statisticData[1]).toFixed(2)}</span></Typography>
                     <br />
                     <hr style={{ backgroundColor: '#E8E8E8', height: 1, width: '95%', margin: 'auto' }} />
                     <br />

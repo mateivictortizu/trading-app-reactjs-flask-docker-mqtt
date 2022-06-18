@@ -15,7 +15,23 @@ def addFundsDAO(user, value):
 def withdrawFundsDAO(user, value):
     Session = sessionmaker(bind=engine)
     session = Session()
-    Fund.add_money(user, -value)
+    Fund.withdraw_money(user, value)
+    session.commit()
+    session.close()
+
+
+def addFundsAfterSellDAO(user, value):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    Fund.add_money_after_sell(user, value)
+    session.commit()
+    session.close()
+
+
+def withdrawFundsAfterBuyDAO(user, value):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    Fund.withdraw_money_after_buy(user, value)
     session.commit()
     session.close()
 

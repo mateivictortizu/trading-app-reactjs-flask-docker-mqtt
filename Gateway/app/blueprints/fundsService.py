@@ -1,64 +1,49 @@
-import json
-
-from flask import Blueprint, request, jsonify
-
-from app.RabbitMQClients.FundsRabbitMQ import AddMoneyClient, WithdrawMoneyClient, GetFundsClient
+from flask import Blueprint, request
 
 from app import socketio
+from app.RabbitMQProcessor.FundsRabbitMQProcessor import add_money_processor, withdraw_money_processor, \
+    get_funds_processor, withdraw_money_after_buy_processor, add_money_after_sell_processor
+from app.blueprints import add_session, add_money_client, withdraw_money_client, get_funds_client, \
+    withdraw_money_after_buy_client, add_money_after_sell_client
 
 funds = Blueprint('funds', __name__)
 
-add_money_client = None
-withdraw_money_client = None
-get_funds_client = None
+funds.before_request(add_session)
 
 
 @funds.route('/add-money', methods=['POST'])
 def add_money():
-    global add_money_client
-    if add_money_client is None:
-        add_money_client = AddMoneyClient()
-    try:
-        response = json.loads(add_money_client.call(request.json))
-        return response, response['code']
-    except Exception:
-        try:
-            add_money_client = AddMoneyClient()
-            response = json.loads(add_money_client.call(request.json))
-            return response, response['code']
-        except Exception:
-            return jsonify({'error': 'Add money server error', 'code': 500}), 500
+    add_money_value = add_money_processor(add_money_client, request.json)
+    value_after_add = get_funds_processor(get_funds_client, {'user': request.json['user']})
+    print(request.json)
+    socketio.emit('get_funds', {'value': value_after_add[0]['value']})
+    return add_money_value
 
 
 @funds.route('/withdraw-money', methods=['POST'])
 def withdraw_money():
-    global withdraw_money_client
-    if withdraw_money_client is None:
-        withdraw_money_client = WithdrawMoneyClient()
-    try:
-        response = json.loads(withdraw_money_client.call(request.json))
-        return response, response['code']
-    except Exception:
-        try:
-            withdraw_money_client = WithdrawMoneyClient()
-            response = json.loads(withdraw_money_client.call(request.json))
-            return response, response['code']
-        except Exception:
-            return jsonify({'error': 'Withdraw money server error', 'code': 500}), 500
+    withdraw_money_value = withdraw_money_processor(withdraw_money_client, request.json)
+    value_after_withdraw = get_funds_processor(get_funds_client, {'user': request.json['user']})
+    socketio.emit('get_funds', {'value': value_after_withdraw[0]['value']})
+    return withdraw_money_value
+
+
+@funds.route('/add-money-after-sell', methods=['POST'])
+def add_money_after_sell():
+    add_money_value = add_money_after_sell_processor(add_money_after_sell_client, request.json)
+    value_after_add = get_funds_processor(get_funds_client, {'user': request.json['user']})
+    socketio.emit('get_funds', {'value': value_after_add[0]['value']})
+    return add_money_value
+
+
+@funds.route('/withdraw-money-after-buy', methods=['POST'])
+def withdraw_money_after_buy():
+    withdraw_money_value = withdraw_money_after_buy_processor(withdraw_money_after_buy_client, request.json)
+    value_after_withdraw = get_funds_processor(get_funds_client, {'user': request.json['user']})
+    socketio.emit('get_funds', {'value': value_after_withdraw[0]['value']})
+    return withdraw_money_value
 
 
 @funds.route('/get-funds/<user>')
 def get_funds(user):
-    global get_funds_client
-    if get_funds_client is None:
-        get_funds_client = GetFundsClient()
-    try:
-        response = json.loads(get_funds_client.call({'user': user}))
-        return response, response['code']
-    except Exception:
-        try:
-            get_funds_client = GetFundsClient()
-            response = json.loads(get_funds_client.call({'user': user}))
-            return response, response['code']
-        except Exception:
-            return jsonify({'error': 'Get Funds server error', 'code': 500}), 500
+    return get_funds_processor(get_funds_client, {'user': user})

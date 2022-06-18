@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, Typography, Button, Input} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, Button, Input } from '@mui/material';
 
 export function CustomSell({ openSell, setOpenSell, Transition, stockName, price, logo, stock_symbol }) {
 
@@ -16,19 +16,37 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
     };
 
     function sell_invested() {
-        fetch("http://127.0.0.1:5000/sell", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user: "matteovkt@gmail.com",
-                stock_symbol: stock_symbol,
-                cantitate: value,
-                price: price
-            }),
-        }).then(setOpenSell(false)).then(setValue(0.0));
+        if (value > 0) {
+            fetch("http://127.0.0.1:5000/sell", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user: "matteovkt@gmail.com",
+                    stock_symbol: stock_symbol,
+                    cantitate: value,
+                    price: price
+                }),
+            }).then((data) => {
+                if (data.status === 200) {
+                    data.json().then(() => {
+                        handleCloseSell();
+                    });
 
+                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                    data.json().then(() => {
+                        console.log('Error');
+                    });
+                } else {
+                    console.log('Error');
+                }
+            }
+            )
+        }
+        else {
+            console.log("Bad value")
+        }
     };
 
     return (

@@ -1,7 +1,6 @@
 import json
 import time
 import uuid
-
 import pika
 
 

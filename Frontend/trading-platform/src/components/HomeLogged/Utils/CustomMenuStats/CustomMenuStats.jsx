@@ -22,11 +22,11 @@ export function CustomMenuStats({ anchorAccountStats, handleCloseAccountStats, d
                     <Grid container spacing={1} direction='column'>
                         <Grid item xs={1} ><Typography>Free funds</Typography></Grid>
 
-                        <Grid item xs={1} ><Typography id='fundsTypographyMenuStats'>${funds}</Typography></Grid>
+                        <Grid item xs={1} ><Typography id='fundsTypographyMenuStats'>${funds.toFixed(2)}</Typography></Grid>
 
                         <Grid item xs={1} ><Typography>Portofolio</Typography></Grid>
 
-                        <Grid item xs={1} ><Typography id='portofolioTypographyMenuStats'>${portofolio}</Typography></Grid>
+                        <Grid item xs={1} ><Typography id='portofolioTypographyMenuStats'>${portofolio.toFixed(2)}</Typography></Grid>
                     </Grid>
                 </div>
             </div>
