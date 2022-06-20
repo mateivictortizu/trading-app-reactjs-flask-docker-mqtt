@@ -31,7 +31,6 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    user: "matteovkt@gmail.com",
                     value: parseInt(sumAdd),
                 }),
             }).then(handleCloseCard());

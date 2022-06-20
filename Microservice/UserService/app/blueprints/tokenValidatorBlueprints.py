@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, current_app
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
+
+from app.DAO.tokenValidatorDAO import validate_Token
 
 tokenValidatorBP = Blueprint('tokenValidatorBlueprint', __name__)
 
@@ -15,7 +17,12 @@ def database_error():
     return jsonify({'error': 'Database error'}), 500
 
 
-#TODO implementation of check token
 @tokenValidatorBP.route('/check-token', methods=['GET'])
 def check_token():
-    pass
+    try:
+        token = request.cookies.get('jwt')
+        if token is None:
+            return jsonify({'error': 'JWT missing'}), 500
+        return validate_Token(token, current_app)
+    except Exception as e:
+        return jsonify({'error': 'JWT check fail'}), 500

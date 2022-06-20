@@ -20,6 +20,7 @@ def database_error():
 @investBP.route('/buy', methods=['POST'])
 def buy():
     json_body = request.json
+    print(json_body)
     user = json_body['user']
     stock_symbol = json_body['stock_symbol']
     cantitate = json_body['cantitate']

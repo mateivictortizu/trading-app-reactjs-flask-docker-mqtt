@@ -25,7 +25,6 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    user: "matteovkt@gmail.com",
                     stock_symbol: stock_symbol,
                     cantitate: value,
                     price: price

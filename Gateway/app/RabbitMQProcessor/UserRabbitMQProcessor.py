@@ -48,7 +48,8 @@ def check_token_processor(check_token_client, json_body):
             check_token_client = CheckTokenClient()
             response = json.loads(check_token_client.call(json_body))
             return response, response['code']
-        except Exception:
+        except Exception as e:
+            print(e)
             return jsonify({'error': 'Check token server error', 'code': 500}), 500
 
 

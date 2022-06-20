@@ -24,7 +24,6 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    user: "matteovkt@gmail.com",
                     stock_symbol: stock_symbol,
                     cantitate: value,
                     price: price

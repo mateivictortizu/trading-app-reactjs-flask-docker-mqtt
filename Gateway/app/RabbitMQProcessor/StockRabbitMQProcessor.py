@@ -55,7 +55,6 @@ def get_list_stock_price_processor(get_list_stock_price_client, json_body):
     if get_list_stock_price_client is None:
         get_list_stock_price_client = GetListStockPriceClient()
     try:
-        print(json_body)
         response = json.loads(get_list_stock_price_client.call(json_body))
         return response, response['code']
     except Exception as e:

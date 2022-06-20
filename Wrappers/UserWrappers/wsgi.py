@@ -39,11 +39,22 @@ def on_verify_user(ch, method, props, body):
 
 
 def on_check_token(ch, method, props, body):
-    pass
+    token = json.loads(body)
+    r = requests.get(parse.urljoin(URL, "check-token"), cookies={"jwt": token['jwt']})
+    # TODO handle requests for 404, 500
+    response = dict()
+    json_obj = json.loads(r.content)
+    response = json_obj
+    response["code"] = r.status_code
+    response = json.dumps(response)
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
 def on_register(ch, method, props, body):
-    print("Da")
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "register"), json=json_body)
     # TODO handle requests for 404, 500

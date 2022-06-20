@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, session, make_response
 from flask_cors import CORS
 from flask_session import Session
 from flask_socketio import SocketIO
@@ -13,7 +13,7 @@ app.config['CORS_EXPOSE_HEADERS'] = 'Authorization'
 app.config['CORS_ALLOW_HEADERS'] = ['Content-Type', 'Access-Control-Allow-Credentials']
 app.config['CORS_ORIGINS'] = ['http://localhost:3000', 'http://localhost:8000']
 app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_TYPE"] = 'filesystem'
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 Session(app)
@@ -53,8 +53,12 @@ def join_connect():
     socketio.emit('get_funds', {'value': get_funds_value[0]['value']})
     get_all_stock = get_all_stocks_processor(get_all_stocks_client)
     socketio.emit('get_all_stocks', {'value': get_all_stock[0]['message']})
+    session['user_id'] = 'Ok'
+    resp=make_response()
+    socketio.emit('get_session')
 
 
 @socketio.on('disconnect')
 def test_disconnect():
+    session.pop('user_id', None)
     print('Client disconnected')

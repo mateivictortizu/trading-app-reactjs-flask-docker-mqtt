@@ -58,6 +58,10 @@ React.useEffect(()=>{
         setStatisticData([data['medie'], data['cantitate']]);
     });
 
+    socket.on("get_session", (data)=>{
+        console.log(data);
+    });
+
     socket.on("get_all_stocks",(data) => {
         console.log("get_funds");
         setRows(data['value']);    

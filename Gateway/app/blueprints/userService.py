@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 
 from app.RabbitMQProcessor.UserRabbitMQProcessor import check_token_processor, register_processor, \
     validate_account_processor, login_processor, resend_validate_account_processor, validate_otp_processor, \
@@ -23,7 +23,7 @@ def verify_user():
 
 @user.route('/check-token', methods=['GET'])
 def check_token():
-    return check_token_processor(check_token_client, request.json)
+    return check_token_processor(check_token_client, {'jwt': 'Ok'})
 
 
 @user.route('/register', methods=['POST'])
@@ -58,6 +58,7 @@ def resend_otp():
 
 @user.route('/logout', methods=['DELETE'])
 def logout():
+    session.pop('user_id', None)
     return logout_processor(logout_client, request.json)
 
 

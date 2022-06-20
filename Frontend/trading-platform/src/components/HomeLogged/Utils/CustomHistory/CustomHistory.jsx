@@ -15,7 +15,6 @@ export function CustomHistory({ openHistory, setOpenHistory, Transition, stock_s
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user: "matteovkt@gmail.com",
                 stock_symbol: stock_symbol,
             }),
         }).then(setOpenHistory(false));

@@ -1,7 +1,6 @@
 import os
-import socket
 
-from flask import Flask, request
+from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_executor import Executor
@@ -9,6 +8,8 @@ from flask_json_schema import JsonSchema
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+
+from app.blueprints.tokenValidatorBlueprints import tokenValidatorBP
 
 application = Flask(__name__)
 # , resources={r"/*": {"origins": "http://localhost:3000", "headers":"Authorization"}})
@@ -51,5 +52,6 @@ from app.blueprints import userBlueprint, agentBlueprint
 
 application.register_blueprint(userBlueprint.userBP)
 application.register_blueprint(agentBlueprint.agentBP)
+application.register_blueprint(tokenValidatorBP)
 
 from app.database import models

@@ -1,7 +1,11 @@
+import pickle
 import uuid
+
 from flask import session
 
-users_connections = []
+from app.RabbitMQProcessor.UserRabbitMQProcessor import check_token_processor
+
+users_connections = {}
 
 add_money_client = None
 withdraw_money_client = None
@@ -37,10 +41,18 @@ set_new_pass_client = None
 
 def before_request_function(request_value):
     if 'user_id' not in session:
-        value_jwt = request_value.cookies.get('jwt')
-        # result_token = check_token_processor(check_token_client, request.json)
-        user_id = str(uuid.uuid4())
-        session['user_id'] = user_id
-        users_connections.append({user_id: {'token': value_jwt}})
+        if 'jwt' in request_value.cookies:
+            jwt_value = request_value.cookies.get('jwt')
+            value = check_token_processor(check_token_client, {'jwt': jwt_value})
+            user_id = str(uuid.uuid4())
+            session['user_id'] = user_id
+            users_connections[user_id] = {'user': value[0]['user'], 'type_user': value[0]['type_user']}
+    else:
+        if session['user_id'] not in users_connections:
+            if 'jwt' in request_value.cookies:
+                jwt_value = request_value.cookies.get('jwt')
+                value = check_token_processor(check_token_client, {'jwt': jwt_value})
+                users_connections[session['user_id']] = {'user': value[0]['user'], 'type_user': value[0]['type_user']}
+            else:
+                session.pop('user_id', None)
     print(users_connections)
-    print(session['user_id'])

@@ -44,7 +44,6 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                identifier:"matteovkt@gmail.com",
                 stock_symbol:stock_name
             })
         })
