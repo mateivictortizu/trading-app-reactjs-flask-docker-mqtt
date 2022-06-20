@@ -98,6 +98,7 @@ def login():
         login_client = LoginClient()
     try:
         response = json.loads(login_client.call(request.json))
+        # TODO add auth
         return response, response['code']
     except Exception:
         try:
@@ -149,6 +150,7 @@ def validate_otp():
         validate_otp_client = ValidateOTPClient()
     try:
         response = json.loads(validate_otp_client.call(request.json))
+        #TODO add auth
         return response, response['code']
     except Exception:
         try:

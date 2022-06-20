@@ -8,7 +8,10 @@ from app.blueprints import add_session, add_money_client, withdraw_money_client,
 
 funds = Blueprint('funds', __name__)
 
-funds.before_request(add_session)
+
+@funds.before_request
+def before_request():
+    print(request.json)
 
 
 @funds.route('/add-money', methods=['POST'])

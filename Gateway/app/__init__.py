@@ -1,5 +1,6 @@
 import uuid
 
+import flask
 from flask import Flask, request, session
 from flask_cors import CORS
 from flask_session import Session
@@ -12,13 +13,15 @@ from app.blueprints import get_all_stocks_client
 app = Flask(__name__)
 
 app.config['CORS_EXPOSE_HEADERS'] = 'Authorization'
-app.config['CORS_ALLOW_HEADERS'] = ['Content-Type', 'Authorization']
+app.config['CORS_ALLOW_HEADERS'] = ['Content-Type', 'Access-Control-Allow-Credentials']
 app.config['CORS_ORIGINS'] = ['http://localhost:3000', 'http://localhost:8000']
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
 Session(app)
-cors = CORS(app,supports_credentials=True)
-socketio = SocketIO(app, cors_allowed_origins='*', engineio_logger=True)
+cors = CORS(app, supports_credentials=True)
+socketio = SocketIO(app, cors_allowed_origins='http://localhost:3000')
 
 from app.blueprints.fundsService import funds
 from app.blueprints.stockService import stock
@@ -39,6 +42,18 @@ get_funds_client = None
 @app.before_request
 def before_request():
     print(str(request.method) + str(request.path))
+    print(request.cookies)
+
+
+@app.route('/')
+def test():
+    if 'user_id' not in session:
+        session['user_id'] = str(uuid.uuid4())
+        print(session['user_id'])
+
+    res = flask.make_response()
+    res.set_cookie("name", value="I am cookie")
+    return res
 
 
 @socketio.on('connect')
