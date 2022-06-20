@@ -39,14 +39,14 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     function get_investment(stock_name) {
         fetch("http://127.0.0.1:5000/get-stock-invest-by-user", {
             method: "POST",
+            credentials:'include',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 identifier:"matteovkt@gmail.com",
                 stock_symbol:stock_name
-            }),
-            credentials: "include"
+            })
         })
             .then((data) => {
                 if (data.status === 200) {
@@ -74,6 +74,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
         if (buttonStockClicked !== null) {
             fetch("http://127.0.0.1:5000/get-stock-info/" + buttonStockClicked , {
                 method: "GET",
+                credentials:'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },

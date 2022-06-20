@@ -20,6 +20,7 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
         if (value > 0) {
             fetch("http://127.0.0.1:5000/buy", {
                 method: "POST",
+                credentials:'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },

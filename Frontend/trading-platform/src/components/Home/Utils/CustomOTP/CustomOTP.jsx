@@ -13,6 +13,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     function resendOTP() {
         fetch("http://127.0.0.1:5000/resend-otp", {
             method: "POST",
+            credentials:'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -37,6 +38,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     function validateOTP() {
         fetch("http://127.0.0.1:5000/validate-otp", {
             method: "POST",
+            credentials:'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -49,7 +51,6 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
                 if (data.status == 200) {
                     handleCloseOTP();
                     removeCookie("jwt_otp");
-                    setCookie("jwt", data["Authorization"]);
                     navigate('/home');
 
                 }

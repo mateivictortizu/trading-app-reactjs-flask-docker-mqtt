@@ -1,7 +1,4 @@
-import uuid
-
-import flask
-from flask import Flask, request, session
+from flask import Flask, request
 from flask_cors import CORS
 from flask_session import Session
 from flask_socketio import SocketIO
@@ -42,26 +39,10 @@ get_funds_client = None
 @app.before_request
 def before_request():
     print(str(request.method) + str(request.path))
-    print(request.cookies)
-
-
-@app.route('/')
-def test():
-    if 'user_id' not in session:
-        session['user_id'] = str(uuid.uuid4())
-        print(session['user_id'])
-
-    res = flask.make_response()
-    res.set_cookie("name", value="I am cookie")
-    return res
 
 
 @socketio.on('connect')
 def join_connect():
-    if 'user_id' not in session:
-        session['user_id'] = str(uuid.uuid4())
-    print(session['user_id'])
-
     json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}
     stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
     socketio.emit('stock_popular', stock_popular_list[0])

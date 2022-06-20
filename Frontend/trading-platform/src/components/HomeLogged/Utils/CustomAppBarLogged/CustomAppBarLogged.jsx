@@ -44,6 +44,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     function logout() {
         fetch("http://127.0.0.1:5000/logout", {
             method: "DELETE",
+            credentials:'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': cookies.jwt,

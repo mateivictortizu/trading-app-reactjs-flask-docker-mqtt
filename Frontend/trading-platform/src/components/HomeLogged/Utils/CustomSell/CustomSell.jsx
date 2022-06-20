@@ -19,6 +19,7 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
         if (value > 0) {
             fetch("http://127.0.0.1:5000/sell", {
                 method: "POST",
+                credentials:'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },

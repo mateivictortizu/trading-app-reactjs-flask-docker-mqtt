@@ -26,6 +26,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
         if (cvc.length === 3 && sumAdd>0 && expiry.length>0 && cardName.length>0 && cardNumber.length>0) {
             fetch("http://127.0.0.1:5000/add-money", {
                 method: "POST",
+                credentials:'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },

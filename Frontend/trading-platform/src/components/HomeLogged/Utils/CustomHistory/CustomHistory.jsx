@@ -10,6 +10,7 @@ export function CustomHistory({ openHistory, setOpenHistory, Transition, stock_s
     function get_history_of_stock() {
         fetch("http://127.0.0.1:5000/history", {
             method: "POST",
+            credentials:'include',
             headers: {
                 'Content-Type': 'application/json'
             },
