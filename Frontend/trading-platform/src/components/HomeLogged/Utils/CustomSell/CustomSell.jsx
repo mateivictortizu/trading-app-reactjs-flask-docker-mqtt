@@ -1,9 +1,13 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, Typography, Button, Input } from '@mui/material';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export function CustomSell({ openSell, setOpenSell, Transition, stockName, price, logo, stock_symbol }) {
 
     const [value, setValue] = React.useState(0.0);
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    const navigate = useNavigate();
 
 
     function handleCloseSell() {
@@ -34,7 +38,15 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
                         handleCloseSell();
                     });
 
-                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                } 
+                else if(data.status===403)
+                {
+                    handleCloseSell();
+                    removeCookie("jwt");
+                    removeCookie("session");
+                    navigate('/');
+                } 
+                else if (data.status === 404 || data.status === 400 | data.status === 401) {
                     data.json().then(() => {
                         console.log('Error');
                     });

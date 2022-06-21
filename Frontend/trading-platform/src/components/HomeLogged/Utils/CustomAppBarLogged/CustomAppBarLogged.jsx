@@ -51,6 +51,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
             },
         });
         removeCookie('jwt');
+        removeCookie('session');
         navigate('/');
     }
 

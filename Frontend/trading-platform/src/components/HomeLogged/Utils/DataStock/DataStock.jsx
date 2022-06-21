@@ -7,6 +7,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import { CustomBuy } from '../CustomBuy/CustomBuy';
 import { CustomSell } from '../CustomSell/CustomSell';
 import { CustomHistory } from '../CustomHistory/CustomHistory';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData }) {
     const [stockInfo, setStockInfo] = React.useState(null);
@@ -22,6 +24,8 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     var last_value = null;
     var difference = null;
     var procent = null;
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    const navigate = useNavigate();
 
 
     function handleOpenBuy() {
@@ -60,7 +64,15 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                         setStatisticData([0,0])
                         console.log('Error');
                     });
-                } else {
+                } else if(data.status===403)
+                {
+                    setInvested(0);
+                    setStatisticData([0,0]);
+                    removeCookie("jwt");
+                    removeCookie("session");
+                    navigate('/');
+                } 
+                else {
                     setInvested(0);
                     setStatisticData([0,0])
                     console.log('Error');
@@ -89,7 +101,14 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                         data.json().then(() => {
                             console.log('Error');
                         });
-                    } else {
+                    } 
+                    else if(data.status===403)
+                    {
+                        removeCookie("jwt");
+                        removeCookie("session");
+                        navigate('/');
+                    } 
+                    else {
                         console.log('Error');
                     }
                 });

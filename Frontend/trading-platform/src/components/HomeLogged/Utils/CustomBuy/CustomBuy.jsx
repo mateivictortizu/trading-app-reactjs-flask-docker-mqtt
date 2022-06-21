@@ -1,10 +1,15 @@
 import './CustomBuy.css';
 import React from "react";
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, Typography, Button, Input } from '@mui/material';
 
 export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, logo, stock_symbol }) {
 
     const [value, setValue] = React.useState(0.0);
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    const navigate = useNavigate();
+    
 
 
     function handleCloseBuy() {
@@ -35,7 +40,15 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                         handleCloseBuy();
                     });
 
-                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                }
+                else if(data.status===403)
+                {
+                    handleCloseBuy();
+                    removeCookie("jwt");
+                    removeCookie("session");
+                    navigate('/');
+                }  
+                else if (data.status === 404 || data.status === 400 | data.status === 401) {
                     data.json().then(() => {
                         console.log('Error');
                     });
