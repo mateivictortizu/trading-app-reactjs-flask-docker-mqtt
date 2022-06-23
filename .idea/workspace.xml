@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="70337579-2402-4533-a85e-f82d5f0907cb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Gateway/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/app/blueprints/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Microservice/RecommendationService/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Microservice/RecommendationService/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wrappers/FundsWrappers/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wrappers/FundsWrappers/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wrappers/FundsWrappers/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Wrappers/FundsWrappers/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wrappers/StockWrappers/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Wrappers/StockWrappers/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wrappers/UserWrappers/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Wrappers/UserWrappers/wsgi.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2AzT8j99lI0YOVzXeW4PuSWyh8i" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="70337579-2402-4533-a85e-f82d5f0907cb" name="Changes" comment="" />
+      <created>1656011257010</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1656011257010</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -40,7 +40,7 @@ set_new_pass_client = None
 get_all_stocks_by_user_client = None
 add_watchlist_client = None
 remove_watchlist_client = None
-
+recommendation_client = None
 
 def before_request_function(request_value):
     if 'user_id' not in session:

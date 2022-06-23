@@ -9,10 +9,10 @@ URL = "http://127.0.0.1:5003/"
 def on_ban(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.delete(parse.urljoin(URL, "ban"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -25,10 +25,10 @@ def on_ban(ch, method, props, body):
 def on_verify_user(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.put(parse.urljoin(URL, "verify-user"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -41,10 +41,10 @@ def on_verify_user(ch, method, props, body):
 def on_check_token(ch, method, props, body):
     token = json.loads(body)
     r = requests.get(parse.urljoin(URL, "check-token"), cookies={"jwt": token['jwt']})
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -57,10 +57,10 @@ def on_check_token(ch, method, props, body):
 def on_register(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "register"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -73,10 +73,10 @@ def on_register(ch, method, props, body):
 def on_login(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "login"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     if "Authorization" in r.headers:
         response["Authorization"] = r.headers["Authorization"]
     response["code"] = r.status_code
@@ -91,10 +91,10 @@ def on_login(ch, method, props, body):
 def on_validate_account(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.get(parse.urljoin(URL, "validate-account/" + json_body['validation_code']), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -107,10 +107,10 @@ def on_validate_account(ch, method, props, body):
 def on_resend_validate_account(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "resend-validate-account"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -123,10 +123,10 @@ def on_resend_validate_account(ch, method, props, body):
 def on_validate_otp(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "validate-otp"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     if "Authorization" in r.headers:
         response["Authorization"] = r.headers["Authorization"]
     response["code"] = r.status_code
@@ -141,10 +141,10 @@ def on_validate_otp(ch, method, props, body):
 def on_resend_otp(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "resend-otp"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -157,10 +157,10 @@ def on_resend_otp(ch, method, props, body):
 def on_logout(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.delete(parse.urljoin(URL, "logout"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -173,10 +173,10 @@ def on_logout(ch, method, props, body):
 def on_change_password(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.put(parse.urljoin(URL, "change-password"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -189,10 +189,10 @@ def on_change_password(ch, method, props, body):
 def on_request_change_password(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "request-change-password"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -205,10 +205,10 @@ def on_request_change_password(ch, method, props, body):
 def on_reset_pass(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.get(parse.urljoin(URL, "reset-pass/" + json_body['reset_code']), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -221,10 +221,10 @@ def on_reset_pass(ch, method, props, body):
 def on_set_new_pass(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "set-new-pass"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',

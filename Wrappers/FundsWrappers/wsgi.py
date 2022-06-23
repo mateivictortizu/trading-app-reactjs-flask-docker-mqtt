@@ -10,8 +10,9 @@ def on_add_money(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "add-money"), json=json_body)
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -25,8 +26,9 @@ def on_withdraw_money(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "withdraw-money"), json=json_body)
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -39,8 +41,9 @@ def on_add_money_after_sell(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "add-money-after-sell"), json=json_body)
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -54,8 +57,9 @@ def on_withdraw_money_after_buy(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "withdraw-money-after-buy"), json=json_body)
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -69,8 +73,9 @@ def on_get_funds(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.get(parse.urljoin(URL, "get-funds/" + json_body["user"]), json=json_body)
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',

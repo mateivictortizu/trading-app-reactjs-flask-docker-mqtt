@@ -26,11 +26,13 @@ from app.blueprints.fundsService import funds
 from app.blueprints.stockService import stock
 from app.blueprints.investService import invest
 from app.blueprints.userService import user
+from app.blueprints.recommendationService import recommendations
 
 app.register_blueprint(funds)
 app.register_blueprint(stock)
 app.register_blueprint(invest)
 app.register_blueprint(user)
+app.register_blueprint(recommendations)
 
 URL = "http://127.0.0.1:5000/"
 

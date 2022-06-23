@@ -11,8 +11,9 @@ def on_add_stock(ch, method, props, body):
     r = requests.post(parse.urljoin(URL, "add-stock"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -27,8 +28,9 @@ def on_get_stock_info(ch, method, props, body):
     r = requests.get(parse.urljoin(URL, "get-stock-info/" + json_body['stock_symbol']))
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -43,8 +45,9 @@ def on_get_stock_price(ch, method, props, body):
     r = requests.get(parse.urljoin(URL, "get-stock-price/" + json_body['stock_symbol']))
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -59,8 +62,9 @@ def on_get_list_stock_price(ch, method, props, body):
     r = requests.post(parse.urljoin(URL, "get-list-stock-price"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -75,8 +79,9 @@ def on_update_price(ch, method, props, body):
     r = requests.post(parse.urljoin(URL, "update-price"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -91,8 +96,9 @@ def on_update_stock(ch, method, props, body):
     r = requests.post(parse.urljoin(URL, "update-stock"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -106,8 +112,9 @@ def on_get_all_stocks(ch, method, props, body):
     r = requests.get(parse.urljoin(URL, "get-all-stocks"))
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -122,8 +129,9 @@ def on_get_all_stocks_by_user_wathclist(ch, method, props, body):
     r = requests.get(parse.urljoin(URL, "get-all-stocks-by-user-watchlist"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -138,8 +146,9 @@ def on_remove_watchlist(ch, method, props, body):
     r = requests.post(parse.urljoin(URL, "remove-watchlist"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -154,8 +163,9 @@ def on_add_watchlist(ch, method, props, body):
     r = requests.post(parse.urljoin(URL, "add-watchlist"), json=json_body)
     # TODO handle requests for 404, 500
     response = dict()
-    json_obj = json.loads(r.content)
-    response = json_obj
+    if r.status_code not in range(300, 509):
+        json_obj = json.loads(r.content)
+        response = json_obj
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
