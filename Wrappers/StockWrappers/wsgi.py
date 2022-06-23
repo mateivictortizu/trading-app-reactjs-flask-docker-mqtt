@@ -1,15 +1,15 @@
 import json
+import os
 from urllib import parse
 import requests
 import pika
 
-URL = "http://127.0.0.1:5001/"
+URL = os.environ.get('STOCK_MICROSERVICE', 'http://127.0.0.1:5001/')
 
 
 def on_add_stock(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "add-stock"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -26,7 +26,6 @@ def on_add_stock(ch, method, props, body):
 def on_get_stock_info(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.get(parse.urljoin(URL, "get-stock-info/" + json_body['stock_symbol']))
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -43,7 +42,6 @@ def on_get_stock_info(ch, method, props, body):
 def on_get_stock_price(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.get(parse.urljoin(URL, "get-stock-price/" + json_body['stock_symbol']))
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -60,7 +58,6 @@ def on_get_stock_price(ch, method, props, body):
 def on_get_list_stock_price(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "get-list-stock-price"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -77,7 +74,6 @@ def on_get_list_stock_price(ch, method, props, body):
 def on_update_price(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "update-price"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -94,7 +90,6 @@ def on_update_price(ch, method, props, body):
 def on_update_stock(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "update-stock"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -110,7 +105,6 @@ def on_update_stock(ch, method, props, body):
 
 def on_get_all_stocks(ch, method, props, body):
     r = requests.get(parse.urljoin(URL, "get-all-stocks"))
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -127,7 +121,6 @@ def on_get_all_stocks(ch, method, props, body):
 def on_get_all_stocks_by_user_wathclist(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.get(parse.urljoin(URL, "get-all-stocks-by-user-watchlist"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -144,7 +137,6 @@ def on_get_all_stocks_by_user_wathclist(ch, method, props, body):
 def on_remove_watchlist(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "remove-watchlist"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
@@ -161,7 +153,6 @@ def on_remove_watchlist(ch, method, props, body):
 def on_add_watchlist(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "add-watchlist"), json=json_body)
-    # TODO handle requests for 404, 500
     response = dict()
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)

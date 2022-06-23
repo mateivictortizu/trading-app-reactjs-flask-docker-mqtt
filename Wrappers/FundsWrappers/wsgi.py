@@ -1,9 +1,10 @@
 import json
+import os
 from urllib import parse
 import requests
 import pika
 
-URL = "http://127.0.0.1:5002/"
+URL = os.environ.get('FUNDS_MICROSERVICE', 'http://127.0.0.1:5002/')
 
 
 def on_add_money(ch, method, props, body):

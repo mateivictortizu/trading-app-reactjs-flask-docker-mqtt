@@ -1,9 +1,10 @@
 import json
+import os
 from urllib import parse
 import requests
 import pika
 
-URL = "http://127.0.0.1:5005/"
+URL = os.environ.get('INVEST_MICROSERVICE', 'http://127.0.0.1:5005/')
 
 
 def on_request_buy(ch, method, props, body):

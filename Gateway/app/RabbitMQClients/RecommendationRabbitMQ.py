@@ -4,6 +4,8 @@ import uuid
 
 import pika
 
+from app.RabbitMQClients import rabbit_mq_host_recommendation
+
 
 class RecommendationClient(object):
 
@@ -11,7 +13,7 @@ class RecommendationClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_recommendation ))
 
         self.channel = self.connection.channel()
 

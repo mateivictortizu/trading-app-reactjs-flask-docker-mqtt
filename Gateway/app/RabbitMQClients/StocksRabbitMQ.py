@@ -3,6 +3,8 @@ import time
 import uuid
 import pika
 
+from app.RabbitMQClients import rabbit_mq_host_stocks
+
 
 class AddStockClient(object):
 
@@ -10,7 +12,7 @@ class AddStockClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -51,7 +53,7 @@ class GetStockInfoClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -92,7 +94,7 @@ class GetStockPriceClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -133,7 +135,7 @@ class GetListStockPriceClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -174,7 +176,7 @@ class UpdatePriceClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -215,7 +217,7 @@ class UpdateStockClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -256,7 +258,7 @@ class GetAllStocksClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -296,7 +298,7 @@ class GetAllStocksByUserClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -336,7 +338,7 @@ class AddWatchlistClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 
@@ -376,7 +378,7 @@ class RemoveWatchlistClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_stocks))
 
         self.channel = self.connection.channel()
 

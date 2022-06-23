@@ -34,8 +34,6 @@ app.register_blueprint(invest)
 app.register_blueprint(user)
 app.register_blueprint(recommendations)
 
-URL = "http://127.0.0.1:5000/"
-
 get_list_stock_price_client = None
 get_funds_client = None
 

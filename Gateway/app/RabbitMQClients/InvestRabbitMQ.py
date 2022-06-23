@@ -3,6 +3,8 @@ import time
 import uuid
 import pika
 
+from app.RabbitMQClients import rabbit_mq_host_invest
+
 
 class BuyClient(object):
 
@@ -10,7 +12,7 @@ class BuyClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_invest))
 
         self.channel = self.connection.channel()
 
@@ -51,7 +53,7 @@ class SellClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_invest))
 
         self.channel = self.connection.channel()
 
@@ -92,7 +94,7 @@ class GetAllInvestByUserClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_invest))
 
         self.channel = self.connection.channel()
 
@@ -133,7 +135,7 @@ class GetStockInvestByUserClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_invest))
 
         self.channel = self.connection.channel()
 

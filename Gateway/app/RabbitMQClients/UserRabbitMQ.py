@@ -3,6 +3,8 @@ import time
 import uuid
 import pika
 
+from app.RabbitMQClients import rabbit_mq_host_user
+
 
 class BanClient(object):
 
@@ -10,7 +12,7 @@ class BanClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -51,7 +53,7 @@ class VerifyUserClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -92,7 +94,7 @@ class CheckTokenClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -132,7 +134,7 @@ class RegisterClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -173,7 +175,7 @@ class LoginClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -214,7 +216,7 @@ class ValidateAccountClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -255,7 +257,7 @@ class ResendValidateAccountClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -296,7 +298,7 @@ class ValidateOTPClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -337,7 +339,7 @@ class ResendOTPClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -378,7 +380,7 @@ class LogoutClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -419,7 +421,7 @@ class ChangePasswordClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -460,7 +462,7 @@ class RequestChangePasswordClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -501,7 +503,7 @@ class ResetPassClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 
@@ -542,7 +544,7 @@ class SetNewPassClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_user))
 
         self.channel = self.connection.channel()
 

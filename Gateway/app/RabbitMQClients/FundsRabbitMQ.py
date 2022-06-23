@@ -3,6 +3,8 @@ import time
 import uuid
 import pika
 
+from app.RabbitMQClients import rabbit_mq_host_funds
+
 
 class AddMoneyClient(object):
 
@@ -10,7 +12,7 @@ class AddMoneyClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_funds))
 
         self.channel = self.connection.channel()
 
@@ -51,7 +53,7 @@ class AddMoneyAfterSellClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_funds))
 
         self.channel = self.connection.channel()
 
@@ -92,7 +94,7 @@ class WithdrawMoneyClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_funds))
 
         self.channel = self.connection.channel()
 
@@ -133,7 +135,7 @@ class WithdrawMoneyAfterBuyClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_funds))
 
         self.channel = self.connection.channel()
 
@@ -174,7 +176,7 @@ class GetFundsClient(object):
         self.corr_id = None
         self.response = None
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=rabbit_mq_host_funds))
 
         self.channel = self.connection.channel()
 

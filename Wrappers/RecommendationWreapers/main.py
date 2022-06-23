@@ -1,9 +1,10 @@
 import json
+import os
 from urllib import parse
 import requests
 import pika
 
-URL = "http://127.0.0.1:5006/"
+URL = os.environ.get('RECOMMENDATION_MICROSERVICE', 'http://127.0.0.1:5006/')
 
 
 def on_recommendation(ch, method, props, body):

@@ -1,9 +1,10 @@
 import json
+import os
 from urllib import parse
 import requests
 import pika
 
-URL = "http://127.0.0.1:5003/"
+URL = os.environ.get('USER_MICROSERVICE', 'http://127.0.0.1:5003/')
 
 
 def on_ban(ch, method, props, body):

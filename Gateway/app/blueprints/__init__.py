@@ -42,6 +42,7 @@ add_watchlist_client = None
 remove_watchlist_client = None
 recommendation_client = None
 
+
 def before_request_function(request_value):
     if 'user_id' not in session:
         if 'jwt' in request_value.cookies:
