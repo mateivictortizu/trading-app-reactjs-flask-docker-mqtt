@@ -1,7 +1,7 @@
 import pickle
 import uuid
 
-from flask import session
+from flask import session, jsonify
 
 from app.RabbitMQProcessor.UserRabbitMQProcessor import check_token_processor
 
@@ -37,6 +37,9 @@ change_password_client = None
 request_change_password_client = None
 reset_pass_client = None
 set_new_pass_client = None
+get_all_stocks_by_user_client = None
+add_watchlist_client = None
+remove_watchlist_client = None
 
 
 def before_request_function(request_value):
@@ -47,6 +50,8 @@ def before_request_function(request_value):
             user_id = str(uuid.uuid4())
             session['user_id'] = user_id
             users_connections[user_id] = {'user': value[0]['user'], 'type_user': value[0]['type_user']}
+        else:
+            return jsonify({'error': 'JWT not in request'}), 403
     else:
         if session['user_id'] not in users_connections:
             if 'jwt' in request_value.cookies:
@@ -56,3 +61,4 @@ def before_request_function(request_value):
             else:
                 session.pop('user_id', None)
     print(users_connections)
+    return jsonify({'message': 'JWT Ok'}), 200

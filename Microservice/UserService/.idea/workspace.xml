@@ -2,17 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQClients/UserRabbitMQ.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQClients/UserRabbitMQ.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomAppBarLogged/CustomAppBarLogged.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomAppBarLogged/CustomAppBarLogged.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomTable/CustomTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQClients/StocksRabbitMQ.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQClients/StocksRabbitMQ.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/StockRabbitMQProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/StockRabbitMQProcessor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/UserRabbitMQProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/UserRabbitMQProcessor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/fundsService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/fundsService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/investService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/investService.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/userService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/userService.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/flask_session/a0c95244a0cbd9669a66b4b1e00b85ca" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Wrappers/UserWrappers/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Wrappers/UserWrappers/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/stockService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/stockService.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Wrappers/StockWrappers/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Wrappers/StockWrappers/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

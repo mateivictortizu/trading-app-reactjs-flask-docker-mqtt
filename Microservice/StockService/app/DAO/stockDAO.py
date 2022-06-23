@@ -7,7 +7,7 @@ import yfinance
 from sqlalchemy.orm import sessionmaker
 
 from app import engine
-from app.database.models import Stock, Price, stock_data
+from app.database.models import Stock, Price, stock_data, Watchlist
 import re
 
 
@@ -222,3 +222,44 @@ def get_all_stocksDAO():
     stock = session.query(Price).all()
     session.close()
     return stock
+
+
+def addToWatchlistDAO(stock_symbol, user):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stock_symbol = stock_symbol.upper()
+    if Watchlist.check_if_exists(stock_symbol, user, session) is False:
+        new_watchlist = Watchlist(stock_symbol=stock_symbol, user=user)
+        session.add(new_watchlist)
+    session.commit()
+    session.close()
+
+
+def removeFromWatchlistDAO(stock_symbol, user):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stock_symbol = stock_symbol.upper()
+    if Watchlist.check_if_exists(stock_symbol, user, session) is True:
+        result = session.query(Watchlist).filter_by(stock_symbol=stock_symbol, user=user).first()
+        session.delete(result)
+    session.commit()
+    session.close()
+
+
+def join_watchlist(user):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    stocks = get_all_stocksDAO()
+    result_list=[]
+    if stocks is not None:
+        for i in stocks:
+            if Watchlist.check_if_exists(i.stock_symbol, user, session) is True:
+                result = i.to_json()
+                result['watchlist'] = True
+            else:
+                result = i.to_json()
+                result['watchlist'] = False
+            result_list.append(result)
+    session.commit()
+    session.close()
+    return result_list

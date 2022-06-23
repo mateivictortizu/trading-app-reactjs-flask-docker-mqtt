@@ -3,7 +3,8 @@ import json
 from flask import jsonify
 
 from app.RabbitMQClients.StocksRabbitMQ import GetListStockPriceClient, AddStockClient, GetStockInfoClient, \
-    GetStockPriceClient, UpdatePriceClient, UpdateStockClient, GetAllStocksClient
+    GetStockPriceClient, UpdatePriceClient, UpdateStockClient, GetAllStocksClient, GetAllStocksByUserClient, \
+    RemoveWatchlistClient, AddWatchlistClient
 
 
 def add_stock_processor(add_stock_client, json_body):
@@ -109,3 +110,48 @@ def get_all_stocks_processor(get_all_stocks_client):
             return response, response['code']
         except Exception:
             return jsonify({'error': 'Get all stocks server error', 'code': 500}), 500
+
+
+def get_all_stocks_by_user_processor(get_all_stocks_by_user_client, request_body):
+    if get_all_stocks_by_user_client is None:
+        get_all_stocks_by_user_client = GetAllStocksByUserClient()
+    try:
+        response = json.loads(get_all_stocks_by_user_client.call(request_body))
+        return response, response['code']
+    except Exception:
+        try:
+            get_all_stocks_by_user_client = GetAllStocksByUserClient()
+            response = json.loads(get_all_stocks_by_user_client.call(request_body))
+            return response, response['code']
+        except Exception:
+            return jsonify({'error': 'Get all stocks by user server error', 'code': 500}), 500
+
+
+def add_watchlist_processor(add_watchlist_client, request_body):
+    if add_watchlist_client is None:
+        add_watchlist_client = AddWatchlistClient()
+    try:
+        response = json.loads(add_watchlist_client.call(request_body))
+        return response, response['code']
+    except Exception:
+        try:
+            add_watchlist_client = AddWatchlistClient()
+            response = json.loads(add_watchlist_client.call(request_body))
+            return response, response['code']
+        except Exception:
+            return jsonify({'error': 'Add watchlist server error', 'code': 500}), 500
+
+
+def remove_watchlist_processor(remove_watchlist_client, request_body):
+    if remove_watchlist_client is None:
+        remove_watchlist_client = RemoveWatchlistClient()
+    try:
+        response = json.loads(remove_watchlist_client.call(request_body))
+        return response, response['code']
+    except Exception:
+        try:
+            remove_watchlist_client = RemoveWatchlistClient()
+            response = json.loads(remove_watchlist_client.call(request_body))
+            return response, response['code']
+        except Exception:
+            return jsonify({'error': 'Remove watchlist server error', 'code': 500}), 500

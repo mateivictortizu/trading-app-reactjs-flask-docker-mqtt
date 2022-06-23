@@ -4,7 +4,7 @@ from sqlalchemy.exc import DatabaseError
 
 from app import executor
 from app.DAO.stockDAO import addStockDAO, updateStockDAO, updatePriceDAO, getStockInfoDAO, getStockPriceDAO, \
-    get_all_stocksDAO
+    get_all_stocksDAO, addToWatchlistDAO, removeFromWatchlistDAO, join_watchlist
 
 stockBP = Blueprint('stockBlueprint', __name__)
 
@@ -87,3 +87,29 @@ def get_all_stocks():
         for i in stocks:
             stocks_list.append(i.to_json())
     return jsonify({'message': stocks_list}), 200
+
+
+@stockBP.route('/add-watchlist', methods=['POST'])
+def add_watchlist():
+    try:
+        addToWatchlistDAO(user=request.json['identifier'], stock_symbol=request.json['stock_symbol'])
+        return jsonify({'message': 'ok'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Remove fail'}), 400
+
+
+@stockBP.route('/remove-watchlist', methods=['POST'])
+def remove_watchlist():
+    try:
+        removeFromWatchlistDAO(user=request.json['identifier'], stock_symbol=request.json['stock_symbol'])
+        return jsonify({'message': 'ok'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Remove fail'}), 400
+
+
+@stockBP.route('/get-all-stocks-by-user-watchlist', methods=['GET'])
+def get_all_stocks_by_watchlist():
+    result = join_watchlist(request.json['user'])
+    return jsonify({'list': result}), 200
+
+

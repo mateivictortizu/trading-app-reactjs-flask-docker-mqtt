@@ -6,6 +6,7 @@ import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 import { useNavigate } from 'react-router-dom';
 
+
 export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory, accountValue }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);

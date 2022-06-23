@@ -58,3 +58,11 @@ class Invest(db.Model):
         session.close()
         return list_of_invest
 
+    @staticmethod
+    def get_users_with_invest():
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        list_of_users = session.query(Invest.user.distinct()).all()
+        session.commit()
+        session.close()
+        return list_of_users

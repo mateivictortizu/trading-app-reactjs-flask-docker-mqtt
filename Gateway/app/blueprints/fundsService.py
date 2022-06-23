@@ -11,7 +11,9 @@ funds = Blueprint('funds', __name__)
 
 @funds.route('/add-money', methods=['POST'])
 def add_money():
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     request_body = dict()
     request_body['value'] = request.json['value']
     request_body['user'] = users_connections[session['user_id']]['user']
@@ -23,7 +25,9 @@ def add_money():
 
 @funds.route('/withdraw-money', methods=['POST'])
 def withdraw_money():
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     request_body = dict()
     request_body['value'] = request.json['value']
     request_body['user'] = users_connections[session['user_id']]['user']
@@ -36,7 +40,9 @@ def withdraw_money():
 
 @funds.route('/add-money-after-sell', methods=['POST'])
 def add_money_after_sell():
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     request_body = dict()
     request_body['value'] = request.json['value']
     request_body['cantitate'] = request.json['cantitate']
@@ -50,7 +56,9 @@ def add_money_after_sell():
 
 @funds.route('/withdraw-money-after-buy', methods=['POST'])
 def withdraw_money_after_buy():
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     request_body = dict()
     request_body['value'] = request.json['value']
     request_body['cantitate'] = request.json['cantitate']
@@ -65,5 +73,7 @@ def withdraw_money_after_buy():
 
 @funds.route('/get-funds/<user>')
 def get_funds(user):
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     return get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})

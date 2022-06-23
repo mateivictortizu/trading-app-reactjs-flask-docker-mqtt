@@ -117,6 +117,54 @@ def on_get_all_stocks(ch, method, props, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
+def on_get_all_stocks_by_user_wathclist(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.get(parse.urljoin(URL, "get-all-stocks-by-user-watchlist"), json=json_body)
+    # TODO handle requests for 404, 500
+    response = dict()
+    json_obj = json.loads(r.content)
+    response = json_obj
+    response["code"] = r.status_code
+    response = json.dumps(response)
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+def on_remove_watchlist(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.post(parse.urljoin(URL, "remove-watchlist"), json=json_body)
+    # TODO handle requests for 404, 500
+    response = dict()
+    json_obj = json.loads(r.content)
+    response = json_obj
+    response["code"] = r.status_code
+    response = json.dumps(response)
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+def on_add_watchlist(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.post(parse.urljoin(URL, "add-watchlist"), json=json_body)
+    # TODO handle requests for 404, 500
+    response = dict()
+    json_obj = json.loads(r.content)
+    response = json_obj
+    response["code"] = r.status_code
+    response = json.dumps(response)
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
 def start():
     print('Stock RabbitMQ Server start...')
     connection = pika.BlockingConnection(
@@ -131,6 +179,9 @@ def start():
     channel.queue_declare(queue='update-price')
     channel.queue_declare(queue='update-stock')
     channel.queue_declare(queue='get-all-stocks')
+    channel.queue_declare(queue='get-all-stocks-by-user-watchlist')
+    channel.queue_declare(queue='remove-watchlist')
+    channel.queue_declare(queue='add-watchlist')
 
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue='add-stock', on_message_callback=on_add_stock)
@@ -140,6 +191,11 @@ def start():
     channel.basic_consume(queue='update-price', on_message_callback=on_update_price)
     channel.basic_consume(queue='update-stock', on_message_callback=on_update_stock)
     channel.basic_consume(queue='get-all-stocks', on_message_callback=on_get_all_stocks)
+    channel.basic_consume(queue='get-all-stocks-by-user-watchlist',
+                          on_message_callback=on_get_all_stocks_by_user_wathclist)
+    channel.basic_consume(queue='add-watchlist', on_message_callback=on_add_watchlist)
+    channel.basic_consume(queue='remove-watchlist', on_message_callback=on_remove_watchlist)
+
     try:
         channel.start_consuming()
     except KeyboardInterrupt:

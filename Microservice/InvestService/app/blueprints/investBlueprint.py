@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
-from app.DAO.investDAO import buy_investDAO, sell_investDAO, get_stock_invest_by_userDAO, get_invest_by_userDAO
+from app.DAO.investDAO import buy_investDAO, sell_investDAO, get_stock_invest_by_userDAO, get_invest_by_userDAO, \
+    get_usersDAO, get_user_sumarryDAO
 
 investBP = Blueprint('investBlueprint', __name__)
 
@@ -72,3 +73,15 @@ def get_invest_by_user():
     else:
 
         return jsonify({"message": "Userul are investitii pentru acest stock", "stock_list": stock_list}), 200
+
+
+@investBP.route('/get-invest-summary-by-user', methods=['POST'])
+def get_invest_summary():
+    user = request.json['identifier']
+    stock_dict = get_user_sumarryDAO(user)
+    return jsonify({"message": 'ok', 'dict': stock_dict})
+
+
+@investBP.route('/get-users-invest', methods=['GET'])
+def get_users_invest():
+    return get_usersDAO(), 200

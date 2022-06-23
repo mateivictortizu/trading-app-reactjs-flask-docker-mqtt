@@ -11,10 +11,12 @@ import Loading from '../Loading';
 import CustomInvested from './Utils/CustomInvested/CustomInvested';
 import CustomTable from './Utils/CustomTable/CustomTable';
 import socketIOClient from "socket.io-client";
+import Cookies from 'js-cookie';
 
 const HomeLogged = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    const [cookiesJWT, setCookieJWT, removeCookieJWT] = useCookies(['jwt']);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
@@ -28,8 +30,7 @@ const HomeLogged = () => {
     const [rows, setRows] = React.useState([]);
 
 React.useEffect(()=>{
-
-    const socket = socketIOClient('http://localhost:5000');
+    const socket = socketIOClient('http://localhost:5000',{ withCredentials: true});
     socket.on("stock_popular", (data) => {
         setDatasPopular(data['message']);
         if(buttonHomeClicked==='popular')

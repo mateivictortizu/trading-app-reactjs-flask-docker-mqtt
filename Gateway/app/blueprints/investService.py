@@ -13,7 +13,9 @@ invest = Blueprint('invest', __name__)
 
 @invest.route('/buy', methods=['POST'])
 def buy_invested():
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     value_initial = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
     if float(value_initial[0]['value']) >= float(request.json['cantitate']) * float(request.json['price']):
         result = withdraw_money_after_buy_processor(withdraw_money_after_buy_client,
@@ -42,8 +44,9 @@ def buy_invested():
 
 @invest.route('/sell', methods=['POST'])
 def sell_invested():
-    before_request_function(request)
-    print(users_connections[session['user_id']]['user'])
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     value_initial = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
     result = add_money_after_sell_processor(add_money_after_sell_client,
                                             {'user': users_connections[session['user_id']]['user'], 'value': float(
@@ -70,7 +73,9 @@ def sell_invested():
 
 @invest.route('/get-stock-invest-by-user', methods=['POST'])
 def get_stock_invest_by_user():
-    before_request_function(request)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     request_temp = dict()
     request_temp['stock_symbol'] = request.json['stock_symbol']
     request_temp['identifier'] = users_connections[session['user_id']]['user']
@@ -79,6 +84,7 @@ def get_stock_invest_by_user():
 
 @invest.route('/get-invest-by-user', methods=['POST'])
 def get_invest_by_user():
-    before_request_function(request)
-    print(request.json)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
     return get_invest_by_user_processor(get_invest, request.json)

@@ -4,8 +4,10 @@ from flask_session import Session
 from flask_socketio import SocketIO
 
 from app.RabbitMQProcessor.FundsRabbitMQProcessor import get_funds_processor
-from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor, get_all_stocks_processor
-from app.blueprints import get_all_stocks_client
+from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor, get_all_stocks_processor, \
+    get_all_stocks_by_user_processor
+from app.blueprints import get_all_stocks_client, before_request_function, get_all_stocks_by_user_client, \
+    users_connections
 
 app = Flask(__name__)
 
@@ -43,19 +45,25 @@ def before_request():
 
 @socketio.on('connect')
 def join_connect():
-    json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}
-    stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-    socketio.emit('stock_popular', stock_popular_list[0])
-    json_body = {"stock_list": ["FB", "INTC", "AMD", "NIO", "F", "YUM", "AMZN", "MSFT", "FB", "NVDA"]}
-    stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-    socketio.emit('stock_wishlist', stock_wishlist[0])
-    get_funds_value = get_funds_processor(get_funds_client, {'user': 'matteovkt@gmail.com'})
-    socketio.emit('get_funds', {'value': get_funds_value[0]['value']})
-    get_all_stock = get_all_stocks_processor(get_all_stocks_client)
-    socketio.emit('get_all_stocks', {'value': get_all_stock[0]['message']})
-    session['user_id'] = 'Ok'
-    resp=make_response()
-    socketio.emit('get_session')
+    try:
+        before_request_function(request)
+        json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}
+        stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+        socketio.emit('stock_popular', stock_popular_list[0])
+        get_funds_value = get_funds_processor(get_funds_client, {'user': 'matteovkt@gmail.com'})
+        socketio.emit('get_funds', {'value': get_funds_value[0]['value']})
+        get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
+                                                         {'user': 'matteovkt@gmail.com'})
+        socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']})
+        watchlist_list = []
+        for i in get_all_stock[0]['list']:
+            if i['watchlist'] is True:
+                watchlist_list.append(i['stock_symbol'])
+        json_body = {"stock_list": watchlist_list}
+        stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+        socketio.emit('stock_wishlist', stock_wishlist[0])
+    except Exception as e:
+        print(e)
 
 
 @socketio.on('disconnect')

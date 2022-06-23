@@ -188,8 +188,8 @@ class Price(db.Model):
         return True
 
 
-class Wishlist(db.Model):
-    __tablename__ = 'wishlist'
+class Watchlist(db.Model):
+    __tablename__ = 'watchlist'
 
     wishlist_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user = db.Column(db.String(35), nullable=False)
@@ -201,3 +201,11 @@ class Wishlist(db.Model):
 
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'user': self.user}
+
+    @staticmethod
+    def check_if_exists(stock_symbol, user,  session):
+        search_watchlist = session.query(Watchlist).filter_by(stock_symbol=stock_symbol, user=user).first()
+        session.close()
+        if search_watchlist is None:
+            return False
+        return True
