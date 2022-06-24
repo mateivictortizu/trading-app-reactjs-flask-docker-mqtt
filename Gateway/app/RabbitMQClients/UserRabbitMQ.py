@@ -43,7 +43,7 @@ class BanClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Ban Error', 'code': 500}
         return self.response
 
 
@@ -84,7 +84,7 @@ class VerifyUserClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Verify User Error', 'code': 500}
         return self.response
 
 
@@ -124,7 +124,7 @@ class CheckTokenClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Check Token Error', 'code': 500}
         return self.response
 
 
@@ -165,7 +165,7 @@ class RegisterClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Register Error', 'code': 500}
         return self.response
 
 
@@ -206,7 +206,7 @@ class LoginClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Login Error', 'code': 500}
         return self.response
 
 
@@ -247,7 +247,7 @@ class ValidateAccountClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Validate account Error', 'code': 500}
         return self.response
 
 
@@ -288,7 +288,7 @@ class ResendValidateAccountClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Resend Validate Error', 'code': 500}
         return self.response
 
 
@@ -329,7 +329,7 @@ class ValidateOTPClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Validate OTP Error', 'code': 500}
         return self.response
 
 
@@ -370,7 +370,7 @@ class ResendOTPClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Resend OTP Error', 'code': 500}
         return self.response
 
 
@@ -411,7 +411,7 @@ class LogoutClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Logout Error', 'code': 500}
         return self.response
 
 
@@ -452,7 +452,7 @@ class ChangePasswordClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Change Password Error', 'code': 500}
         return self.response
 
 
@@ -493,7 +493,7 @@ class RequestChangePasswordClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Request Change Password Error', 'code': 500}
         return self.response
 
 
@@ -534,7 +534,7 @@ class ResetPassClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Reset Password Error', 'code': 500}
         return self.response
 
 
@@ -575,5 +575,5 @@ class SetNewPassClient(object):
         while self.response is None:
             self.connection.process_data_events()
             if time.time() > timeout:
-                break
+                return {'error': 'Set New Pass Error', 'code': 500}
         return self.response

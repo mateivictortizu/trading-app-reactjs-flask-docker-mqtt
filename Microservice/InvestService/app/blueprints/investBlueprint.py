@@ -100,3 +100,17 @@ def get_history_stock_user():
              "date_of_buy": i.date_of_buy})
     stock_invest = sorted(stock_invest, key=lambda i: i['date_of_buy'])
     return jsonify({"message": stock_invest}), 200
+
+
+@investBP.route('/get-all-history-user', methods=['POST'])
+def get_all_history_user():
+    user = request.json['identifier']
+    x = Invest.get_history_invest_by_user(user)
+    stock_invest = []
+    for i in x:
+        stock_invest.append(
+            {"stock_symbol": i.stock_symbol, "price": i.price, "cantitate": i.cantitate, "action_type": i.action_type,
+             "date_of_buy": i.date_of_buy})
+    stock_invest = sorted(stock_invest, key=lambda i: i['date_of_buy'])
+    print(stock_invest)
+    return jsonify({"message": stock_invest}), 200

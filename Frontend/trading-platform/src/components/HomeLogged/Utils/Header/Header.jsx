@@ -5,6 +5,7 @@ import { CustomAppBarLogged } from "../CustomAppBarLogged/CustomAppBarLogged";
 import { CustomDeposit } from "../CustomDeposit/CustomDeposit";
 import { CustomManageFunds } from "../CustomManageFunds/CustomManageFunds";
 import { CustomCardDialog } from "../CustomCardDialog/CustomCardDialog";
+import { CustomAllHistory} from "../CustomAllHistory/CustomAllHistory";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -16,6 +17,7 @@ export default function Header({ accountValue }) {
     const [openManageFunds, setOpenManageFunds] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
     const [openCard, setOpenCard] = React.useState(false);
+    const [history,setHistory] = React.useState([]);
 
     function handleClickOpenDeposit() {
         setOpenDeposit(true)
@@ -26,7 +28,35 @@ export default function Header({ accountValue }) {
     }
 
     function handleClickOpenHistory() {
-        setOpenHistory(true)
+
+        fetch("http://127.0.0.1:5000/get-all-history-user", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((data) => {
+            if (data.status === 200) {
+                data.json().then((message) => {
+                    console.log(message);
+                    setHistory(message['message']);
+
+                })
+
+            }
+            else if (data.status === 403) {
+                console.log('Error');
+            }
+            else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                data.json().then(() => {
+                    console.log('Error');
+                });
+            } else {
+                console.log('Error');
+            }
+        }
+        )
+        setOpenHistory(true);
     }
 
     return (
@@ -58,6 +88,13 @@ export default function Header({ accountValue }) {
                     setOpenDeposit={setOpenDeposit}
                     Transition={Transition}
                 />
+
+                <CustomAllHistory
+                    openHistory={openHistory} 
+                    setOpenHistory={setOpenHistory} 
+                    Transition={Transition} 
+                    history={history} 
+                ></CustomAllHistory>
 
             </div>
         </header>

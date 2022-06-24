@@ -127,6 +127,18 @@
     font-family: 'Roboto', sans-serif;
 }
 
+#buttonDataStock:disabled {
+    color: white;
+    background-color: #3d3e3e;
+    margin: 10px;
+    width: 100px;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inspiration', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+
 
 #buttonsDivDataStock {
     position: absolute;

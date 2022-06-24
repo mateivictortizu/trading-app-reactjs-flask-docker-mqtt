@@ -34,24 +34,16 @@ export function CustomHistory({ openHistory, setOpenHistory, Transition, stock_s
                 <DialogContent >
                     {(history.length!==0)&&(<TableContainer component={Paper}>
                         <Table style={{marginTop:'20px', height:'200px'}}  stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow >
-                                    <TableCell align="center"><Typography>Name</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Action Type</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Price</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Quantity</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Date</Typography></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+
+                            <TableBody style={{backgroundColor:"#0066cc"}}>
                                 {history.map((row) =>
                                 (
                                     <TableRow key={row.stock_symbol + row.date_of_buy}>
-                                        <TableCell align="center"><Typography>{row.stock_symbol}</Typography></TableCell>
-                                        <TableCell align="center"><Typography>{row.action_type}</Typography></TableCell>
-                                        <TableCell align="center"><Typography>{row.price}</Typography></TableCell>
-                                        <TableCell align="center"><Typography>{row.cantitate}</Typography></TableCell>
-                                        <TableCell align="center"><Typography>{row.date_of_buy}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.stock_symbol}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:(row.action_type==='BUY')?'#2AAA8A':'#7F0000'}}>{row.action_type}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.price}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.cantitate}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.date_of_buy}</Typography></TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

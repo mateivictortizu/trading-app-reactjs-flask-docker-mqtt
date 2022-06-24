@@ -4,11 +4,12 @@ from app import socketio
 from app.RabbitMQProcessor.FundsRabbitMQProcessor import get_funds_processor, add_money_after_sell_processor, \
     withdraw_money_after_buy_processor
 from app.RabbitMQProcessor.InvestRabbitMQProcessor import buy_processor, sell_processor, \
-    get_stock_invest_by_user_processor, get_invest_by_user_processor, get_history_stock_user_processor
+    get_stock_invest_by_user_processor, get_invest_by_user_processor, get_history_stock_user_processor, \
+    get_all_history_user_processor
 from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor
 from app.blueprints import get_funds_client, buy, sell, get_stock, get_invest, add_money_after_sell_client, \
     withdraw_money_after_buy_client, before_request_function, users_connections, get_list_stock_price_client, \
-    get_history_stock_user_client
+    get_history_stock_user_client, get_all_history_user_client
 
 invest = Blueprint('invest', __name__)
 
@@ -118,3 +119,13 @@ def get_history_stock_user():
     request_temp['stock_symbol'] = request.json['stock_symbol']
     request_temp['identifier'] = users_connections[session['user_id']]['user']
     return get_history_stock_user_processor(get_history_stock_user_client, request_temp)
+
+
+@invest.route('/get-all-history-user', methods=['POST'])
+def get_history_user():
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
+    request_temp = dict()
+    request_temp['identifier'] = users_connections[session['user_id']]['user']
+    return get_all_history_user_processor(get_all_history_user_client, request_temp)

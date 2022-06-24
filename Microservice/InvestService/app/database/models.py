@@ -58,6 +58,15 @@ class Invest(db.Model):
         return list_of_invest
 
     @staticmethod
+    def get_history_invest_by_user(user):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        list_of_invest = session.query(Invest).filter_by(user=user)
+        session.commit()
+        session.close()
+        return list_of_invest
+
+    @staticmethod
     def get_invest_by_user(user):
         Session = sessionmaker(bind=engine)
         session = Session()

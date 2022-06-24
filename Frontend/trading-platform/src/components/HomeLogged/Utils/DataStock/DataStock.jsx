@@ -10,7 +10,7 @@ import { CustomHistory } from '../CustomHistory/CustomHistory';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested }) {
+export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested, valueAccount }) {
     const [stockInfo, setStockInfo] = React.useState(null);
     const [period, setPeriod] = React.useState('1D');
     const [openBuy, setOpenBuy] = React.useState(false);
@@ -205,15 +205,15 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
 
         return (
             <div className="dataStock">
-                <CustomBuy openBuy={openBuy} setOpenBuy={setOpenBuy} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol}></CustomBuy>
-                <CustomSell openSell={openSell} setOpenSell={setOpenSell} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol}></CustomSell>
+                <CustomBuy openBuy={openBuy} setOpenBuy={setOpenBuy} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol} valueAccount={valueAccount}></CustomBuy>
+                <CustomSell openSell={openSell} setOpenSell={setOpenSell} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol} qty_available={statisticData[1].toFixed(2)}></CustomSell>
                 <CustomHistory openHistory={openHistory} setOpenHistory={setOpenHistory} Transition={Transition} stock_symbol={stockInfo.stock_symbol} logo={stockInfo.logo} stockName={stockInfo.company_name} history={history} setHistory={setHistory}></CustomHistory>
                 <div id="firstDivDataStock">
                     <img id='imgDataStock' src={stockInfo.logo} alt={stockInfo.company_name}></img>
                     <Typography id='stockName'>{stockInfo.company_name}</Typography>
                     <Typography id='stockDetails'>{stockInfo.stock_symbol} · STOCK · US  </Typography>
                     <div id='buttonsDivDataStock'>
-                        <Button id='buttonDataStock' onClick={handleOpenSell}>Sell</Button>
+                        <Button id='buttonDataStock' disabled={(statisticData[1].toFixed(2)<=0)} onClick={handleOpenSell}>Sell</Button>
                         <Button id='buttonDataStock' onClick={handleOpenBuy}>Buy</Button>
                     </div>
                     <Typography id='priceDataStock'>${priceClicked.toFixed(2)}</Typography>

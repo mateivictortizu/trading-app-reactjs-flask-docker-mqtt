@@ -135,6 +135,7 @@ else {
                                     setStatisticData={setStatisticData}
                                     invested = {invest}
                                     setInvested={setInvest}
+                                    valueAccount={valueAccount}
                                 />
                             </Grid>
                         </div>
@@ -160,6 +161,7 @@ else {
                                     setStatisticData={setStatisticData}
                                     invested = {invest}
                                     setInvested={setInvest}
+                                    valueAccount={valueAccount}
                                 />
                             </Grid>
                         </div>

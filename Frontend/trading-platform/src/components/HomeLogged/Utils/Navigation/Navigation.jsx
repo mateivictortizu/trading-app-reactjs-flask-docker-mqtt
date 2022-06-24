@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 export default function Navigation({ buttonClicked, setButtonClicked }) {
 
