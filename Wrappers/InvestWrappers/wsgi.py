@@ -96,6 +96,28 @@ def on_stock_invest_by_user(ch, method, props, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
+def on_history_stock_user(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.post(parse.urljoin(URL, "get-history-stock-user"), json=json_body)
+    response = {}
+    if r.status_code == 200 or r.status_code == 201 or r.status_code == 401:
+        json_obj = json.loads(r.content)
+        response = json_obj
+    else:
+        try:
+            response = json.loads(r.content)
+        except Exception:
+            response["message"] = "Get History Stock Invest by user fail"
+    response["code"] = r.status_code
+    response = json.dumps(response)
+
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=response)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
 def start():
     print('Invest RabbitMQ Server start...')
     connection = pika.BlockingConnection(
@@ -107,12 +129,14 @@ def start():
     channel.queue_declare(queue='sell_queue')
     channel.queue_declare(queue='get_all_invest_by_user')
     channel.queue_declare(queue='get_stock_invest_by_user')
+    channel.queue_declare(queue='get_history_stock_by_user')
 
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue='buy_queue', on_message_callback=on_request_buy)
     channel.basic_consume(queue='sell_queue', on_message_callback=on_request_sell)
     channel.basic_consume(queue='get_all_invest_by_user', on_message_callback=on_get_invest_by_user)
     channel.basic_consume(queue='get_stock_invest_by_user', on_message_callback=on_stock_invest_by_user)
+    channel.basic_consume(queue='get_history_stock_by_user', on_message_callback=on_history_stock_user)
     try:
         channel.start_consuming()
     except KeyboardInterrupt:

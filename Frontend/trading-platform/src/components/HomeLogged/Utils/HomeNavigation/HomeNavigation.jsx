@@ -16,11 +16,18 @@ export default function HomeNavigation({ buttonHomeClicked, setButtonHomeClicked
         setButtonStockClicked(datasPopular[0]['stock_symbol']);
     }
 
+    function clickRecommended() {
+        setButtonHomeClicked('recommended');
+        setPriceClicked(datasPopular[0]['price']);
+        setButtonStockClicked(datasPopular[0]['stock_symbol']);
+    }
+
     return (
         <div className="navigationHome">
             <Button id={!(buttonHomeClicked === 'mywatchlist') ? 'buttonNavigationHomeLogged' : 'buttonClickedNavigationHomeLogged'} onClick={clickMyWatchlist}>My Watchlist</Button>
 
             <Button id={!(buttonHomeClicked === 'popular') ? 'buttonNavigationHomeLogged' : 'buttonClickedNavigationHomeLogged'} onClick={clickPopular}>Popular</Button>
+            <Button id={!(buttonHomeClicked === 'recommended') ? 'buttonNavigationHomeLogged' : 'buttonClickedNavigationHomeLogged'} onClick={clickRecommended}>Recommended</Button>
         </div>
     );
 

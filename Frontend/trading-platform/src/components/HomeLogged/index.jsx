@@ -23,11 +23,13 @@ const HomeLogged = () => {
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
     const [priceClicked, setPriceClicked] = React.useState(null);
     const [datas, setDatas] = React.useState([]);
+    const [datasInvest, setDatasInvest]= React.useState([]);
     const [datasPopular, setDatasPopular] = React.useState([]);
     const [valueAccount, setValueAccount] = React.useState(0.0);
     const [stockInfo, setStockInfo] = React.useState(null);
     const [statisticData, setStatisticData]=React.useState([0,0]);
     const [rows, setRows] = React.useState([]);
+    const [invest,setInvest] = React.useState([]);
 
 React.useEffect(()=>{
     const socket = socketIOClient('http://localhost:5000',{ withCredentials: true});
@@ -48,6 +50,17 @@ React.useEffect(()=>{
             setButtonStockClicked(data['message'][0]['stock_symbol']);
             setPriceClicked(data['message'][0]['price']);
         }
+    });
+    socket.on("stock_invest",(data) => {
+        console.log("stock_invest");
+        console.log(socket);
+        setDatasInvest(data['message']);
+    });
+    socket.on("invest_on", (data)=>{
+        setInvest(data);
+    });
+    socket.on("statisticData", (data)=>{
+        setStatisticData(data);
     });
     socket.on("get_funds", (data) => {
         console.log("get_funds");
@@ -120,6 +133,8 @@ else {
                                     priceClicked={priceClicked}
                                     statisticData={statisticData} 
                                     setStatisticData={setStatisticData}
+                                    invested = {invest}
+                                    setInvested={setInvest}
                                 />
                             </Grid>
                         </div>
@@ -133,7 +148,7 @@ else {
                                     setButtonStockClicked={setButtonStockClicked}
                                     priceClicked={priceClicked}
                                     setPriceClicked={setPriceClicked}
-                                    data={datas}
+                                    data={datasInvest}
                                     buttonHomeClicked={buttonHomeClicked}
                                 />
                             </Grid>
@@ -143,6 +158,8 @@ else {
                                     priceClicked={priceClicked}
                                     statisticData={statisticData} 
                                     setStatisticData={setStatisticData}
+                                    invested = {invest}
+                                    setInvested={setInvest}
                                 />
                             </Grid>
                         </div>
@@ -153,12 +170,6 @@ else {
                             <CustomTable rows={rows}></CustomTable>
                         </div>
                     }
-
-                    {(buttonClicked === 'notification') &&
-                        <div>
-                        </div>
-                    }
-
 
                 </Grid>
             </div>

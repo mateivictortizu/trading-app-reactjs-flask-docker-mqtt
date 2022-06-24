@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import sessionmaker
 
@@ -12,6 +14,7 @@ class Invest(db.Model):
     action_type = db.Column(db.String(4), nullable=False)
     cantitate = db.Column(db.Float, nullable=False)
     price = db.Column(db.Float, nullable=False)
+    date_of_buy = db.Column(db.DateTime, nullable=False)
     CheckConstraint('price >=0', name='priceChecking')
     CheckConstraint('cantitate >=0', name='qtyChecking')
 
@@ -21,6 +24,11 @@ class Invest(db.Model):
         self.action_type = action_type
         self.cantitate = cantitate
         self.price = price
+        self.date_of_buy = datetime.utcnow()
+
+    def to_json(self):
+        return {"user": self.user, "stock_symbol": self.stock_symbol, "action_type": self.action_type,
+                "cantitate": self.cantitate, "price": self.price, "date_of_buy": self.date_of_buy}
 
     @staticmethod
     def buy_invest(user, stock_symbol, cantitate, price):

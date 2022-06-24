@@ -20,9 +20,6 @@ export default function Navigation({ buttonClicked, setButtonClicked }) {
         setButtonClicked('search');
     }
 
-    function clickNotification() {
-        setButtonClicked('notification');
-    }
 
     return (
         <div className="sidebar">
@@ -36,10 +33,6 @@ export default function Navigation({ buttonClicked, setButtonClicked }) {
 
             <Button title='Search' onClick={clickSearch} id={(buttonClicked === 'search') ? 'buttonClickedSidebarLogged' : 'buttonSidebarLogged'}>
                 <SearchIcon />
-            </Button>
-
-            <Button title='Notification' onClick={clickNotification} id={(buttonClicked === 'notification') ? 'buttonClickedSidebarLogged' : 'buttonSidebarLogged'}>
-                <NotificationsIcon />
             </Button>
         </div>
     );

@@ -4,6 +4,7 @@ from sqlalchemy.exc import DatabaseError
 
 from app.DAO.investDAO import buy_investDAO, sell_investDAO, get_stock_invest_by_userDAO, get_invest_by_userDAO, \
     get_usersDAO, get_user_sumarryDAO
+from app.database.models import Invest
 
 investBP = Blueprint('investBlueprint', __name__)
 
@@ -85,3 +86,17 @@ def get_invest_summary():
 @investBP.route('/get-users-invest', methods=['GET'])
 def get_users_invest():
     return get_usersDAO(), 200
+
+
+@investBP.route('/get-history-stock-user', methods=['POST'])
+def get_history_stock_user():
+    user = request.json['identifier']
+    stock_symbol = request.json['stock_symbol']
+    x = Invest.get_stock_invest_by_user(user, stock_symbol)
+    stock_invest = []
+    for i in x:
+        stock_invest.append(
+            {"stock_symbol": i.stock_symbol, "price": i.price, "cantitate": i.cantitate, "action_type": i.action_type,
+             "date_of_buy": i.date_of_buy})
+    stock_invest = sorted(stock_invest, key=lambda i: i['date_of_buy'])
+    return jsonify({"message": stock_invest}), 200

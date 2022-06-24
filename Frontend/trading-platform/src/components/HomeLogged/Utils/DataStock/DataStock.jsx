@@ -10,13 +10,12 @@ import { CustomHistory } from '../CustomHistory/CustomHistory';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData }) {
+export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested }) {
     const [stockInfo, setStockInfo] = React.useState(null);
     const [period, setPeriod] = React.useState('1D');
     const [openBuy, setOpenBuy] = React.useState(false);
     const [openSell, setOpenSell] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
-    const [invested, setInvested] = React.useState(0);
     var graphics = null;
     var change = null;
     var stock = null;
@@ -26,13 +25,36 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     var procent = null;
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
-
+    const [history, setHistory] = React.useState([]);
 
     function handleOpenBuy() {
         setOpenBuy(true);
     };
 
-    function handleOpenHistory() {
+    function handleOpenHistory(stock_name) {
+        fetch("http://127.0.0.1:5000/get-history-stock-user", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                stock_symbol: stock_name
+            })
+        })
+            .then((data) => {
+                if (data.status === 200) {
+                    data.json().then((message) => {
+                        console.log(message);
+                        setHistory(message['message']);
+                    });
+                }
+                else if (data.status === 403) {
+                    removeCookie("jwt");
+                    removeCookie("session");
+                    navigate('/');
+                }
+            });
         setOpenHistory(true);
     };
 
@@ -43,39 +65,19 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     function get_investment(stock_name) {
         fetch("http://127.0.0.1:5000/get-stock-invest-by-user", {
             method: "POST",
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                stock_symbol:stock_name
+                stock_symbol: stock_name
             })
         })
             .then((data) => {
-                if (data.status === 200) {
-                    data.json().then((message) => {
-                        setStatisticData([message['medie'], message['cantitate']]);
-                        setInvested(1);
-                    });
-
-                } else if (data.status === 404 || data.status === 400 | data.status === 401) {
-                    setInvested(0);
-                    data.json().then(() => {
-                        setStatisticData([0,0])
-                        console.log('Error');
-                    });
-                } else if(data.status===403)
-                {
-                    setInvested(0);
-                    setStatisticData([0,0]);
+                if (data.status === 403) {
                     removeCookie("jwt");
                     removeCookie("session");
                     navigate('/');
-                } 
-                else {
-                    setInvested(0);
-                    setStatisticData([0,0])
-                    console.log('Error');
                 }
             });
     };
@@ -83,9 +85,9 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     useEffect(() => {
         setInvested(0);
         if (buttonStockClicked !== null) {
-            fetch("http://127.0.0.1:5000/get-stock-info/" + buttonStockClicked , {
+            fetch("http://127.0.0.1:5000/get-stock-info/" + buttonStockClicked, {
                 method: "GET",
-                credentials:'include',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -95,19 +97,18 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                         data.json().then((message) => {
                             get_investment(buttonStockClicked);
                             setStockInfo(message);
-     
+
                         });
                     } else if (data.status === 404 || data.status === 400 | data.status === 401) {
                         data.json().then(() => {
                             console.log('Error');
                         });
-                    } 
-                    else if(data.status===403)
-                    {
+                    }
+                    else if (data.status === 403) {
                         removeCookie("jwt");
                         removeCookie("session");
                         navigate('/');
-                    } 
+                    }
                     else {
                         console.log('Error');
                     }
@@ -206,7 +207,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
             <div className="dataStock">
                 <CustomBuy openBuy={openBuy} setOpenBuy={setOpenBuy} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol}></CustomBuy>
                 <CustomSell openSell={openSell} setOpenSell={setOpenSell} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol}></CustomSell>
-                <CustomHistory openHistory={openHistory} setOpenHistory={setOpenHistory} Transition={Transition} stock_symbol={stockInfo.stock_symbol} logo={stockInfo.logo} stockName={stockInfo.company_name}></CustomHistory>
+                <CustomHistory openHistory={openHistory} setOpenHistory={setOpenHistory} Transition={Transition} stock_symbol={stockInfo.stock_symbol} logo={stockInfo.logo} stockName={stockInfo.company_name} history={history} setHistory={setHistory}></CustomHistory>
                 <div id="firstDivDataStock">
                     <img id='imgDataStock' src={stockInfo.logo} alt={stockInfo.company_name}></img>
                     <Typography id='stockName'>{stockInfo.company_name}</Typography>
@@ -228,9 +229,9 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                     <hr style={{ backgroundColor: '#E8E8E8', height: 1, width: '95%', margin: 'auto' }} />
                     <br />
                     <Typography style={{ fontSize: '12px', color: 'gray', fontWeight: 'bold' }}><span style={{ marginLeft: '40px' }}>AVERAGE PRICE</span> <span id='instrumentInvestmentsRightDataStock'>SELL PRICE</span> <span id='instrumentDetailsRightDataStock'>RETURN</span></Typography>
-                    <Typography style={{ color: 'black', fontWeight: 'bold' }}><span style={{ marginLeft: '40px' }}>${Number(statisticData[0]).toFixed(2)}</span> <span id='instrumentInvestmentsRightDataStock'>${priceClicked.toFixed(2)}</span> <span id='instrumentDetailsRightDataStock'>{Number(priceClicked * statisticData[1] - statisticData[0] * statisticData[1]).toFixed(2)} ({(Number(priceClicked*statisticData[1]-statisticData[0]*statisticData[1])/Number(priceClicked*statisticData[1])*100).toFixed(2)}%)</span></Typography>
+                    <Typography style={{ color: 'black', fontWeight: 'bold' }}><span style={{ marginLeft: '40px' }}>${Number(statisticData[0]).toFixed(2)}</span> <span id='instrumentInvestmentsRightDataStock'>${priceClicked.toFixed(2)}</span> <span id='instrumentDetailsRightDataStock'>{Number(priceClicked * statisticData[1] - statisticData[0] * statisticData[1]).toFixed(2)} ({(Number(priceClicked * statisticData[1] - statisticData[0] * statisticData[1]) / Number(priceClicked * statisticData[1]) * 100).toFixed(2)}%)</span></Typography>
                     <br />
-                </div>):""}
+                </div>) : ""}
                 <div id='brDivDataStock'></div>
                 <div id="otherDivDataStock">
                     <Typography id='titleDivDataStock'>Company details</Typography>
@@ -250,7 +251,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 </div>
                 <div id='brDivDataStock'></div>
                 <div>
-                    <Button variant="outlined" id='buttonHistory' onClick={handleOpenHistory}><HistoryIcon style={{ color: '#4E4F50' }}></HistoryIcon>&nbsp;History</Button>
+                    <Button variant="outlined" id='buttonHistory' onClick={() => handleOpenHistory(stockInfo.stock_symbol)}><HistoryIcon style={{ color: '#4E4F50' }}></HistoryIcon>&nbsp;History</Button>
                 </div>
             </div>
         )

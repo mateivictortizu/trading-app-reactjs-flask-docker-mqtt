@@ -4,10 +4,11 @@ from flask_session import Session
 from flask_socketio import SocketIO
 
 from app.RabbitMQProcessor.FundsRabbitMQProcessor import get_funds_processor
+from app.RabbitMQProcessor.InvestRabbitMQProcessor import get_invest_by_user_processor
 from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor, get_all_stocks_processor, \
     get_all_stocks_by_user_processor
 from app.blueprints import get_all_stocks_client, before_request_function, get_all_stocks_by_user_client, \
-    users_connections
+    users_connections, get_invest
 
 app = Flask(__name__)
 
@@ -62,6 +63,10 @@ def join_connect():
         json_body = {"stock_list": watchlist_list}
         stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
         socketio.emit('stock_wishlist', stock_wishlist[0])
+        stock_invest = get_invest_by_user_processor(get_invest, json_body={'identifier': 'matteovkt@gmail.com'})
+        json_body = {"stock_list": stock_invest[0]['stock_list']}
+        stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+        socketio.emit('stock_invest', stock_invest_list[0])
     except Exception as e:
         print(e)
 

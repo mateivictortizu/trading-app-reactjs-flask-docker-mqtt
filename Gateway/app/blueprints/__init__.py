@@ -41,6 +41,7 @@ get_all_stocks_by_user_client = None
 add_watchlist_client = None
 remove_watchlist_client = None
 recommendation_client = None
+get_history_stock_user_client = None
 
 
 def before_request_function(request_value):
