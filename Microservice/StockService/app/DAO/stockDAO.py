@@ -7,6 +7,7 @@ import yfinance
 from sqlalchemy.orm import sessionmaker
 
 from app import engine
+from app import data_logo
 from app.database.models import Stock, Price, stock_data, Watchlist
 import re
 
@@ -75,10 +76,13 @@ def updateStockAsync(stock_symbol, date):
         else:
             bad_check = True
 
-        if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-            stock.logo = search_stock.info['logo_url']
+        if stock.stock_symbol in data_logo:
+            stock.logo = data_logo[stock.stock_symbol]
         else:
-            bad_check = True
+            if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+                stock.logo = search_stock.info['logo_url']
+            else:
+                bad_check = True
 
         if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info['longBusinessSummary'] is not None:
             stock.longBuisnessSummary = search_stock.info['longBusinessSummary']
@@ -154,10 +158,13 @@ def updatePriceAsync(stock_symbol, date):
         else:
             bad_check = True
 
-        if 'logo_url' in search_price.info.keys() and search_price.info['logo_url'] is not None:
-            price.logo = search_price.info['logo_url']
+        if price.stock_symbol in data_logo:
+            price.logo = data_logo[price.stock_symbol]
         else:
-            bad_check = True
+            if 'logo_url' in search_price.info.keys() and search_price.info['logo_url'] is not None:
+                price.logo = search_price.info['logo_url']
+            else:
+                bad_check = True
         if bad_check is False:
             if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
                 if price.price > search_price.info['currentPrice']:
@@ -250,7 +257,7 @@ def join_watchlist(user):
     Session = sessionmaker(bind=engine)
     session = Session()
     stocks = get_all_stocksDAO()
-    result_list=[]
+    result_list = []
     if stocks is not None:
         for i in stocks:
             if Watchlist.check_if_exists(i.stock_symbol, user, session) is True:

@@ -1,0 +1,12 @@
+{
+  "AMD": "https://s3-symbol-logo.tradingview.com/advanced-micro-devices--600.png",
+  "INTC": "https://s3-symbol-logo.tradingview.com/intel--600.png",
+  "NFLX" : "https://s3-symbol-logo.tradingview.com/netflix--600.png",
+  "KO": "https://s3-symbol-logo.tradingview.com/coca-cola--600.png",
+  "GOOGL": "https://s3-symbol-logo.tradingview.com/alphabet--600.png",
+  "BABA": "https://s3-symbol-logo.tradingview.com/alibaba--600.png",
+  "BAC": "https://s3-symbol-logo.tradingview.com/bank-of-america--600.png",
+  "FDX": "https://s3-symbol-logo.tradingview.com/fedex--600.png",
+  "PLTR": "https://s3-symbol-logo.tradingview.com/palantir--600.png",
+  "TWTR": "https://s3-symbol-logo.tradingview.com/twitter--600.png"
+}

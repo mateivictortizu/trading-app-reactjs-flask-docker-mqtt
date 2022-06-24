@@ -90,7 +90,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                                 id='appBarButtonAccountValue'
                                 onClick={handleClickAccountStats}
                             >
-                                <Typography style={{ color: '#808080', fontSize: '15px', fontWeight: 'bold' }}>Account value &nbsp;</Typography>${Number(accountValue.toFixed(2)) + Number(portofolio.toFixed(2))}
+                                <Typography style={{ color: '#808080', fontSize: '15px', fontWeight: 'bold' }}>Account value &nbsp;</Typography>${Number(accountValue + portofolio).toFixed(2)}
                             </Button>
                             <Button
                                 aria-controls="simple-menu"

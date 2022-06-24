@@ -7,7 +7,7 @@ import pandas as pd
 import yfinance as yf
 from sqlalchemy import CheckConstraint
 
-from app import db
+from app import db, data_logo
 
 
 def stock_data(ticker, period, interval, observation):
@@ -52,10 +52,13 @@ class Stock(db.Model):
             self.longBuisnessSummary = search_stock.info['longBusinessSummary']
         else:
             return
-        if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-            self.logo = search_stock.info['logo_url']
+        if self.stock_symbol in data_logo:
+            self.logo = data_logo[self.stock_symbol]
         else:
-            return
+            if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+                self.logo = search_stock.info['logo_url']
+            else:
+                return
         self.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
             else None
         if 'sector' in search_stock.info.keys() and search_stock.info['sector'] is not None:
@@ -123,10 +126,13 @@ class Price(db.Model):
             self.company_name = re.split(' Corporation|,|Group ', search_stock.info['shortName'])[0]
         else:
             return
-        if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-            self.logo = search_stock.info['logo_url']
+        if self.stock_symbol in data_logo:
+            self.logo = data_logo[self.stock_symbol]
         else:
-            return
+            if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+                self.logo = search_stock.info['logo_url']
+            else:
+                return
         if 'currentPrice' in search_stock.info.keys() and search_stock.info['currentPrice'] is not None:
             self.price = search_stock.info['currentPrice']
         else:

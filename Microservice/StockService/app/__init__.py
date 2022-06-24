@@ -6,6 +6,14 @@ import os
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
+import json
+
+data_logo = None
+try:
+    f = open('stock_logo.json')
+    data_logo = json.load(f)
+except Exception as e:
+    print(e)
 
 app = Flask(__name__)
 
