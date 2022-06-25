@@ -6,6 +6,7 @@ import { CustomDeposit } from "../CustomDeposit/CustomDeposit";
 import { CustomManageFunds } from "../CustomManageFunds/CustomManageFunds";
 import { CustomCardDialog } from "../CustomCardDialog/CustomCardDialog";
 import { CustomAllHistory} from "../CustomAllHistory/CustomAllHistory";
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -29,7 +30,7 @@ export default function Header({ accountValue, investValue }) {
 
     function handleClickOpenHistory() {
 
-        fetch("http://127.0.0.1:5000/get-all-history-user", {
+        fetch(GATEWAY_HOST+"/get-all-history-user", {
             method: "POST",
             credentials: 'include',
             headers: {

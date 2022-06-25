@@ -1,6 +1,8 @@
 flask-cors
-requests~=2.27.1
-Flask~=2.1.2
-pika~=1.2.1
+requests==2.28.0
+Flask
+pika
 flask-session
 gevent-websocket
+pyopenssl
+flask-sslify

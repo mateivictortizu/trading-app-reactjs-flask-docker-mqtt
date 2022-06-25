@@ -5,6 +5,7 @@ import { Button, Stack, Toolbar, Box, AppBar, Typography } from '@mui/material';
 import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 import { useNavigate } from 'react-router-dom';
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 
 export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory, accountValue, investValue }) {
@@ -42,7 +43,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     };
 
     function logout() {
-        fetch("http://127.0.0.1:5000/logout", {
+        fetch(GATEWAY_HOST+"/logout", {
             method: "DELETE",
             credentials:'include',
             headers: {

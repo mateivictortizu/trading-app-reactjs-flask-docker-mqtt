@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22be3110-9daa-4062-b6ea-dba5c575bccd" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomInvested/CustomInvested.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/Utils/CustomInvested/CustomInvested.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/trading-platform/src/components/HomeLogged/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQClients/InvestRabbitMQ.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQClients/InvestRabbitMQ.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/InvestRabbitMQProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/InvestRabbitMQProcessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/UserRabbitMQProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/RabbitMQProcessor/UserRabbitMQProcessor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Gateway/app/blueprints/investService.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/app/blueprints/investService.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/cert.pem" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Gateway/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Wrappers/InvestWrappers/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Wrappers/InvestWrappers/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Gateway/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Gateway/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Wrappers/FundsWrappers/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Wrappers/FundsWrappers/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

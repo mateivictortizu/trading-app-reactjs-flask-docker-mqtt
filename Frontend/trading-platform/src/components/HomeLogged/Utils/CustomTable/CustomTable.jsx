@@ -10,11 +10,12 @@ import './CustomTable.css';
 import { Button, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 export default function CustomTable({ rows }) {
 
   function addToWishlist(stock_symbol) {
-    fetch("http://127.0.0.1:5000/add-watchlist", {
+    fetch(GATEWAY_HOST+"/add-watchlist", {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -27,7 +28,7 @@ export default function CustomTable({ rows }) {
   }
 
   function removeFromWishlist(stock_symbol) {
-    fetch("http://127.0.0.1:5000/remove-watchlist", {
+    fetch(GATEWAY_HOST+"/remove-watchlist", {
       method: "POST",
       credentials: 'include',
       headers: {

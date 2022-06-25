@@ -2,6 +2,7 @@ import React from "react";
 import { Dialog, DialogTitle, DialogContent, Typography, Button, Input } from '@mui/material';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 export function CustomSell({ openSell, setOpenSell, Transition, stockName, price, logo, stock_symbol, qty_available }) {
 
@@ -29,7 +30,7 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
 
     function sell_invested() {
         if (value > 0 && value<=qty_available) {
-            fetch("http://127.0.0.1:5000/sell", {
+            fetch(GATEWAY_HOST+"/sell", {
                 method: "POST",
                 credentials: 'include',
                 headers: {

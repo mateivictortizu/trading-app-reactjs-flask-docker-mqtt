@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, Typography, Button, Input } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, logo, stock_symbol, valueAccount }) {
 
@@ -39,7 +40,7 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
             if (price * value <= valueAccount) {
                 console.log(price * value);
                 console.log(valueAccount);
-                fetch("http://127.0.0.1:5000/buy", {
+                fetch(GATEWAY_HOST+"/buy", {
                     method: "POST",
                     credentials: 'include',
                     headers: {

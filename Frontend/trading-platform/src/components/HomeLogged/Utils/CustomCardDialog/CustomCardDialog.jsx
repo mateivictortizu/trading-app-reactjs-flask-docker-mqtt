@@ -3,6 +3,7 @@ import React from "react";
 import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transition }) {
 
@@ -24,7 +25,7 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
 
     function pay() {
         if (cvc.length === 3 && sumAdd>0 && expiry.length>0 && cardName.length>0 && cardNumber.length>0) {
-            fetch("http://127.0.0.1:5000/add-money", {
+            fetch(GATEWAY_HOST+"/add-money", {
                 method: "POST",
                 credentials:'include',
                 headers: {

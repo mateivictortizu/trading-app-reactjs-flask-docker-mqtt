@@ -134,7 +134,7 @@ def validate_otp_processor(validate_otp_client, json_body):
         validate_otp_response = validate_otp_client.call(json_body)
         response = json.loads(validate_otp_response)
         resp = make_response(response, response['code'])
-        resp.set_cookie('jwt', response['Authorization'], samesite='None', secure=True)
+        resp.set_cookie('jwt', response['Authorization'], samesite='None', secure=True, httponly=False)
         return resp
     except Exception:
         try:

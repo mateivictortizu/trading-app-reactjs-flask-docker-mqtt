@@ -48,6 +48,7 @@ def before_request():
 
 @socketio.on('connect')
 def join_connect():
+    print(request.cookies)
     try:
         before_request_function(request)
         json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}

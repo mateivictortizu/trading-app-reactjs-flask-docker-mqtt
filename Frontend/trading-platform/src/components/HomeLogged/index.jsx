@@ -12,6 +12,7 @@ import CustomInvested from './Utils/CustomInvested/CustomInvested';
 import CustomTable from './Utils/CustomTable/CustomTable';
 import socketIOClient from "socket.io-client";
 import Cookies from 'js-cookie';
+import {GATEWAY_HOST} from '../../Utils/Extra/Hosts';
 
 const HomeLogged = () => {
 
@@ -35,7 +36,8 @@ const HomeLogged = () => {
     const [recommendationValue, setRecommendationValue]=React.useState([]);
 
 React.useEffect(()=>{
-    const socket = socketIOClient('http://localhost:5000',{ withCredentials: true});
+    const socket = socketIOClient(GATEWAY_HOST,{ withCredentials: true});
+    console.log(Cookies.get('jwt'));
     socket.on("stock_popular", (data) => {
         setDatasPopular(data['message']);
         if(buttonHomeClicked==='popular')
@@ -69,7 +71,6 @@ React.useEffect(()=>{
     });
 
     socket.on("get_invest_value_of_account", (data)=>{
-        console.log(data);
         setValueInvest(data);
     });
 

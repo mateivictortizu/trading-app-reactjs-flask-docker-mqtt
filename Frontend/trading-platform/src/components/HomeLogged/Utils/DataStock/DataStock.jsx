@@ -9,6 +9,7 @@ import { CustomSell } from '../CustomSell/CustomSell';
 import { CustomHistory } from '../CustomHistory/CustomHistory';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
 
 export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested, valueAccount }) {
     const [stockInfo, setStockInfo] = React.useState(null);
@@ -32,7 +33,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     };
 
     function handleOpenHistory(stock_name) {
-        fetch("http://127.0.0.1:5000/get-history-stock-user", {
+        fetch(GATEWAY_HOST+"/get-history-stock-user", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -63,7 +64,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     };
 
     function get_investment(stock_name) {
-        fetch("http://127.0.0.1:5000/get-stock-invest-by-user", {
+        fetch(GATEWAY_HOST+"/get-stock-invest-by-user", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -85,7 +86,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     useEffect(() => {
         setInvested(0);
         if (buttonStockClicked !== null) {
-            fetch("http://127.0.0.1:5000/get-stock-info/" + buttonStockClicked, {
+            fetch(GATEWAY_HOST+"/get-stock-info/" + buttonStockClicked, {
                 method: "GET",
                 credentials: 'include',
                 headers: {
