@@ -2,7 +2,7 @@ import "./HomeNavigation.css";
 import React from "react";
 import { Button } from "@mui/material";
 
-export default function HomeNavigation({ buttonHomeClicked, setButtonHomeClicked, datas, datasPopular, setPriceClicked,setButtonStockClicked}) {
+export default function HomeNavigation({ buttonHomeClicked, setButtonHomeClicked, datas, datasPopular, datasRecommendation, setPriceClicked,setButtonStockClicked}) {
 
     function clickMyWatchlist() {
         setButtonHomeClicked('mywatchlist');
@@ -18,8 +18,16 @@ export default function HomeNavigation({ buttonHomeClicked, setButtonHomeClicked
 
     function clickRecommended() {
         setButtonHomeClicked('recommended');
-        setPriceClicked(datasPopular[0]['price']);
-        setButtonStockClicked(datasPopular[0]['stock_symbol']);
+        if(datasRecommendation.length !=0)
+        {
+            setPriceClicked(datasRecommendation[0]['price']);
+            setButtonStockClicked(datasRecommendation[0]['stock_symbol']);
+        }
+        else
+        {
+            setPriceClicked(undefined);
+            setButtonStockClicked(undefined);
+        }
     }
 
     return (

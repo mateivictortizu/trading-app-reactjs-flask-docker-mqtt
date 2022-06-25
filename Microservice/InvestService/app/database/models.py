@@ -22,8 +22,8 @@ class Invest(db.Model):
         self.user = user
         self.stock_symbol = stock_symbol
         self.action_type = action_type
-        self.cantitate = cantitate
-        self.price = price
+        self.cantitate = round(cantitate, 2)
+        self.price = round(price,2)
         self.date_of_buy = datetime.utcnow()
 
     def to_json(self):
@@ -34,7 +34,7 @@ class Invest(db.Model):
     def buy_invest(user, stock_symbol, cantitate, price):
         Session = sessionmaker(bind=engine)
         session = Session()
-        new_invest = Invest(user, stock_symbol, 'BUY', cantitate, price)
+        new_invest = Invest(user, stock_symbol, 'BUY', round(cantitate,2), round(price,2))
         session.add(new_invest)
         session.commit()
         session.close()
@@ -43,7 +43,7 @@ class Invest(db.Model):
     def sell_invest(user, stock_symbol, cantitate, price):
         Session = sessionmaker(bind=engine)
         session = Session()
-        new_invest = Invest(user, stock_symbol, 'SELL', cantitate, price)
+        new_invest = Invest(user, stock_symbol, 'SELL', round(cantitate,2), round(price,2))
         session.add(new_invest)
         session.commit()
         session.close()

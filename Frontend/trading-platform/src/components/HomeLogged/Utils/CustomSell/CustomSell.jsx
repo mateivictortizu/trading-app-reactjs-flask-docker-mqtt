@@ -86,7 +86,7 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
                     Sell {stockName}
                     <Typography id='priceCustomBuy'>${price}</Typography>
                 </DialogTitle>
-                <DialogContent style={{ height: '250px' }}>
+                <DialogContent style={{ height: '300px' }}>
                     <Typography id='valueBuy'>Value</Typography>
                     <Input
                         id='insertBuy'

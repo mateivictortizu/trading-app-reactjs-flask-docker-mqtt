@@ -20,10 +20,8 @@ def RecommandationSystems():
         user_matrix = []
         for i in users_result:
             user_line = []
-            print(i)
             for j in all_stocks:
                 if j in users_result[i]:
-                    print(str(users_result[i]) + str(users_result[i][j]))
                     user_line.append(users_result[i][j])
                 else:
                     user_line.append(None)
@@ -32,7 +30,7 @@ def RecommandationSystems():
         R = np.array(user_matrix)
         N = len(users_result)
         M = len(all_stocks)
-        K = round(M / 2)
+        K = 2
 
         nr_epoci = 1000
         alfa = 0.01
@@ -70,10 +68,6 @@ def RecommandationSystems():
                 break
 
             epoca = epoca + 1
-
-        print('\nMatrice estimari')
-        print(R)
-        print('\n')
 
         rezultat = np.matmul(U, V)
         print(rezultat)

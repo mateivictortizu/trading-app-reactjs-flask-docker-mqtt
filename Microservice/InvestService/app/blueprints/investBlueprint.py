@@ -25,12 +25,13 @@ def buy():
     print(json_body)
     user = json_body['user']
     stock_symbol = json_body['stock_symbol']
-    cantitate = json_body['cantitate']
-    price = json_body['price']
+    cantitate = float(json_body['cantitate'])
+    price = float(json_body['price'])
     try:
         buy_investDAO(user, stock_symbol, cantitate, price)
         return jsonify({"message": "Buy Completed"}), 200
     except Exception as e:
+        print(e)
         return jsonify({"message": "Buy Fail"}), 400
 
 
@@ -39,8 +40,8 @@ def sell():
     json_body = request.json
     user = json_body['user']
     stock_symbol = json_body['stock_symbol']
-    cantitate = json_body['cantitate']
-    price = json_body['price']
+    cantitate = float(json_body['cantitate'])
+    price = float(json_body['price'])
     try:
         sell_investDAO(user, stock_symbol, cantitate, price)
         return jsonify({"message": "Sell Completed"}), 200
@@ -146,14 +147,14 @@ def get_detailed_stock_invest():
     user = request.json['identifier']
     x = Invest.get_history_invest_by_user(user)
     stock_dict = {}
-    total_cty={}
+    total_cty = {}
     for i in x:
         if i.action_type == 'BUY':
             if i.stock_symbol in stock_dict and "cantitate" in stock_dict[i.stock_symbol] and \
                     "price" in stock_dict[i.stock_symbol]:
                 stock_dict[i.stock_symbol] = {"cantitate": stock_dict[i.stock_symbol]["cantitate"] + i.cantitate,
                                               "price": stock_dict[i.stock_symbol]["price"] + i.price * i.cantitate}
-                total_cty[i.stock_symbol]=total_cty[i.stock_symbol] + i.cantitate
+                total_cty[i.stock_symbol] = total_cty[i.stock_symbol] + i.cantitate
             else:
                 stock_dict[i.stock_symbol] = {"cantitate": i.cantitate, "price": i.price * i.cantitate}
                 total_cty[i.stock_symbol] = i.cantitate
@@ -163,7 +164,7 @@ def get_detailed_stock_invest():
                 stock_dict[i.stock_symbol] = {"cantitate": stock_dict[i.stock_symbol]["cantitate"] - i.cantitate,
                                               "price": stock_dict[i.stock_symbol]["price"]}
 
-    list_to_pop=[]
+    list_to_pop = []
     for i in stock_dict:
         if stock_dict[i]['cantitate'] == 0:
             list_to_pop.append(i)
@@ -172,4 +173,4 @@ def get_detailed_stock_invest():
     for i in list_to_pop:
         stock_dict.pop(i)
     print(stock_dict)
-    return 'Ok', 200
+    return stock_dict, 200

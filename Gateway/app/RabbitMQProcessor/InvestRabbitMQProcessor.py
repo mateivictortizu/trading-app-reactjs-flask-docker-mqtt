@@ -1,7 +1,8 @@
 import json
 
 from app.RabbitMQClients.InvestRabbitMQ import BuyClient, SellClient, GetStockInvestByUserClient, \
-    GetAllInvestByUserClient, GetHistoryStockByUserClient, GetAllHistoryByUserClient, GetValueOfAccountClient
+    GetAllInvestByUserClient, GetHistoryStockByUserClient, GetAllHistoryByUserClient, GetValueOfAccountClient, \
+    GetDetailedUserInvest
 
 
 def buy_processor(buy, json_body):
@@ -107,3 +108,18 @@ def get_value_of_account_processor(get_value_of_account_client, json_body):
             return response, response['code']
         except Exception:
             return 'Get Value of Account User server error', 500
+
+
+def get_user_detailed_invests_processor(get_user_detailed_invests_client, json_body):
+    if get_user_detailed_invests_client is None:
+        get_user_detailed_invests_client = GetDetailedUserInvest()
+    try:
+        response = json.loads(get_user_detailed_invests_client.call(json_body))
+        return response, response['code']
+    except Exception:
+        try:
+            get_user_detailed_invests_client = GetDetailedUserInvest()
+            response = json.loads(get_user_detailed_invests_client.call(json_body))
+            return response, response['code']
+        except Exception:
+            return 'Get Detailed User Invest server error', 500

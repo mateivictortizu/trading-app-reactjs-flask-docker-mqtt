@@ -11,9 +11,9 @@ def sell_investDAO(user, stock_symbol, cantitate, price):
 
 def get_stock_invest_by_userDAO(user, stock_symbol):
     list_of_invest = Invest.get_stock_invest_by_user(user, stock_symbol)
-    average = 0
-    no_of_buy = 0
-    cantitate = 0
+    average = 0.0
+    no_of_buy = 0.0
+    cantitate = 0.0
     for i in list_of_invest:
         if i.action_type == "BUY":
             average = average + i.cantitate * i.price
@@ -24,7 +24,7 @@ def get_stock_invest_by_userDAO(user, stock_symbol):
 
     if cantitate > 0:
         average = average / round(no_of_buy, 3)
-        return [cantitate, average]
+        return [round(cantitate, 2), round(average, 2)]
     else:
         return None
 
@@ -52,7 +52,7 @@ def get_user_sumarryDAO(user):
                 stock_dict[i.stock_symbol] = stock_dict[i.stock_symbol] - i.cantitate * i.price
             total_quantity = total_quantity - i.cantitate * i.price
     for i in stock_dict:
-        stock_dict[i] = stock_dict[i] / total_quantity * 100
+        stock_dict[i] = round(stock_dict[i] / total_quantity * 100, 2)
     return stock_dict
 
 

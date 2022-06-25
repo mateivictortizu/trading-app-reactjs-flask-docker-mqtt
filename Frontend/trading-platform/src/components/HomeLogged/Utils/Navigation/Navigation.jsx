@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function Navigation({ buttonClicked, setButtonClicked }) {
+export default function Navigation({ buttonClicked, setButtonClicked, data, setPriceClicked, setButtonStockClicked }) {
 
     function clickHome() {
         setButtonClicked('home');
@@ -13,10 +13,19 @@ export default function Navigation({ buttonClicked, setButtonClicked }) {
 
     function clickPie() {
         setButtonClicked('pie');
+        if(data.length!=0)
+        {
+            setButtonStockClicked(data[0]['stock_symbol']);
+        }
+        else
+        {
+            setButtonStockClicked(undefined);
+        }
     }
 
     function clickSearch() {
         setButtonClicked('search');
+        
     }
 
 

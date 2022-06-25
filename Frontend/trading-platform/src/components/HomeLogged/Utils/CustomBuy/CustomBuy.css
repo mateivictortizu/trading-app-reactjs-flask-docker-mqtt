@@ -16,7 +16,7 @@
 #buttonBuy{
     color:white;
     background-color: #0066cc;
-    top: 300px;
+    top: 350px;
     width: 300px;
     position: absolute;
     left: 0;
@@ -28,7 +28,7 @@
 #buttonBuy:disabled{
     color:white;
     background-color: #3d3e3e;
-    top: 300px;
+    top: 350px;
     width: 300px;
     position: absolute;
     left: 0;
@@ -40,7 +40,7 @@
 #valueBuy{
     font-size: 30px;
     text-align:center;
-    top:190px;
+    top:270px;
 }
 
 #insertBuy {

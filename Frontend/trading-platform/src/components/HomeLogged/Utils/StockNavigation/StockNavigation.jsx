@@ -2,14 +2,14 @@ import "./StockNavigation.css";
 import React from "react";
 import { Button, Typography } from "@mui/material";
 
-export default function StockNavigation({ buttonStockClicked, setButtonStockClicked, priceClicked, setPriceClicked, data, datasPopular,buttonHomeClicked }) {
+export default function StockNavigation({ buttonStockClicked, setButtonStockClicked, priceClicked, setPriceClicked, data, datasPopular, datasRecommendation, buttonHomeClicked }) {
 
     function clickButton(key, price) {
         setButtonStockClicked(key);
         setPriceClicked(price);
     }
 
-    if (data.lenght !== 0 && buttonHomeClicked==='mywatchlist') {
+    if (data.length !== 0 && buttonHomeClicked==='mywatchlist') {
         return (
             <div className="navigationStock">
                 <div id="firstDivNavigationStock">
@@ -33,7 +33,7 @@ export default function StockNavigation({ buttonStockClicked, setButtonStockClic
             </div>
         )
     }
-    else if (datasPopular.lenght !== 0 && buttonHomeClicked==='popular') {
+    else if (datasPopular.length !== 0 && buttonHomeClicked==='popular') {
         return (
             <div className="navigationStock">
                 <div id="firstDivNavigationStock">
@@ -57,11 +57,11 @@ export default function StockNavigation({ buttonStockClicked, setButtonStockClic
             </div>
         )
     }
-    else if (datasPopular.lenght !== 0 && buttonHomeClicked==='recommended') {
+    else if (datasRecommendation.length !== 0 && buttonHomeClicked==='recommended') {
         return (
             <div className="navigationStock">
                 <div id="firstDivNavigationStock">
-                    {datasPopular.map(item =>
+                    {datasRecommendation.map(item =>
                     (
                         <Button key={item.stock_symbol} onClick={() => clickButton(item.stock_symbol, item.price)} id={(buttonStockClicked === item.stock_symbol) ? 'buttonClickedNavigationStockLogged' : 'buttonNavigationStockLogged'}>
                             <img id='imgNavigationStockLogged' src={item.logo} alt={item.stock_symbol} ></img>

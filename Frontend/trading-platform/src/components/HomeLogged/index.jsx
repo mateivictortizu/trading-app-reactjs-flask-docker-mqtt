@@ -23,7 +23,8 @@ const HomeLogged = () => {
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
     const [priceClicked, setPriceClicked] = React.useState(null);
     const [datas, setDatas] = React.useState([]);
-    const [datasInvest, setDatasInvest]= React.useState([]);
+    const [datasForInvest, setDatasInvest]= React.useState([]);
+    const [dataUserInvest, setdataUserInvest]= React.useState([]);
     const [datasPopular, setDatasPopular] = React.useState([]);
     const [valueAccount, setValueAccount] = React.useState(0.0);
     const [stockInfo, setStockInfo] = React.useState(null);
@@ -31,6 +32,7 @@ const HomeLogged = () => {
     const [rows, setRows] = React.useState([]);
     const [invest,setInvest] = React.useState([]);
     const [valueInvest, setValueInvest]=React.useState(0);
+    const [recommendationValue, setRecommendationValue]=React.useState([]);
 
 React.useEffect(()=>{
     const socket = socketIOClient('http://localhost:5000',{ withCredentials: true});
@@ -75,6 +77,13 @@ React.useEffect(()=>{
         console.log("get_funds");
         setRows(data['value']);    
     });
+
+    socket.on("detailed_user_invests",(data) => {
+        setdataUserInvest(data); 
+    });
+    socket.on("recommendation",(data) => {
+        setRecommendationValue(data['message']);
+    });
 },[])
 
 if (datas.length === 0) {
@@ -97,6 +106,9 @@ else {
                         <Navigation
                             buttonClicked={buttonClicked}
                             setButtonClicked={setButtonClicked}
+                            data={datasForInvest}
+                            setPriceClicked={setPriceClicked}
+                            setButtonStockClicked={setButtonStockClicked}
                         />
                     </Grid>
                     {(buttonClicked === 'home') &&
@@ -107,6 +119,7 @@ else {
                                     setButtonHomeClicked={setButtonHomeClicked}
                                     datas={datas}
                                     datasPopular={datasPopular}
+                                    datasRecommendation={recommendationValue}
                                     setPriceClicked={setPriceClicked}
                                     setButtonStockClicked={setButtonStockClicked}
                                 />
@@ -120,6 +133,7 @@ else {
                                     setPriceClicked={setPriceClicked}
                                     data={datas}
                                     datasPopular={datasPopular}
+                                    datasRecommendation={recommendationValue}
                                     buttonHomeClicked={buttonHomeClicked}
                                 />
                             </Grid>
@@ -145,7 +159,8 @@ else {
                                     setButtonStockClicked={setButtonStockClicked}
                                     priceClicked={priceClicked}
                                     setPriceClicked={setPriceClicked}
-                                    data={datasInvest}
+                                    dataForInvest={datasForInvest}
+                                    dataUserInvest={dataUserInvest}
                                     buttonHomeClicked={buttonHomeClicked}
                                     investValue={valueInvest}
                                 />

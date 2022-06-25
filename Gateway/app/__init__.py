@@ -4,11 +4,13 @@ from flask_session import Session
 from flask_socketio import SocketIO
 
 from app.RabbitMQProcessor.FundsRabbitMQProcessor import get_funds_processor
-from app.RabbitMQProcessor.InvestRabbitMQProcessor import get_invest_by_user_processor, get_value_of_account_processor
+from app.RabbitMQProcessor.InvestRabbitMQProcessor import get_invest_by_user_processor, get_value_of_account_processor, \
+    get_user_detailed_invests_processor
+from app.RabbitMQProcessor.RecommendationRabbitMQProcessor import recommendation_processor
 from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor, get_all_stocks_processor, \
     get_all_stocks_by_user_processor
 from app.blueprints import get_all_stocks_client, before_request_function, get_all_stocks_by_user_client, \
-    users_connections, get_invest, get_value_of_account_client
+    users_connections, get_invest, get_value_of_account_client, get_user_detailed_invests_client, recommendation_client
 
 app = Flask(__name__)
 
@@ -67,8 +69,22 @@ def join_connect():
         json_body = {"stock_list": stock_invest[0]['stock_list']}
         stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
         socketio.emit('stock_invest', stock_invest_list[0])
-        value_of_account = get_value_of_account_processor(get_value_of_account_client, json_body={'identifier': 'matteovkt@gmail.com'})
-        socketio.emit('get_invest_value_of_account',value_of_account[0]['message'])
+        value_of_account = get_value_of_account_processor(get_value_of_account_client,
+                                                          json_body={'identifier': 'matteovkt@gmail.com'})
+        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
+        value_of_account = get_value_of_account_processor(get_value_of_account_client,
+                                                          json_body={'identifier': 'matteovkt@gmail.com'})
+        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
+        user_detailed_invests = get_user_detailed_invests_processor(get_user_detailed_invests_client,
+                                                                    json_body={'identifier': 'matteovkt@gmail.com'})
+        socketio.emit('detailed_user_invests', user_detailed_invests[0])
+
+        get_recommendation = recommendation_processor(recommendation_client,
+                                                      json_body={'identifier': 'matteovkt@gmail.com'})
+        if 'matteovkt@gmail.com' in get_recommendation[0]:
+            json_body = {"stock_list": get_recommendation[0]['matteovkt@gmail.com']}
+            stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+            socketio.emit('recommendation', stock_invest_list[0])
     except Exception as e:
         print(e)
 

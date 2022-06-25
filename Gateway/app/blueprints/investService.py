@@ -5,11 +5,12 @@ from app.RabbitMQProcessor.FundsRabbitMQProcessor import get_funds_processor, ad
     withdraw_money_after_buy_processor
 from app.RabbitMQProcessor.InvestRabbitMQProcessor import buy_processor, sell_processor, \
     get_stock_invest_by_user_processor, get_invest_by_user_processor, get_history_stock_user_processor, \
-    get_all_history_user_processor, get_value_of_account_processor
+    get_all_history_user_processor, get_value_of_account_processor, get_user_detailed_invests_processor
 from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor
 from app.blueprints import get_funds_client, buy, sell, get_stock, get_invest, add_money_after_sell_client, \
     withdraw_money_after_buy_client, before_request_function, users_connections, get_list_stock_price_client, \
-    get_history_stock_user_client, get_all_history_user_client, get_value_of_account_client
+    get_history_stock_user_client, get_all_history_user_client, get_value_of_account_client, \
+    get_user_detailed_invests_client
 
 invest = Blueprint('invest', __name__)
 
@@ -39,8 +40,9 @@ def buy_invested():
                                                                 {'identifier': users_connections[session['user_id']][
                                                                     'user'],
                                                                  'stock_symbol': request.json['stock_symbol']})
-        socketio.emit('get_investment', {
-            'cantitate': float(get_value_of_stock[0]['cantitate']), 'medie': float(get_value_of_stock[0]['medie'])})
+        if get_value_of_stock == 200:
+            socketio.emit('get_investment', {
+                'cantitate': float(get_value_of_stock[0]['cantitate']), 'medie': float(get_value_of_stock[0]['medie'])})
         stock_invest = get_invest_by_user_processor(get_invest,
                                                     json_body={
                                                         'identifier': users_connections[session['user_id']]['user']})
@@ -52,6 +54,9 @@ def buy_invested():
                                                               'identifier': users_connections[session['user_id']][
                                                                   'user']})
         socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
+        user_detailed_invests = get_user_detailed_invests_processor(get_user_detailed_invests_client,
+                                                                    json_body={'identifier': 'matteovkt@gmail.com'})
+        socketio.emit('detailed_user_invests', user_detailed_invests[0])
         return buy_result
     else:
         return jsonify({"message": "Not enough funds"}), 400
@@ -97,6 +102,9 @@ def sell_invested():
                                                               'identifier': users_connections[session['user_id']][
                                                                   'user']})
         socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
+        user_detailed_invests = get_user_detailed_invests_processor(get_user_detailed_invests_client,
+                                                                    json_body={'identifier': 'matteovkt@gmail.com'})
+        socketio.emit('detailed_user_invests', user_detailed_invests[0])
         return sell_result
     else:
         return jsonify({'message': 'Add money error'}), 400
@@ -159,10 +167,11 @@ def get_value_of_user_account():
     return get_value_of_account_processor(get_value_of_account_client, request_temp)
 
 
-@invest.route('/get-user-detailied-invests', methods=['GET'])
+@invest.route('/get-user-detailed-invests', methods=['GET'])
 def get_user_detailed_invests():
     before_checking_result = before_request_function(request)
     if before_checking_result[1] == 403:
         return before_checking_result
     request_temp = dict()
     request_temp['identifier'] = users_connections[session['user_id']]['user']
+    return get_user_detailed_invests_processor(get_user_detailed_invests_client, request_temp)
