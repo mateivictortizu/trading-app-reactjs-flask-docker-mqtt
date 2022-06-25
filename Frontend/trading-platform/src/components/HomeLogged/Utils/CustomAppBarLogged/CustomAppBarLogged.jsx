@@ -7,16 +7,15 @@ import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 import { useNavigate } from 'react-router-dom';
 
 
-export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory, accountValue }) {
+export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory, accountValue, investValue }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
-    const [portofolio, setPortofolio] = React.useState(1);
     const navigate = useNavigate();
     var data = {
         datasets: [
             {
-                data: [accountValue, portofolio],
+                data: [accountValue, investValue],
                 backgroundColor: [
                     '#32CD32',
                     '#0066cc'
@@ -90,7 +89,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                                 id='appBarButtonAccountValue'
                                 onClick={handleClickAccountStats}
                             >
-                                <Typography style={{ color: '#808080', fontSize: '15px', fontWeight: 'bold' }}>Account value &nbsp;</Typography>${Number(accountValue + portofolio).toFixed(2)}
+                                <Typography style={{ color: '#808080', fontSize: '15px', fontWeight: 'bold' }}>Account value &nbsp;</Typography>${Number(accountValue + investValue).toFixed(2)}
                             </Button>
                             <Button
                                 aria-controls="simple-menu"
@@ -127,7 +126,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                             handleCloseAccountStats={handleCloseAccountStats}
                             data={data}
                             funds={accountValue}
-                            portofolio={portofolio} />
+                            portofolio={investValue} />
 
                     </Toolbar>
                 </AppBar>

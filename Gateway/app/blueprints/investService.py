@@ -5,11 +5,11 @@ from app.RabbitMQProcessor.FundsRabbitMQProcessor import get_funds_processor, ad
     withdraw_money_after_buy_processor
 from app.RabbitMQProcessor.InvestRabbitMQProcessor import buy_processor, sell_processor, \
     get_stock_invest_by_user_processor, get_invest_by_user_processor, get_history_stock_user_processor, \
-    get_all_history_user_processor
+    get_all_history_user_processor, get_value_of_account_processor
 from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor
 from app.blueprints import get_funds_client, buy, sell, get_stock, get_invest, add_money_after_sell_client, \
     withdraw_money_after_buy_client, before_request_function, users_connections, get_list_stock_price_client, \
-    get_history_stock_user_client, get_all_history_user_client
+    get_history_stock_user_client, get_all_history_user_client, get_value_of_account_client
 
 invest = Blueprint('invest', __name__)
 
@@ -41,10 +41,17 @@ def buy_invested():
                                                                  'stock_symbol': request.json['stock_symbol']})
         socketio.emit('get_investment', {
             'cantitate': float(get_value_of_stock[0]['cantitate']), 'medie': float(get_value_of_stock[0]['medie'])})
-        stock_invest = get_invest_by_user_processor(get_invest, json_body={'identifier': 'matteovkt@gmail.com'})
+        stock_invest = get_invest_by_user_processor(get_invest,
+                                                    json_body={
+                                                        'identifier': users_connections[session['user_id']]['user']})
         json_body = {"stock_list": stock_invest[0]['stock_list']}
         stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
         socketio.emit('stock_invest', stock_invest_list[0])
+        value_of_account = get_value_of_account_processor(get_value_of_account_client,
+                                                          json_body={
+                                                              'identifier': users_connections[session['user_id']][
+                                                                  'user']})
+        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
         return buy_result
     else:
         return jsonify({"message": "Not enough funds"}), 400
@@ -73,12 +80,23 @@ def sell_invested():
                                                                 {'identifier': users_connections[session['user_id']][
                                                                     'user'],
                                                                  'stock_symbol': request.json['stock_symbol']})
-        socketio.emit('get_investment', {
-            'cantitate': float(get_value_of_stock[0]['cantitate']), 'medie': float(get_value_of_stock[0]['medie'])})
-        stock_invest = get_invest_by_user_processor(get_invest, json_body={'identifier': 'matteovkt@gmail.com'})
+        if get_value_of_stock[1] == 200:
+            socketio.emit('get_investment', {
+                'cantitate': float(get_value_of_stock[0]['cantitate']), 'medie': float(get_value_of_stock[0]['medie'])})
+            socketio.emit("invest_on", 1)
+        else:
+            socketio.emit('get_investment', {'cantitate': 0, 'medie': 0})
+            socketio.emit("invest_on", 0)
+        stock_invest = get_invest_by_user_processor(get_invest, json_body={
+            'identifier': users_connections[session['user_id']]['user']})
         json_body = {"stock_list": stock_invest[0]['stock_list']}
         stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
         socketio.emit('stock_invest', stock_invest_list[0])
+        value_of_account = get_value_of_account_processor(get_value_of_account_client,
+                                                          json_body={
+                                                              'identifier': users_connections[session['user_id']][
+                                                                  'user']})
+        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
         return sell_result
     else:
         return jsonify({'message': 'Add money error'}), 400
@@ -129,3 +147,22 @@ def get_history_user():
     request_temp = dict()
     request_temp['identifier'] = users_connections[session['user_id']]['user']
     return get_all_history_user_processor(get_all_history_user_client, request_temp)
+
+
+@invest.route('/get-value-of-user-account', methods=['GET'])
+def get_value_of_user_account():
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
+    request_temp = dict()
+    request_temp['identifier'] = users_connections[session['user_id']]['user']
+    return get_value_of_account_processor(get_value_of_account_client, request_temp)
+
+
+@invest.route('/get-user-detailied-invests', methods=['GET'])
+def get_user_detailed_invests():
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
+    request_temp = dict()
+    request_temp['identifier'] = users_connections[session['user_id']]['user']

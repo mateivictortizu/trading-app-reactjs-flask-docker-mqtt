@@ -43,6 +43,8 @@ remove_watchlist_client = None
 recommendation_client = None
 get_history_stock_user_client = None
 get_all_history_user_client = None
+get_value_of_account_client = None
+
 
 def before_request_function(request_value):
     if 'user_id' not in session:

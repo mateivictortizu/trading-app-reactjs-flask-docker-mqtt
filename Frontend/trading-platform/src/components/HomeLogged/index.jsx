@@ -30,6 +30,7 @@ const HomeLogged = () => {
     const [statisticData, setStatisticData]=React.useState([0,0]);
     const [rows, setRows] = React.useState([]);
     const [invest,setInvest] = React.useState([]);
+    const [valueInvest, setValueInvest]=React.useState(0);
 
 React.useEffect(()=>{
     const socket = socketIOClient('http://localhost:5000',{ withCredentials: true});
@@ -42,8 +43,6 @@ React.useEffect(()=>{
         }
     });
     socket.on("stock_wishlist",(data) => {
-        console.log("stock_wishlist");
-        console.log(socket);
         setDatas(data['message']);
         if(buttonHomeClicked==='mywatchlist')
         {
@@ -52,8 +51,6 @@ React.useEffect(()=>{
         }
     });
     socket.on("stock_invest",(data) => {
-        console.log("stock_invest");
-        console.log(socket);
         setDatasInvest(data['message']);
     });
     socket.on("invest_on", (data)=>{
@@ -63,17 +60,15 @@ React.useEffect(()=>{
         setStatisticData(data);
     });
     socket.on("get_funds", (data) => {
-        console.log("get_funds");
         setValueAccount(data['value']);    
     });
     socket.on("get_investment", (data)=>{
-        console.log('get_investment');
-        console.log([data['medie'], data['cantitate']]);
         setStatisticData([data['medie'], data['cantitate']]);
     });
 
-    socket.on("get_session", (data)=>{
+    socket.on("get_invest_value_of_account", (data)=>{
         console.log(data);
+        setValueInvest(data);
     });
 
     socket.on("get_all_stocks",(data) => {
@@ -94,6 +89,7 @@ else {
         <div className='mainDivLogged'>
             <Header
                 accountValue={valueAccount}
+                investValue={valueInvest}
             />
             <div className="firstDivLogged">
                 <Grid direction="row" container spacing={1}>
@@ -151,6 +147,7 @@ else {
                                     setPriceClicked={setPriceClicked}
                                     data={datasInvest}
                                     buttonHomeClicked={buttonHomeClicked}
+                                    investValue={valueInvest}
                                 />
                             </Grid>
                             <Grid item >

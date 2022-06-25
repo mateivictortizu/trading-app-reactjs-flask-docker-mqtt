@@ -65,15 +65,28 @@ def get_stock_invest_by_user():
 def get_invest_by_user():
     user = request.json['identifier']
     result = get_invest_by_userDAO(user)
-    stock_list = []
+    stock_list = {}
     for i in result:
-        stock_list.append(i.stock_symbol)
-    stock_list = list(dict.fromkeys(stock_list))
+        if i.action_type == 'BUY':
+            if i.stock_symbol not in stock_list:
+                stock_list[i.stock_symbol] = i.cantitate
+            else:
+                stock_list[i.stock_symbol] = stock_list[i.stock_symbol] + i.cantitate
+        else:
+            if i.stock_symbol not in stock_list:
+                stock_list[i.stock_symbol] = i.cantitate
+            else:
+                stock_list[i.stock_symbol] = stock_list[i.stock_symbol] - i.cantitate
+
+    invest_list = []
+    for i in stock_list:
+        if stock_list[i] != 0:
+            invest_list.append(i)
     if result is None:
         return jsonify({"message": "Userul nu are investitii pentru acest stock"}), 404
     else:
 
-        return jsonify({"message": "Userul are investitii pentru acest stock", "stock_list": stock_list}), 200
+        return jsonify({"message": "Userul are investitii pentru acest stock", "stock_list": invest_list}), 200
 
 
 @investBP.route('/get-invest-summary-by-user', methods=['POST'])
@@ -112,5 +125,51 @@ def get_all_history_user():
             {"stock_symbol": i.stock_symbol, "price": i.price, "cantitate": i.cantitate, "action_type": i.action_type,
              "date_of_buy": i.date_of_buy})
     stock_invest = sorted(stock_invest, key=lambda i: i['date_of_buy'])
-    print(stock_invest)
     return jsonify({"message": stock_invest}), 200
+
+
+@investBP.route('/get-value-of-user-account', methods=['GET'])
+def get_value_of_user_account():
+    user = request.json['identifier']
+    x = Invest.get_history_invest_by_user(user)
+    price = 0
+    for i in x:
+        if i.action_type == 'BUY':
+            price = price + i.price * i.cantitate
+        else:
+            price = price - i.price * i.cantitate
+    return jsonify({"message": price}), 200
+
+
+@investBP.route('/get-detailed-stock-invest', methods=['GET'])
+def get_detailed_stock_invest():
+    user = request.json['identifier']
+    x = Invest.get_history_invest_by_user(user)
+    stock_dict = {}
+    total_cty={}
+    for i in x:
+        if i.action_type == 'BUY':
+            if i.stock_symbol in stock_dict and "cantitate" in stock_dict[i.stock_symbol] and \
+                    "price" in stock_dict[i.stock_symbol]:
+                stock_dict[i.stock_symbol] = {"cantitate": stock_dict[i.stock_symbol]["cantitate"] + i.cantitate,
+                                              "price": stock_dict[i.stock_symbol]["price"] + i.price * i.cantitate}
+                total_cty[i.stock_symbol]=total_cty[i.stock_symbol] + i.cantitate
+            else:
+                stock_dict[i.stock_symbol] = {"cantitate": i.cantitate, "price": i.price * i.cantitate}
+                total_cty[i.stock_symbol] = i.cantitate
+        else:
+            if i.stock_symbol in stock_dict and "cantitate" in stock_dict[i.stock_symbol] and \
+                    "price" in stock_dict[i.stock_symbol]:
+                stock_dict[i.stock_symbol] = {"cantitate": stock_dict[i.stock_symbol]["cantitate"] - i.cantitate,
+                                              "price": stock_dict[i.stock_symbol]["price"]}
+
+    list_to_pop=[]
+    for i in stock_dict:
+        if stock_dict[i]['cantitate'] == 0:
+            list_to_pop.append(i)
+        else:
+            stock_dict[i]['price'] = stock_dict[i]['price'] / total_cty[i]
+    for i in list_to_pop:
+        stock_dict.pop(i)
+    print(stock_dict)
+    return 'Ok', 200

@@ -1,0 +1,25 @@
+#divSummary {
+    width: 500px;
+    height: 430px;
+    background-color: white;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #bdbebe;
+    text-align: center;
+}
+
+#typographyTitle{
+    font-size: 30px;
+    color:#656565;
+}
+
+#infoSummary{
+    font-size: 40px;
+    font-weight: bold;
+    color: #656565;
+}
+
+#changeSummary{
+    font-size: 40px;
+    font-weight: bold;
+}

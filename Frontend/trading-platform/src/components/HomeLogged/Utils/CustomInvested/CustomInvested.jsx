@@ -1,20 +1,23 @@
 import "./CustomInvested.css";
 import React from "react";
 import { Button, Typography } from "@mui/material";
-import CustomStockSummary from "../CustomStockSummary/CustomStockSummary";
+import CustomSummary from "../CustomSummary/CustomSummary";
 
-export default function CustomInvested({ buttonStockClicked, setButtonStockClicked, setPriceClicked, data }) {
+export default function CustomInvested({ buttonStockClicked, setButtonStockClicked, setPriceClicked, data, investValue }) {
 
     function clickButton(key, price) {
         setButtonStockClicked(key);
         setPriceClicked(price);
     }
 
+    var share=1;
+    var average=100;
+
     if (data.lenght !== 0) {
         return (
             <div>
                 <div id='customInvested'>
-                    <CustomStockSummary data={data}></CustomStockSummary>
+                    <CustomSummary average={investValue} current_value={90}> </CustomSummary>
 
 
                     <div id="firstDivNavigationInvested">
@@ -24,13 +27,12 @@ export default function CustomInvested({ buttonStockClicked, setButtonStockClick
                                 <img id='imgNavigationInvestedLogged' src={item.logo} alt={item.stock_symbol} ></img>
                                 <Typography id='nameInvestedNavigation'>
                                     {item.company_name}
+                                </Typography >
+                                <Typography id='shareInvestedNavigation'>
+                                    {share} shares
                                 </Typography>
-                                <Typography style={{ position: 'absolute', right: '50px', color: '#2AAA8A', fontSize: '25px' }}>
-                                    {parseInt(item.price)}
-                                </Typography>
-                                <Typography style={{ color: '#2AAA8A', position: 'absolute', fontSize: '15px', right: '20px', bottom: '20px' }}>
-                                    .{Number((item.price - parseInt(item.price))).toFixed(2).toString().split(".")[1]}$
-                                </Typography>
+                                <Typography style={{color: '#555', fontWeight: 'bold', position: 'absolute', fontSize: '15px', right: '20px', top: '15px'}}>${Number(share*item.price).toFixed(2)}</Typography>
+                                <Typography style={{color: '#2AAA8A', position: 'absolute', fontSize: '13px', right: '20px', top: '35px'}}>{Number(share*item.price-share*average).toFixed(2)} ({Number((share*item.price-share*average)/(share*average)*100).toFixed(2)}%)</Typography>
                             </Button>
                         )
                         )}
