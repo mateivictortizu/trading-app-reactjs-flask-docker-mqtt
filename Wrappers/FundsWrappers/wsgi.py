@@ -38,6 +38,7 @@ def on_withdraw_money(ch, method, props, body):
                      body=str(response))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
+
 def on_add_money_after_sell(ch, method, props, body):
     json_body = json.loads(body)
     r = requests.post(parse.urljoin(URL, "add-money-after-sell"), json=json_body)
