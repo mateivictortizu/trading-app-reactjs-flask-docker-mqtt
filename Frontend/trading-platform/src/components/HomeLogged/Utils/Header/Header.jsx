@@ -5,8 +5,10 @@ import { CustomAppBarLogged } from "../CustomAppBarLogged/CustomAppBarLogged";
 import { CustomDeposit } from "../CustomDeposit/CustomDeposit";
 import { CustomManageFunds } from "../CustomManageFunds/CustomManageFunds";
 import { CustomCardDialog } from "../CustomCardDialog/CustomCardDialog";
-import { CustomAllHistory} from "../CustomAllHistory/CustomAllHistory";
-import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
+import { CustomAllHistory } from "../CustomAllHistory/CustomAllHistory";
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import { CustomSettings } from "../CustomSettings/CustomSettings";
+import { CustomWithdrawMoney } from "../CustomWithdraw/CustomWithdraw";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -18,7 +20,9 @@ export default function Header({ accountValue, investValue }) {
     const [openManageFunds, setOpenManageFunds] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
     const [openCard, setOpenCard] = React.useState(false);
-    const [history,setHistory] = React.useState([]);
+    const [history, setHistory] = React.useState([]);
+    const [openSettings, setOpenSettings] = React.useState(false);
+    const [openWithdraw, setOpenWithdraw] = React.useState(false);
 
     function handleClickOpenDeposit() {
         setOpenDeposit(true)
@@ -28,9 +32,13 @@ export default function Header({ accountValue, investValue }) {
         setOpenManageFunds(true)
     }
 
+    function handleClickOpenSettings() {
+        setOpenSettings(true)
+    }
+
     function handleClickOpenHistory() {
 
-        fetch(GATEWAY_HOST+"/get-all-history-user", {
+        fetch(GATEWAY_HOST + "/get-all-history-user", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -67,6 +75,7 @@ export default function Header({ accountValue, investValue }) {
                     handleClickOpenDeposit={handleClickOpenDeposit}
                     handleClickOpenManageFunds={handleClickOpenManageFunds}
                     handleClickOpenHistory={handleClickOpenHistory}
+                    handleClickOpenSettings={handleClickOpenSettings}
                     accountValue={accountValue}
                     investValue={investValue}
                 />
@@ -81,6 +90,14 @@ export default function Header({ accountValue, investValue }) {
                     openManageFunds={openManageFunds}
                     setOpenManageFunds={setOpenManageFunds}
                     setOpenDeposit={setOpenDeposit}
+                    setOpenWithdraw={setOpenWithdraw}
+                    Transition={Transition}
+                />
+
+                <CustomWithdrawMoney
+                    openWithdraw={openWithdraw}
+                    setOpenWithdraw={setOpenWithdraw}
+                    setOpenDeposit={setOpenDeposit}
                     Transition={Transition}
                 />
 
@@ -91,11 +108,17 @@ export default function Header({ accountValue, investValue }) {
                     Transition={Transition}
                 />
 
+                <CustomSettings
+                    openSettings={openSettings}
+                    setOpenSettings={setOpenSettings}
+                    Transition={Transition}
+                />
+
                 <CustomAllHistory
-                    openHistory={openHistory} 
-                    setOpenHistory={setOpenHistory} 
-                    Transition={Transition} 
-                    history={history} 
+                    openHistory={openHistory}
+                    setOpenHistory={setOpenHistory}
+                    Transition={Transition}
+                    history={history}
                 ></CustomAllHistory>
 
             </div>

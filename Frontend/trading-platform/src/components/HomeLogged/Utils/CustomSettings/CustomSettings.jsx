@@ -1,0 +1,119 @@
+import React from "react";
+import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/material';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+
+
+export function CustomSettings({ openSettings, setOpenSettings, Transition }) {
+    function handleCloseSettings() {
+        setOpenSettings(false);
+        setOldPassword('');
+        setNewPassword('');
+        setRepeatNewPassword('');
+    };
+
+    const [oldPassword, setOldPassword]=React.useState('');
+    const [newPassword, setNewPassword]=React.useState('');
+    const [repeatNewPassword, setRepeatNewPassword]=React.useState('');
+
+    const handleChangeOldPassword = (event) => {
+        setOldPassword(event.target.value);
+    };
+
+    const handleChangeNewPassword = (event) => {
+        setNewPassword(event.target.value);
+    };
+
+    const handleChangeRepeatNewPassword = (event) => {
+        setRepeatNewPassword(event.target.value);
+    };
+
+    function change_pass() {
+        fetch(GATEWAY_HOST + "/change-password", {
+            method: "PUT",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                password:oldPassword,
+                new_password: newPassword
+            }),
+        }).then((data) => {
+            if (data.status === 200) {
+                data.json().then(() => {
+                    handleCloseSettings();
+                });
+
+            }
+            else if (data.status === 403) {
+                handleCloseSettings();
+            }
+            else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                data.json().then(() => {
+                    handleCloseSettings();
+                });
+            } else {
+                handleCloseSettings();
+            }
+        }
+        );
+        console.log("Change Password")
+    }
+
+    return (
+        <div>
+            <Dialog
+                open={openSettings}
+                onClose={handleCloseSettings}
+                TransitionComponent={Transition}
+                keepMounted
+                fullWidth
+                maxWidth="sm"
+                PaperProps={{
+                    style: { borderRadius: 10 }
+                }}
+            >
+                <DialogTitle style={{ backgroundColor: '#E8E8E8', textAlign: 'center' }}> Settings
+                </DialogTitle>
+                <DialogContent style={{ width: '99%' }}>
+                    <div style={{ textAlign: 'center', borderRadius: '10px', marginTop: '20px', backgroundColor: '#E8E8E8' }}>
+
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="Old password"
+                            label="Old password"
+                            type="password"
+                            value={oldPassword}
+                            onChange={handleChangeOldPassword}
+                            style={{ width: '90%', marginTop: '20px' }}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="New Password"
+                            label="New Password"
+                            type="password"
+                            value={newPassword}
+                            onChange={handleChangeNewPassword}
+                            style={{ width: '90%', marginTop: '20px' }}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="Repeat New Password"
+                            label="Repeat New Password"
+                            type="password"
+                            value={repeatNewPassword}
+                            onChange={handleChangeRepeatNewPassword}
+                            style={{ width: '90%', marginTop: '20px' }}
+                        />
+                        <Button id='buttonPayCardDialog' onClick={change_pass}>
+                            Change Password
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </div>
+    )
+}

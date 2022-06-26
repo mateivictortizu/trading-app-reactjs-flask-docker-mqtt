@@ -175,7 +175,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
         }
 
         if (!checkIsValidPhone(phoneRegister)) {
-            setErrorPhoneRegisterMessage("");
+            setErrorPhoneRegisterMessage("Bad phone format");
             result = false;
         }
 
@@ -214,7 +214,6 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     };
 
     const handleSendRegister = () => {
-        console.log("Works");
         if (checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateRegister)) {
             var dateBirthRegister = dateRegister.toLocaleDateString("en-US", { year: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { month: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { day: 'numeric' });
             fetch("http://" + USER_HOST + "/register", {

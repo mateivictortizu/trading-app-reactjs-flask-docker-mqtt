@@ -138,17 +138,7 @@ def validate_accountDAO(current_app, db, validation_code):
         db.session.remove()
         return jsonify({'error': 'Account is already confirmed'}), 400
     search_user.confirmed = True
-
-    FUNDS_HOST = os.getenv("FUNDS_HOST", "https://127.0.0.1:5002")
-    json_user = {'email': validate}
-
     try:
-        '''
-        r = requests.post(parse.urljoin(FUNDS_HOST, "/add-new"), json=json_user, verify=False)
-        if r.status_code != 201:
-            db.session.remove()
-            return jsonify({'error': 'Account was not confirmed'}), 400
-        '''
         pass
     except Exception:
         return jsonify({'error': 'Error in create account'}), 400

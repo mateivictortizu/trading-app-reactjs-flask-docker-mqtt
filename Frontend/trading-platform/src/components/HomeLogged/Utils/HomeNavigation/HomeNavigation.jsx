@@ -6,27 +6,44 @@ export default function HomeNavigation({ buttonHomeClicked, setButtonHomeClicked
 
     function clickMyWatchlist() {
         setButtonHomeClicked('mywatchlist');
-        setPriceClicked(datas[0]['price']);
-        setButtonStockClicked(datas[0]['stock_symbol']);
+        if(datas.length!==0)
+        {
+            setPriceClicked(datas[0]['price']);
+            setButtonStockClicked(datas[0]['stock_symbol']);
+        }
+        else
+        {
+            setPriceClicked(null);
+            setButtonStockClicked(null);
+        }
     }
 
     function clickPopular() {
         setButtonHomeClicked('popular');
-        setPriceClicked(datasPopular[0]['price']);
-        setButtonStockClicked(datasPopular[0]['stock_symbol']);
+        if(datasPopular.length!==0)
+        {
+            setPriceClicked(datasPopular[0]['price']);
+            setButtonStockClicked(datasPopular[0]['stock_symbol']);
+    
+        }
+        else
+        {
+            setPriceClicked(null);
+            setButtonStockClicked(null);
+        }
     }
 
     function clickRecommended() {
         setButtonHomeClicked('recommended');
-        if(datasRecommendation.length !=0)
+        if(datasRecommendation.length !==0)
         {
             setPriceClicked(datasRecommendation[0]['price']);
             setButtonStockClicked(datasRecommendation[0]['stock_symbol']);
         }
         else
         {
-            setPriceClicked(undefined);
-            setButtonStockClicked(undefined);
+            setPriceClicked(null);
+            setButtonStockClicked(null);
         }
     }
 

@@ -9,10 +9,10 @@ import { CustomSell } from '../CustomSell/CustomSell';
 import { CustomHistory } from '../CustomHistory/CustomHistory';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 
 export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested, valueAccount }) {
-    const [stockInfo, setStockInfo] = React.useState(null);
+    const [stockInfo, setStockInfo] = React.useState(undefined);
     const [period, setPeriod] = React.useState('1D');
     const [openBuy, setOpenBuy] = React.useState(false);
     const [openSell, setOpenSell] = React.useState(false);
@@ -33,7 +33,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     };
 
     function handleOpenHistory(stock_name) {
-        fetch(GATEWAY_HOST+"/get-history-stock-user", {
+        fetch(GATEWAY_HOST + "/get-history-stock-user", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -64,7 +64,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     };
 
     function get_investment(stock_name) {
-        fetch(GATEWAY_HOST+"/get-stock-invest-by-user", {
+        fetch(GATEWAY_HOST + "/get-stock-invest-by-user", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -85,8 +85,9 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
 
     useEffect(() => {
         setInvested(0);
+        setStockInfo(undefined);
         if (buttonStockClicked !== null) {
-            fetch(GATEWAY_HOST+"/get-stock-info/" + buttonStockClicked, {
+            fetch(GATEWAY_HOST + "/get-stock-info/" + buttonStockClicked, {
                 method: "GET",
                 credentials: 'include',
                 headers: {
@@ -115,11 +116,16 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                     }
                 });
         }
+        else {
+            setStockInfo(undefined);
+
+        }
     }, [buttonStockClicked, priceClicked]);
 
 
-    if (stockInfo === null) {
-        return (<div></div>)
+    if (stockInfo === undefined || buttonStockClicked === null || priceClicked === null) {
+        return (<div>
+        </div>)
     }
     else {
         if (period === '1D') {
@@ -214,7 +220,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                     <Typography id='stockName'>{stockInfo.company_name}</Typography>
                     <Typography id='stockDetails'>{stockInfo.stock_symbol} · STOCK · US  </Typography>
                     <div id='buttonsDivDataStock'>
-                        <Button id='buttonDataStock' disabled={(statisticData[1].toFixed(2)<=0)} onClick={handleOpenSell}>Sell</Button>
+                        <Button id='buttonDataStock' disabled={(statisticData[1].toFixed(2) <= 0)} onClick={handleOpenSell}>Sell</Button>
                         <Button id='buttonDataStock' onClick={handleOpenBuy}>Buy</Button>
                     </div>
                     <Typography id='priceDataStock'>${priceClicked.toFixed(2)}</Typography>

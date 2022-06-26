@@ -2,17 +2,35 @@ import './CustomBuy.css';
 import React from "react";
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import { Dialog, DialogTitle, DialogContent, Typography, Button, Input } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, Button, Input, Grid } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, logo, stock_symbol, valueAccount }) {
 
     const [value, setValue] = React.useState(0.0);
+    const [priceAutobuyValue, setPriceAutobuyValue] = React.useState(0.0);
+    const [qtyAutobuyValue, setQtyAutobuyValue] = React.useState(0.0);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
     const [errorBuy, setErrorBuy] = React.useState("");
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = React.useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [messageAlert, setMessageAlert]=React.useState([]);
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
 
     const handleChange = (event) => {
@@ -22,6 +40,8 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
     function handleCloseBuy() {
         setOpenBuy(false);
         setValue(0.0);
+        setPriceAutobuyValue(0.0);
+        setQtyAutobuyValue(0.0);
         setErrorBuy("");
     };
 
@@ -35,12 +55,18 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
         }
     };
 
+    const handlePriceAutobuyValueChange = (event) => {
+        setPriceAutobuyValue(event.target.value);
+    };
+
+    const handleQtyAutobuyValueChange = (event) => {
+        setQtyAutobuyValue(event.target.value);
+    };
+
     function buy_invested() {
         if (value > 0) {
             if (price * value <= valueAccount) {
-                console.log(price * value);
-                console.log(valueAccount);
-                fetch(GATEWAY_HOST+"/buy", {
+                fetch(GATEWAY_HOST + "/buy", {
                     method: "POST",
                     credentials: 'include',
                     headers: {
@@ -55,11 +81,14 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                     if (data.status === 200) {
                         data.json().then(() => {
                             handleCloseBuy();
+                            setOpenAlert(true);
+                            setMessageAlert(["You buy "+value+" shares of "+stock_symbol,"success"])
                         });
 
                     }
                     else if (data.status === 403) {
                         setErrorBuy("Not enought money");
+                        setMessageAlert(["Buy fail","error"])
                         handleCloseBuy();
                         removeCookie("jwt");
                         removeCookie("session");
@@ -82,8 +111,21 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
         }
     };
 
+    function autobuy_invested() {
+        console.log('Autobuy');
+        handleCloseBuy();
+    };
+
     return (
         <div>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+            }}>
+                <Alert onClose={handleCloseAlert} severity={messageAlert[1]} sx={{ width: '100%' }} style={{ backgroundColor: "#0066cc" }} >
+                    {messageAlert[0]}
+                </Alert>
+            </Snackbar>
             <Dialog
                 open={openBuy}
                 onClose={handleCloseBuy}
@@ -101,7 +143,7 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                     <Typography id='priceCustomBuy'>${price}</Typography>
                 </DialogTitle>
                 <DialogContent style={{ height: '300px' }}>
-                    <div style={{ textAlign: 'center' }}>
+                    <div style={{ textAlign: 'center', marginTop: '10px' }}>
                         Buy
                         <Switch
                             checked={checked}
@@ -112,7 +154,7 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                     </div>
                     {(checked === false) &&
                         <div>
-                            <Typography id='valueBuy'>Value</Typography>
+                            <Typography id='valueBuy'>Quantity</Typography>
                             <Input
                                 id='insertBuy'
                                 disableUnderline={true}
@@ -126,21 +168,35 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                             />
                             <Button id='buttonBuy' disabled={(errorBuy !== "")} onClick={buy_invested}>BUY</Button>
                         </div>}
-                        {(checked === true) &&
+                    {(checked === true) &&
                         <div>
-                            <Typography id='valueBuy'>Value</Typography>
-                            <Input
-                                id='insertBuy'
-                                disableUnderline={true}
-                                error={errorBuy !== ""}
-                                helpertext={errorBuy}
-                                style={{ color: (errorBuy !== "") ? '#7F0000' : '#0066cc' }}
-                                autoFocus
-                                fullWidth
-                                onChange={handleValueChange}
-                                value={value}
-                            />
-                            <Button id='buttonBuy' disabled={(errorBuy !== "")} onClick={buy_invested}>BUY</Button>
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <Typography id='valueBuy'>Quantity</Typography>
+                                    <Input
+                                        id='insertBuy'
+                                        disableUnderline={true}
+                                        style={{ color: '#0066cc' }}
+                                        autoFocus
+                                        fullWidth
+                                        onChange={handleQtyAutobuyValueChange}
+                                        value={qtyAutobuyValue}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Typography id='valueBuy'>Target Price</Typography>
+                                    <Input
+                                        id='insertBuy'
+                                        disableUnderline={true}
+                                        style={{ color: '#0066cc' }}
+                                        autoFocus
+                                        fullWidth
+                                        onChange={handlePriceAutobuyValueChange}
+                                        value={priceAutobuyValue}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Button id='buttonBuy' onClick={autobuy_invested}>AUTOBUY</Button>
                         </div>}
                 </DialogContent>
             </Dialog>

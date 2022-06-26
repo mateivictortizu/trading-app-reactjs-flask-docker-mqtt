@@ -40,9 +40,13 @@ def buy_invested():
                                                                 {'identifier': users_connections[session['user_id']][
                                                                     'user'],
                                                                  'stock_symbol': request.json['stock_symbol']})
-        if get_value_of_stock == 200:
+        if get_value_of_stock[1] == 200:
             socketio.emit('get_investment', {
                 'cantitate': float(get_value_of_stock[0]['cantitate']), 'medie': float(get_value_of_stock[0]['medie'])})
+            socketio.emit("invest_on", 1)
+        else:
+            socketio.emit('get_investment', {'cantitate': 0, 'medie': 0})
+            socketio.emit("invest_on", 0)
         stock_invest = get_invest_by_user_processor(get_invest,
                                                     json_body={
                                                         'identifier': users_connections[session['user_id']]['user']})

@@ -20,7 +20,7 @@ const HomeLogged = () => {
     const [cookiesJWT, setCookieJWT, removeCookieJWT] = useCookies(['jwt']);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
-    const [buttonHomeClicked, setButtonHomeClicked] = React.useState('mywatchlist');
+    const [buttonHomeClicked, setButtonHomeClicked] = React.useState('popular');
     const [buttonStockClicked, setButtonStockClicked] = React.useState(null);
     const [priceClicked, setPriceClicked] = React.useState(null);
     const [datas, setDatas] = React.useState([]);
@@ -87,7 +87,7 @@ React.useEffect(()=>{
     });
 },[])
 
-if (datas.length === 0) {
+if (datasPopular.length === 0) {
     return (
         <div>
             <Loading />
@@ -107,7 +107,11 @@ else {
                         <Navigation
                             buttonClicked={buttonClicked}
                             setButtonClicked={setButtonClicked}
-                            data={datasForInvest}
+                            dataForInvest={datasForInvest}
+                            datasRecommendation={recommendationValue}
+                            datasPopular={datasPopular}
+                            datas={datas}
+                            buttonHomeClicked={buttonHomeClicked}
                             setPriceClicked={setPriceClicked}
                             setButtonStockClicked={setButtonStockClicked}
                         />

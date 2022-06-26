@@ -6,7 +6,8 @@ from app.RabbitMQProcessor.UserRabbitMQProcessor import check_token_processor, r
     reset_pass_processor, set_new_pass_processor, verify_user_processor, ban_user_processor
 from app.blueprints import ban_client, verify_user_client, check_token_client, register_client, login_client, \
     validate_account_client, resend_validate_account_client, validate_otp_client, resend_otp_client, logout_client, \
-    change_password_client, request_change_password_client, reset_pass_client, set_new_pass_client
+    change_password_client, request_change_password_client, reset_pass_client, set_new_pass_client, users_connections, \
+    before_request_function
 
 user = Blueprint('user', __name__)
 
@@ -64,7 +65,14 @@ def logout():
 
 @user.route('/change-password', methods=['PUT'])
 def change_password():
-    return change_password_processor(change_password_client, request.json)
+    before_checking_result = before_request_function(request)
+    if before_checking_result[1] == 403:
+        return before_checking_result
+    request_temp = dict()
+    request_temp['identifier'] = users_connections[session['user_id']]['user']
+    request_temp['password'] = request.json['password']
+    request_temp['new_password'] = request.json['new_password']
+    return change_password_processor(change_password_client, request_temp)
 
 
 @user.route('/request-change-password', methods=['POST'])

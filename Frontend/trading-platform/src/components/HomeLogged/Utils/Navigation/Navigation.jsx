@@ -5,27 +5,61 @@ import HomeIcon from '@mui/icons-material/Home';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function Navigation({ buttonClicked, setButtonClicked, data, setPriceClicked, setButtonStockClicked }) {
+export default function Navigation({ buttonClicked, setButtonClicked, dataForInvest, datasRecommendation,
+    datasPopular, datas, buttonHomeClicked, setPriceClicked, setButtonStockClicked }) {
 
     function clickHome() {
         setButtonClicked('home');
+        if(buttonHomeClicked==='mywatchlist')
+        {
+            if (datas.length != 0) {
+                setButtonStockClicked(datas[0]['stock_symbol']);
+                setPriceClicked(datas[0]['price'])
+            }
+            else {
+                setButtonStockClicked(undefined);
+                setPriceClicked(undefined);
+            }
+        }
+        if(buttonHomeClicked==='popular')
+        {
+            if (datasPopular.length != 0) {
+                setButtonStockClicked(datasPopular[0]['stock_symbol']);
+                setPriceClicked(datasPopular[0]['price'])
+            }
+            else {
+                setButtonStockClicked(undefined);
+                setPriceClicked(undefined);
+            }
+        }
+        if(buttonHomeClicked==='recommended')
+        {
+            if (datasRecommendation.length != 0) {
+                setButtonStockClicked(datasRecommendation[0]['stock_symbol']);
+                setPriceClicked(datasRecommendation[0]['price'])
+            }
+            else {
+                setButtonStockClicked(undefined);
+                setPriceClicked(undefined);
+            }
+        }
     }
 
     function clickPie() {
         setButtonClicked('pie');
-        if(data.length!=0)
-        {
-            setButtonStockClicked(data[0]['stock_symbol']);
+        if (dataForInvest.length != 0) {
+            setButtonStockClicked(dataForInvest[0]['stock_symbol']);
+            setPriceClicked(dataForInvest[0]['price'])
         }
-        else
-        {
+        else {
             setButtonStockClicked(undefined);
+            setPriceClicked(undefined);
         }
     }
 
     function clickSearch() {
         setButtonClicked('search');
-        
+
     }
 
 

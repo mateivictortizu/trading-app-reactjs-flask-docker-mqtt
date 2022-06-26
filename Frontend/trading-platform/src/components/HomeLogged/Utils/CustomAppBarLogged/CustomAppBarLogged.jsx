@@ -5,10 +5,10 @@ import { Button, Stack, Toolbar, Box, AppBar, Typography } from '@mui/material';
 import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 import { useNavigate } from 'react-router-dom';
-import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 
 
-export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenHistory, accountValue, investValue }) {
+export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenSettings, handleClickOpenHistory, accountValue, investValue }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
@@ -43,9 +43,9 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     };
 
     function logout() {
-        fetch(GATEWAY_HOST+"/logout", {
+        fetch(GATEWAY_HOST + "/logout", {
             method: "DELETE",
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': cookies.jwt,
@@ -69,6 +69,11 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
     function history() {
         handleCloseUser();
         handleClickOpenHistory();
+    }
+
+    function settings(){
+        handleCloseUser();
+        handleClickOpenSettings();
     }
 
     return (
@@ -119,6 +124,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                             deposit={deposit}
                             manageFunds={manageFunds}
                             history={history}
+                            settings={settings}
                             logout={logout}
                         />
 
