@@ -1,2 +1,5 @@
-venv
+#venv
 app/database/migrations
+app/registration.db
+#__pycache__
+#.idea
