@@ -6,6 +6,7 @@ from datetime import datetime
 import pandas as pd
 import yfinance as yf
 from sqlalchemy import CheckConstraint
+from sqlalchemy.dialects.mysql import LONGTEXT
 
 from app import db, data_logo
 
@@ -32,8 +33,8 @@ class Stock(db.Model):
     sector = db.Column(db.String(40), nullable=False)
     industry = db.Column(db.String(40), nullable=False)
     market_name = db.Column(db.String(20), nullable=False)
+    longBuisnessSummary = db.Column(LONGTEXT, nullable=False)
     currency = db.Column(db.String(5), nullable=False)
-    longBuisnessSummary = db.Column(db.Text(), nullable=False)
     isin = db.Column(db.String(50), nullable=False)
     one_day = db.Column(db.JSON, nullable=True)
     one_month = db.Column(db.JSON, nullable=True)
@@ -209,7 +210,7 @@ class Watchlist(db.Model):
         return {'stock_symbol': self.stock_symbol, 'user': self.user}
 
     @staticmethod
-    def check_if_exists(stock_symbol, user,  session):
+    def check_if_exists(stock_symbol, user, session):
         search_watchlist = session.query(Watchlist).filter_by(stock_symbol=stock_symbol, user=user).first()
         session.close()
         if search_watchlist is None:

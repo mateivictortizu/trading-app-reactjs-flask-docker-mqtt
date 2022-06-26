@@ -5,4 +5,4 @@ pika
 flask-session
 gevent-websocket
 pyopenssl
-flask-sslify
+flask_socketio

@@ -10,3 +10,4 @@ apscheduler
 pyOpenSSL
 flask_cors
 mysqlclient
+gunicorn

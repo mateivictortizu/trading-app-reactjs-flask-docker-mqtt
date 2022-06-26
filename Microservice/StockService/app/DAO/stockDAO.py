@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import yfinance
 from sqlalchemy.orm import sessionmaker
 
-from app import engine
+from app import engine, executor
 from app import data_logo
 from app.database.models import Stock, Price, stock_data, Watchlist
 import re
@@ -218,7 +218,6 @@ def updatePriceDAO():
     for price in prices:
         if isinstance(price, Price):
             t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
-            t.daemon = True
             t.start()
             time.sleep(0.1)
 

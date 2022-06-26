@@ -1,10 +1,10 @@
 version: '2.9'
 services:
   webuser:
-    build: UserService
+    build: ./Microservice/UserService
     restart: always
     ports:
-      - "5001"
+      - "5003"
     environment:
       - DB_HOST=mysqluser
       - DB_USER=matteovk
@@ -40,21 +40,122 @@ services:
   nginxuser:
       image: nginx:latest
       volumes:
-          - ./UserService/nginx.conf:/etc/nginx/nginx.conf:ro
-          - ./UserService/cert.pem:/etc/nginx/cert.pem
-          - ./UserService/key.pem:/etc/nginx/key.pem
+          - ./Microservice/UserService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./Microservice/UserService/cert.pem:/etc/nginx/cert.pem
+          - ./Microservice/UserService/key.pem:/etc/nginx/key.pem
       depends_on:
           - webuser
       ports:
-          - "5001:5001"
+          - "5003:5003"
       networks:
         - network
-        
-  webstock:
-    build: StockService
+   
+  webfunds:
+    build: ./Microservice/FundsService
     restart: always
     ports:
-      - "5000"
+      - "5002"
+    environment:
+      - DB_HOST=mysqlfunds
+      - DB_USER=matteovk
+      - DB_PASSWORD=admin
+      - DB_DATABASE=funds
+    depends_on:
+      mysqlfunds:
+        condition: service_healthy
+    links:
+      - 'mysqlfunds'
+    networks:
+      - network
+      
+  mysqlfunds:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=funds
+      - MYSQL_USER=matteovk
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - mysqlfunds:/var/lib/mysql
+    ports:
+      - "3310:3307"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - network
+
+  nginxfunds:
+      image: nginx:latest
+      volumes:
+          - ./Microservice/FundsService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./Microservice/FundsService/cert.pem:/etc/nginx/cert.pem
+          - ./Microservice/FundsService/key.pem:/etc/nginx/key.pem
+      depends_on:
+          - webfunds
+      ports:
+          - "5002:5002"
+      networks:
+        - network
+   
+  webinvest:
+    build: ./Microservice/InvestService
+    restart: always
+    ports:
+      - "5005"
+    environment:
+      - DB_HOST=mysqlinvest
+      - DB_USER=matteovk
+      - DB_PASSWORD=admin
+      - DB_DATABASE=invest
+    depends_on:
+      mysqlinvest:
+        condition: service_healthy
+    links:
+      - 'mysqlinvest'
+    networks:
+      - network
+      
+  mysqlinvest:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=invest
+      - MYSQL_USER=matteovk
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - mysqlinvest:/var/lib/mysql
+    ports:
+      - "3311:3307"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - network
+
+  nginxinvest:
+      image: nginx:latest
+      volumes:
+          - ./Microservice/InvestService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./Microservice/InvestService/cert.pem:/etc/nginx/cert.pem
+          - ./Microservice/InvestService/key.pem:/etc/nginx/key.pem
+      depends_on:
+          - webinvest
+      ports:
+          - "5005:5005"
+      networks:
+        - network
+ 
+ 
+  webstock:
+    build: ./Microservice/StockService
+    restart: always
+    ports:
+      - "5001"
     environment:
       - DB_HOST=mysqlstock
       - DB_USER=matteovk
@@ -78,7 +179,7 @@ services:
     volumes:
       - mysqlstock:/var/lib/mysql
     ports:
-      - "3308:3306"
+      - "3312:3307"
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       interval: 1s
@@ -86,32 +187,25 @@ services:
       retries: 30
     networks:
       - network
-  
+
   nginxstock:
       image: nginx:latest
       volumes:
-          - ./StockService/nginx.conf:/etc/nginx/nginx.conf:ro
-          - ./StockService/cert.pem:/etc/nginx/cert.pem
-          - ./StockService/key.pem:/etc/nginx/key.pem
+          - ./Microservice/StockService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./Microservice/StockService/cert.pem:/etc/nginx/cert.pem
+          - ./Microservice/StockService/key.pem:/etc/nginx/key.pem
       depends_on:
           - webstock
       ports:
-          - "5000:5000"
+          - "5001:5001"
       networks:
         - network
+ 
   
-  backgroundscheduler:
-      build: BackgroundService
-      restart: always
-      environment:
-       - STOCK_HOST=nginxstock:5000
-       - STOCK_PROTOCOL=https
-      depends_on:
-       - nginxstock
-      networks:
-       - network  
 networks:
   network:
 volumes:
   mysqluser:
+  mysqlfunds:
+  mysqlinvest:
   mysqlstock:
