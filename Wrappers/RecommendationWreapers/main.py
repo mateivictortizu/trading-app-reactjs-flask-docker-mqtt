@@ -4,7 +4,8 @@ from urllib import parse
 import requests
 import pika
 
-URL = os.environ.get('RECOMMENDATION_MICROSERVICE', 'http://127.0.0.1:5006/')
+URL = 'http://'+os.environ.get('RECOMMENDATION_MICROSERVICE', 'http://127.0.0.1:5006/')+'/'
+RABBIT_MQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 
 
 def on_recommendation(ch, method, props, body):
@@ -26,7 +27,7 @@ def on_recommendation(ch, method, props, body):
 def start():
     print('Recommendation RabbitMQ Server start...')
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='localhost'))
+        pika.ConnectionParameters(host=RABBIT_MQ_HOST))
 
     channel = connection.channel()
 

@@ -4,7 +4,8 @@ from urllib import parse
 import requests
 import pika
 
-URL = os.environ.get('USER_MICROSERVICE', 'http://127.0.0.1:5003/')
+URL = 'http://'+os.environ.get('USER_MICROSERVICE', 'http://127.0.0.1:5003/')+'/'
+RABBIT_MQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 
 
 def on_ban(ch, method, props, body):
@@ -238,7 +239,7 @@ def on_set_new_pass(ch, method, props, body):
 def start():
     print('User RabbitMQ Server start...')
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='localhost'))
+        pika.ConnectionParameters(host=RABBIT_MQ_HOST))
 
     channel = connection.channel()
 

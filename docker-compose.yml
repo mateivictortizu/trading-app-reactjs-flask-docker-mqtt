@@ -200,8 +200,128 @@ services:
           - "5001:5001"
       networks:
         - network
- 
   
+  webrecommendation:
+    build: ./Microservice/RecommendationService
+    restart: always
+    environment:
+      - STOCK_HOST=nginxstock:5001
+      - STOCK_INVEST=nginxinvest:5005
+    ports:
+      - "5006"
+    networks:
+      - network
+      
+  nginxrecommendation:
+      image: nginx:latest
+      volumes:
+          - ./Microservice/RecommendationService/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./Microservice/RecommendationService/cert.pem:/etc/nginx/cert.pem
+          - ./Microservice/RecommendationService/key.pem:/etc/nginx/key.pem
+      depends_on:
+          - webrecommendation
+      ports:
+          - "5006:5006"
+      networks:
+        - network
+      
+  background:
+    build: ./BackgroundService
+    restart: always
+    environment:
+      - STOCK_HOST=nginxstock:5001
+      - STOCK_PROTOCOL=http
+    depends_on:
+      - nginxstock
+    networks:
+      - network
+      
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - network
+        
+  userwrapper:
+    build: ./Wrappers/UserWrappers
+    restart: always
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - USER_MICROSERVICE=nginxuser:5003
+    depends_on:
+      - rabbitmq
+      - nginxuser
+    networks:
+      - network
+   
+  stockwrapper:
+    build: ./Wrappers/StockWrappers
+    restart: always
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - STOCK_MICROSERVICE=nginxstock:5001
+    depends_on:
+      - rabbitmq
+      - nginxstock
+    networks:
+      - network
+
+  recommendationwrapper:
+    build: ./Wrappers/RecommendationWreapers
+    restart: always
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RECOMMENDATION_MICROSERVICE=nginxrecommendation:5006
+    depends_on:
+      - rabbitmq
+      - nginxrecommendation
+    networks:
+      - network 
+      
+  investwrapper:
+    build: ./Wrappers/InvestWrappers
+    restart: always
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - INVEST_MICROSERVICE=nginxinvest:5005
+    depends_on:
+      - rabbitmq
+      - nginxinvest
+    networks:
+      - network
+ 
+  fundswrapper:
+    build: ./Wrappers/FundsWrappers
+    restart: always
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - FUNDS_MICROSERVICE=nginxfunds:5002
+    depends_on:
+      - rabbitmq
+      - nginxfunds
+    networks:
+      - network
+      
+  gateway:
+    build: ./Gateway
+    restart: always
+    environment:
+      - RABBIT_MQ_FUNDS=rabbitmq
+      - RABBIT_MQ_INVEST=rabbitmq
+      - RABBIT_MQ_RECOMMENDATION=rabbitmq
+      - RABBIT_MQ_STOCKS=rabbitmq
+      - RABBIT_MQ_USER=rabbitmq
+    ports:
+      - "5000:5000"
+    networks:
+      - network
+      
 networks:
   network:
 volumes:

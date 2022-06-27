@@ -1,1 +1,3 @@
 venv/
+app/database/migrations/
+flask_session

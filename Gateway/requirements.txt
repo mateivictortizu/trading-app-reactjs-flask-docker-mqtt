@@ -6,3 +6,4 @@ flask-session
 gevent-websocket
 pyopenssl
 flask_socketio
+gunicorn

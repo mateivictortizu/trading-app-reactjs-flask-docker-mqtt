@@ -4,7 +4,8 @@ from urllib import parse
 import requests
 import pika
 
-URL = os.environ.get('STOCK_MICROSERVICE', 'http://127.0.0.1:5001/')
+URL = 'http://'+os.environ.get('STOCK_MICROSERVICE', '127.0.0.1:5001')+'/'
+RABBIT_MQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 
 
 def on_add_stock(ch, method, props, body):
@@ -169,7 +170,7 @@ def on_add_watchlist(ch, method, props, body):
 def start():
     print('Stock RabbitMQ Server start...')
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='localhost'))
+        pika.ConnectionParameters(host=RABBIT_MQ_HOST))
 
     channel = connection.channel()
 

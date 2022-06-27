@@ -4,7 +4,8 @@ from urllib import parse
 import requests
 import pika
 
-URL = os.environ.get('FUNDS_MICROSERVICE', 'http://127.0.0.1:5002/')
+URL = 'http://'+os.environ.get('FUNDS_MICROSERVICE', 'http://127.0.0.1:5002/')+'/'
+RABBIT_MQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 
 
 def on_add_money(ch, method, props, body):
@@ -90,7 +91,7 @@ def on_get_funds(ch, method, props, body):
 def start():
     print('Funds RabbitMQ Server start...')
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='localhost'))
+        pika.ConnectionParameters(host=RABBIT_MQ_HOST))
 
     channel = connection.channel()
 

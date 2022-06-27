@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn --bind 0.0.0.0:5000 wsgi:app --log-level debug
+gunicorn --bind 0.0.0.0:5000 -k gevent -w 1 wsgi:app
