@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 import yfinance
 from sqlalchemy.orm import sessionmaker
+from yfinance import tickers
 
 from app import engine, executor
 from app import data_logo
@@ -55,60 +56,58 @@ def addStockDAO(stock_symbol):
 
 
 def updateStockAsync(stock_symbol, date):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    if datetime.utcnow() > date + timedelta(seconds=30):
-        session.close()
+    if datetime.utcnow() > date + timedelta(seconds=10):
         return
     bad_check = False
     stock_symbol = stock_symbol.upper()
     try:
-        stock = session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
         try:
             search_stock = yfinance.Ticker(stock_symbol)
+            search_stock_info = search_stock.info
         except:
             bad_check = True
-            session.close()
             raise Exception('Cannot receive data from server')
-
-        if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
-            stock.company_name = search_stock.info['longName']
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        stock = session.query(Stock).filter_by(stock_symbol=stock_symbol).first()
+        if 'longName' in search_stock_info.keys() and search_stock_info['longName'] is not None:
+            stock.company_name = search_stock_info['longName']
         else:
             bad_check = True
 
         if stock.stock_symbol in data_logo:
             stock.logo = data_logo[stock.stock_symbol]
         else:
-            if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-                stock.logo = search_stock.info['logo_url']
+            if 'logo_url' in search_stock_info.keys() and search_stock_info['logo_url'] is not None:
+                stock.logo = search_stock_info['logo_url']
             else:
                 bad_check = True
 
-        if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info['longBusinessSummary'] is not None:
-            stock.longBuisnessSummary = search_stock.info['longBusinessSummary']
+        if 'longBusinessSummary' in search_stock_info.keys() and search_stock_info['longBusinessSummary'] is not None:
+            stock.longBuisnessSummary = search_stock_info['longBusinessSummary']
         else:
             bad_check = True
 
-        stock.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
+        stock.employees = search_stock_info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock_info.keys() \
             else None
 
-        if 'sector' in search_stock.info.keys() and search_stock.info['sector'] is not None:
-            stock.sector = search_stock.info['sector']
+        if 'sector' in search_stock_info.keys() and search_stock_info['sector'] is not None:
+            stock.sector = search_stock_info['sector']
         else:
             bad_check = True
 
-        if 'industry' in search_stock.info.keys() and search_stock.info['industry'] is not None:
-            stock.industry = search_stock.info['industry']
+        if 'industry' in search_stock_info.keys() and search_stock_info['industry'] is not None:
+            stock.industry = search_stock_info['industry']
         else:
             bad_check = True
 
-        if 'market' in search_stock.info.keys() and search_stock.info['market'] is not None:
-            stock.market_name = search_stock.info['market']
+        if 'market' in search_stock_info.keys() and search_stock_info['market'] is not None:
+            stock.market_name = search_stock_info['market']
         else:
             bad_check = True
 
-        if 'financialCurrency' in search_stock.info.keys() and search_stock.info['financialCurrency'] is not None:
-            stock.currency = search_stock.info['financialCurrency']
+        if 'financialCurrency' in search_stock_info.keys() and search_stock_info['financialCurrency'] is not None:
+            stock.currency = search_stock_info['financialCurrency']
         else:
             bad_check = True
 
@@ -120,8 +119,9 @@ def updateStockAsync(stock_symbol, date):
         stock.isin = search_stock.isin
         if bad_check is False:
             session.commit()
-    finally:
         session.close()
+    except Exception as e:
+        print(e)
 
 
 def updateStockDAO():
@@ -137,89 +137,85 @@ def updateStockDAO():
 
 
 def updatePriceAsync(stock_symbol, date):
-    Session = sessionmaker(bind=engine)
-    session = Session()
     if datetime.utcnow() > date + timedelta(seconds=7):
-        session.close()
         return
     stock_symbol = stock_symbol.upper()
     try:
-        price = session.query(Price).filter_by(stock_symbol=stock_symbol).first()
         bad_check = False
         try:
-            search_price = yfinance.Ticker(price.stock_symbol)
+            search_price = yfinance.Ticker(stock_symbol)
+            search_price = search_price.info
         except:
-            session.close()
             bad_check = True
-            print("BAD")
             raise Exception('Cannot receive data from server')
-        if 'shortName' in search_price.info.keys() and search_price.info['shortName'] is not None:
-            price.company_name = re.split(' Corporation|,|Group ', search_price.info['shortName'])[0]
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        price = session.query(Price).filter_by(stock_symbol=stock_symbol).first()
+        if 'shortName' in search_price.keys() and search_price['shortName'] is not None:
+            price.company_name = re.split(' Corporation|,|Group ', search_price['shortName'])[0]
         else:
             bad_check = True
 
         if price.stock_symbol in data_logo:
             price.logo = data_logo[price.stock_symbol]
         else:
-            if 'logo_url' in search_price.info.keys() and search_price.info['logo_url'] is not None:
-                price.logo = search_price.info['logo_url']
+            if 'logo_url' in search_price.keys() and search_price['logo_url'] is not None:
+                price.logo = search_price['logo_url']
             else:
                 bad_check = True
         if bad_check is False:
-            if 'currentPrice' in search_price.info.keys() and search_price.info['currentPrice'] is not None:
-                if price.price > search_price.info['currentPrice']:
+            if 'currentPrice' in search_price.keys() and search_price['currentPrice'] is not None:
+                if price.price > search_price['currentPrice']:
                     price.updown = False
                 else:
                     price.updown = True
-                price.price = search_price.info['currentPrice']
+                price.price = search_price['currentPrice']
             else:
                 bad_check = True
 
-            if 'recommendationKey' in search_price.info.keys() and search_price.info['recommendationKey'] is not None:
-                price.recommendation = search_price.info['recommendationKey']
+            if 'recommendationKey' in search_price.keys() and search_price['recommendationKey'] is not None:
+                price.recommendation = search_price['recommendationKey']
             else:
                 bad_check = True
 
-            if 'targetLowPrice' in search_price.info.keys() and search_price.info['targetLowPrice'] is not None:
-                price.targetLow = search_price.info['targetLowPrice']
+            if 'targetLowPrice' in search_price.keys() and search_price['targetLowPrice'] is not None:
+                price.targetLow = search_price['targetLowPrice']
             else:
                 bad_check = True
 
-            if 'targetMeanPrice' in search_price.info.keys() and search_price.info['targetMeanPrice'] is not None:
-                price.targetMean = search_price.info['targetMeanPrice']
+            if 'targetMeanPrice' in search_price.keys() and search_price['targetMeanPrice'] is not None:
+                price.targetMean = search_price['targetMeanPrice']
             else:
                 bad_check = True
 
-            if 'targetHighPrice' in search_price.info.keys() and search_price.info['targetHighPrice'] is not None:
-                price.targetHigh = search_price.info['targetHighPrice']
+            if 'targetHighPrice' in search_price.keys() and search_price['targetHighPrice'] is not None:
+                price.targetHigh = search_price['targetHighPrice']
             else:
                 bad_check = True
-            if 'recommendationMean' in search_price.info.keys() and search_price.info['recommendationMean'] is not None:
-                price.recommendationMean = search_price.info['recommendationMean']
+            if 'recommendationMean' in search_price.keys() and search_price['recommendationMean'] is not None:
+                price.recommendationMean = search_price['recommendationMean']
             else:
                 bad_check = True
 
-            if session.query(Price).filter_by(stock_symbol=stock_symbol).first().lastModify < date:
-                price.lastModify = date
+            if price.lastModify < date:
                 if bad_check is False:
+                    price.lastModify = date
                     session.commit()
-    except:
-        print('EXCEPT')
-        session.close()
-    finally:
-        session.close()
+            session.close()
+    except Exception as e:
+        print(e)
 
 
 def updatePriceDAO():
     Session = sessionmaker(bind=engine)
     session = Session()
+    # TODO order by oldest to newer update
     prices = session.query(Price).all()
     session.close()
     for price in prices:
         if isinstance(price, Price):
             t = threading.Thread(target=updatePriceAsync, args=(price.stock_symbol, datetime.utcnow()))
             t.start()
-            time.sleep(0.1)
 
 
 def get_all_stocksDAO():

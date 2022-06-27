@@ -92,6 +92,7 @@ def loginDAO(executor, current_app, db, mail, password, identifier):
         otp = OTP(username=user.username, email=user.email)
         OTP.add_to_otp(otp)
         try:
+            print(otp.code)
             message_html = "<h3>Your OTP is:</h3> <h1>" + str(otp.code) + "</h1>"
             executor.submit(send_email, current_app, mail, [otp.email],
                             'Hello {}'.format(otp.username), message_html)
@@ -194,6 +195,7 @@ def validate_otpDAO(current_app, db, otp_jwt, code):
                                                 jwt_secret=current_app.config['JWT_SECRET_KEY'])
             token = Token(token=jwt_token)
             Token.add_to_token(token)
+            print(token)
             OTP.delete_all_otp_from_identifier(user.username)
             OTPToken.delete_otp_token(otp_jwt)
             response = flask.Response(content_type='application/json')

@@ -20,8 +20,8 @@ if __name__ == "__main__":
 
     scheduler = BackgroundScheduler()
     scheduler.configure(timezone=utc)
-    scheduler.add_job(update_price, 'interval', seconds=5)
-    scheduler.add_job(update_stocks, 'interval', days=5)
+    scheduler.add_job(update_price, 'interval', seconds=20)
+    scheduler.add_job(update_stocks, 'interval', days=1)
     scheduler.start()
 
     try:

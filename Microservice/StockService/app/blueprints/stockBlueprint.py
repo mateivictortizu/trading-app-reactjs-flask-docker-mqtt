@@ -1,3 +1,5 @@
+import threading
+
 from flask import Blueprint, jsonify, request
 from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
@@ -62,7 +64,8 @@ def get_list_stock_price():
 @stockBP.route('/update-price', methods=['POST'])
 def update_price():
     try:
-        updatePriceDAO()
+        t = threading.Thread(target=updatePriceDAO)
+        t.start()
         return jsonify({'message': 'Prices updated'}), 200
     except Exception as e:
         print(e)
