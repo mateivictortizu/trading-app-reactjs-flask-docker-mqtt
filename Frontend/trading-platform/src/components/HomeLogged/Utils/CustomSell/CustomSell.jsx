@@ -108,7 +108,43 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
     };
 
     function autosell_invested() {
-        console.log('AUTOSELL');
+        fetch(GATEWAY_HOST + "/autosell", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                stock_symbol: stock_symbol,
+                cantitate: qtyAutosellValue,
+                price: priceAutosellValue
+            }),
+        }).then((data) => {
+            if (data.status === 200) {
+                data.json().then(() => {
+                    handleCloseSell();
+                    setMessageAlert(["You placed a pending sell order with "+value+" shares of "+stock_symbol,"success"])
+                });
+
+            }
+            else if (data.status === 403) {
+                handleCloseSell();
+                setMessageAlert(["AutoSell failed","error"])
+                removeCookie("jwt");
+                removeCookie("session");
+                navigate('/');
+            }
+            else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                data.json().then(() => {
+                    setMessageAlert(["AutoSell failed","error"])
+                    console.log('Error');
+                });
+            } else {
+                setMessageAlert(["Sell failed","error"])
+                console.log('Error');
+            }
+        }
+        )
         handleCloseSell();
     }
 

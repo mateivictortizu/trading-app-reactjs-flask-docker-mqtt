@@ -2,7 +2,7 @@ import json
 
 from app.RabbitMQClients.InvestRabbitMQ import BuyClient, SellClient, GetStockInvestByUserClient, \
     GetAllInvestByUserClient, GetHistoryStockByUserClient, GetAllHistoryByUserClient, GetValueOfAccountClient, \
-    GetDetailedUserInvest
+    GetDetailedUserInvest, AutoSellClient, AutoBuyClient, PendingAutoinvestClient, RemoveAutoinvestClient
 
 
 def buy_processor(buy, json_body):
@@ -123,3 +123,63 @@ def get_user_detailed_invests_processor(get_user_detailed_invests_client, json_b
             return response, response['code']
         except Exception:
             return 'Get Detailed User Invest server error', 500
+
+
+def autobuy_processor(autobuy, json_body):
+    if autobuy is None:
+        autobuy = AutoBuyClient()
+    try:
+        response = json.loads(autobuy.call(json_body))
+        return response, response['code']
+    except Exception:
+        try:
+            autobuy = AutoBuyClient()
+            response = json.loads(autobuy.call(json_body))
+            return response, response['code']
+        except Exception:
+            return 'AutoBuy server error', 500
+
+
+def autosell_processor(autosell, json_body):
+    if autosell is None:
+        autosell = AutoSellClient()
+    try:
+        response = json.loads(autosell.call(json_body))
+        return response, response['code']
+    except Exception:
+        try:
+            autosell = AutoSellClient()
+            response = json.loads(autosell.call(json_body))
+            return response, response['code']
+        except Exception:
+            return 'AutoSell server error', 500
+
+
+def get_autoinvest_stock_user_processor(get_autoinvest_stock_user_client, json_body):
+    if get_autoinvest_stock_user_client is None:
+        get_autoinvest_stock_user_client = PendingAutoinvestClient()
+    try:
+        response = json.loads(get_autoinvest_stock_user_client.call(json_body))
+        return response, response['code']
+    except Exception:
+        try:
+            get_autoinvest_stock_user_client = PendingAutoinvestClient()
+            response = json.loads(get_autoinvest_stock_user_client.call(json_body))
+            return response, response['code']
+        except Exception:
+            return 'Get autoinvest pending server error', 500
+
+
+def remove_autoinvest_processor(remove_autoinvest_client, json_body):
+    if remove_autoinvest_client is None:
+        remove_autoinvest_client = RemoveAutoinvestClient()
+    try:
+        response = json.loads(remove_autoinvest_client.call(json_body))
+        return response, response['code']
+    except Exception:
+        try:
+            remove_autoinvest_client = RemoveAutoinvestClient()
+            response = json.loads(remove_autoinvest_client.call(json_body))
+            return response, response['code']
+        except Exception:
+            return 'Remove autoinvest server error', 500

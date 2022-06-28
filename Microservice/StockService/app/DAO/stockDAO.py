@@ -1,16 +1,14 @@
 import json
+import re
 import threading
-import time
 from datetime import datetime, timedelta
 
 import yfinance
 from sqlalchemy.orm import sessionmaker
-from yfinance import tickers
 
-from app import engine, executor
 from app import data_logo
+from app import engine
 from app.database.models import Stock, Price, stock_data, Watchlist
-import re
 
 
 def getStockInfoDAO(stock_symbol):

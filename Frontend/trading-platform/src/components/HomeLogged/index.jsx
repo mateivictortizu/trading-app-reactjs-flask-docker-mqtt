@@ -37,7 +37,6 @@ const HomeLogged = () => {
 
 React.useEffect(()=>{
     const socket = socketIOClient(GATEWAY_HOST,{ withCredentials: true});
-    console.log(Cookies.get('jwt'));
     socket.on("stock_popular", (data) => {
         setDatasPopular(data['message']);
         if(buttonHomeClicked==='popular')
@@ -75,7 +74,6 @@ React.useEffect(()=>{
     });
 
     socket.on("get_all_stocks",(data) => {
-        console.log("get_funds");
         setRows(data['value']);    
     });
 

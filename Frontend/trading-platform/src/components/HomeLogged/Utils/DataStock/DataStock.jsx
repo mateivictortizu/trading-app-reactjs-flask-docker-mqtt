@@ -7,9 +7,11 @@ import HistoryIcon from '@mui/icons-material/History';
 import { CustomBuy } from '../CustomBuy/CustomBuy';
 import { CustomSell } from '../CustomSell/CustomSell';
 import { CustomHistory } from '../CustomHistory/CustomHistory';
+import { CustomPendingInvest } from '../CustomPendingInvest/CustomPendingInvest';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
 
 export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested, valueAccount }) {
     const [stockInfo, setStockInfo] = React.useState(undefined);
@@ -17,6 +19,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     const [openBuy, setOpenBuy] = React.useState(false);
     const [openSell, setOpenSell] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
+    const [openPendingInvest, setOpenPendingInvest] = React.useState(false);
     var graphics = null;
     var change = null;
     var stock = null;
@@ -27,6 +30,8 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
     const [history, setHistory] = React.useState([]);
+    const [pendingInvest, setPendingInvest] = React.useState([]);
+
 
     function handleOpenBuy() {
         setOpenBuy(true);
@@ -57,6 +62,33 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 }
             });
         setOpenHistory(true);
+    };
+
+    function handleOpenPendingInvest(stock_name) {
+        fetch(GATEWAY_HOST + "/get-autoinvest-stock-user", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                stock_symbol: stock_name
+            })
+        })
+            .then((data) => {
+                if (data.status === 200) {
+                    data.json().then((message) => {
+                        console.log(message);
+                        setPendingInvest(message['message']);
+                    });
+                }
+                else if (data.status === 403) {
+                    removeCookie("jwt");
+                    removeCookie("session");
+                    navigate('/');
+                }
+            });
+        setOpenPendingInvest(true);
     };
 
     function handleOpenSell() {
@@ -214,7 +246,8 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
             <div className="dataStock">
                 <CustomBuy openBuy={openBuy} setOpenBuy={setOpenBuy} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol} valueAccount={valueAccount}></CustomBuy>
                 <CustomSell openSell={openSell} setOpenSell={setOpenSell} Transition={Transition} stockName={stockInfo.company_name} price={priceClicked.toFixed(2)} logo={stockInfo.logo} stock_symbol={stockInfo.stock_symbol} qty_available={statisticData[1].toFixed(2)}></CustomSell>
-                <CustomHistory openHistory={openHistory} setOpenHistory={setOpenHistory} Transition={Transition} stock_symbol={stockInfo.stock_symbol} logo={stockInfo.logo} stockName={stockInfo.company_name} history={history} setHistory={setHistory}></CustomHistory>
+                <CustomHistory openHistory={openHistory} setOpenHistory={setOpenHistory} Transition={Transition} stock_symbol={stockInfo.stock_symbol} logo={stockInfo.logo} stockName={stockInfo.company_name} history={history} ></CustomHistory>
+                <CustomPendingInvest openPendingInvest={openPendingInvest} setOpenPendingInvest={setOpenPendingInvest} Transition={Transition} stock_symbol={stockInfo.stock_symbol} logo={stockInfo.logo} stockName={stockInfo.company_name} pendingInvest={pendingInvest} />
                 <div id="firstDivDataStock">
                     <img id='imgDataStock' src={stockInfo.logo} alt={stockInfo.company_name}></img>
                     <Typography id='stockName'>{stockInfo.company_name}</Typography>
@@ -259,6 +292,8 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                 <div id='brDivDataStock'></div>
                 <div>
                     <Button variant="outlined" id='buttonHistory' onClick={() => handleOpenHistory(stockInfo.stock_symbol)}><HistoryIcon style={{ color: '#4E4F50' }}></HistoryIcon>&nbsp;History</Button>
+                    &nbsp;&nbsp;
+                    <Button variant="outlined" id='buttonHistory' onClick={() => handleOpenPendingInvest(stockInfo.stock_symbol)}><PendingActionsIcon style={{ color: '#4E4F50' }}></PendingActionsIcon>&nbsp;Pending Invest</Button>
                 </div>
             </div>
         )

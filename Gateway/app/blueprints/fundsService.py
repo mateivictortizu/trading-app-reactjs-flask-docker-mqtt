@@ -19,7 +19,7 @@ def add_money():
     request_body['user'] = users_connections[session['user_id']]['user']
     add_money_value = add_money_processor(add_money_client, request_body)
     value_after_add = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_funds', {'value': value_after_add[0]['value']})
+    socketio.emit('get_funds', {'value': value_after_add[0]['value']},room=users_connections[session['user_id']]['socket'])
     return add_money_value
 
 
@@ -34,7 +34,8 @@ def withdraw_money():
     withdraw_money_value = withdraw_money_processor(withdraw_money_client, request_body)
     value_after_withdraw = get_funds_processor(get_funds_client,
                                                {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_funds', {'value': value_after_withdraw[0]['value']})
+    socketio.emit('get_funds', {'value': value_after_withdraw[0]['value']},
+                  room=users_connections[session['user_id']]['socket'])
     return withdraw_money_value
 
 
@@ -50,7 +51,8 @@ def add_money_after_sell():
     request_body['user'] = users_connections[session['user_id']]['user']
     add_money_value = add_money_after_sell_processor(add_money_after_sell_client, request_body)
     value_after_add = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_funds', {'value': value_after_add[0]['value']})
+    socketio.emit('get_funds', {'value': value_after_add[0]['value']},
+                  room=users_connections[session['user_id']]['socket'])
     return add_money_value
 
 
@@ -67,7 +69,8 @@ def withdraw_money_after_buy():
     withdraw_money_value = withdraw_money_after_buy_processor(withdraw_money_after_buy_client, request_body)
     value_after_withdraw = get_funds_processor(get_funds_client,
                                                {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_funds', {'value': value_after_withdraw[0]['value']})
+    socketio.emit('get_funds', {'value': value_after_withdraw[0]['value']},
+                  room=users_connections[session['user_id']]['socket'])
     return withdraw_money_value
 
 

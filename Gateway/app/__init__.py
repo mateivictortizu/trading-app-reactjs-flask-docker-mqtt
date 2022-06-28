@@ -23,7 +23,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 Session(app)
 cors = CORS(app, supports_credentials=True)
-socketio = SocketIO(app, cors_allowed_origins='http://localhost:3000')
+socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000', 'http://localhost:8000'])
 
 from app.blueprints.fundsService import funds
 from app.blueprints.stockService import stock
@@ -48,44 +48,59 @@ def before_request():
 
 @socketio.on('connect')
 def join_connect():
-    print(request.cookies)
     try:
         before_request_function(request)
+        users_connections[session['user_id']]['socket'] = request.sid
         json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}
+
         stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-        socketio.emit('stock_popular', stock_popular_list[0])
-        get_funds_value = get_funds_processor(get_funds_client, {'user': 'matteovkt@gmail.com'})
-        socketio.emit('get_funds', {'value': get_funds_value[0]['value']})
+        socketio.emit('stock_popular', stock_popular_list[0], room=request.sid)
+
+        get_funds_value = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
+        socketio.emit('get_funds', {'value': get_funds_value[0]['value']}, room=request.sid)
+
         get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
-                                                         {'user': 'matteovkt@gmail.com'})
-        socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']})
+                                                         {'user': users_connections[session['user_id']]['user']})
+        socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']}, room=request.sid)
+
         watchlist_list = []
         for i in get_all_stock[0]['list']:
             if i['watchlist'] is True:
                 watchlist_list.append(i['stock_symbol'])
         json_body = {"stock_list": watchlist_list}
         stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-        socketio.emit('stock_wishlist', stock_wishlist[0])
-        stock_invest = get_invest_by_user_processor(get_invest, json_body={'identifier': 'matteovkt@gmail.com'})
+        socketio.emit('stock_wishlist', stock_wishlist[0], room=request.sid)
+
+        stock_invest = get_invest_by_user_processor(get_invest, json_body={
+            'identifier': users_connections[session['user_id']]['user']})
         json_body = {"stock_list": stock_invest[0]['stock_list']}
         stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-        socketio.emit('stock_invest', stock_invest_list[0])
+        socketio.emit('stock_invest', stock_invest_list[0], room=request.sid)
+
         value_of_account = get_value_of_account_processor(get_value_of_account_client,
-                                                          json_body={'identifier': 'matteovkt@gmail.com'})
-        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
+                                                          json_body={
+                                                              'identifier': users_connections[session['user_id']][
+                                                                  'user']})
+        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'], room=request.sid)
+
         value_of_account = get_value_of_account_processor(get_value_of_account_client,
-                                                          json_body={'identifier': 'matteovkt@gmail.com'})
-        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'])
+                                                          json_body={
+                                                              'identifier': users_connections[session['user_id']][
+                                                                  'user']})
+        socketio.emit('get_invest_value_of_account', value_of_account[0]['message'], room=request.sid)
+
         user_detailed_invests = get_user_detailed_invests_processor(get_user_detailed_invests_client,
-                                                                    json_body={'identifier': 'matteovkt@gmail.com'})
-        socketio.emit('detailed_user_invests', user_detailed_invests[0])
+                                                                    json_body={'identifier': users_connections[
+                                                                        session['user_id']]['user']})
+        socketio.emit('detailed_user_invests', user_detailed_invests[0], room=request.sid)
 
         get_recommendation = recommendation_processor(recommendation_client,
-                                                      json_body={'identifier': 'matteovkt@gmail.com'})
-        if 'matteovkt@gmail.com' in get_recommendation[0]:
-            json_body = {"stock_list": get_recommendation[0]['matteovkt@gmail.com']}
+                                                      json_body={
+                                                          'identifier': users_connections[session['user_id']]['user']})
+        if users_connections[session['user_id']]['user'] in get_recommendation[0]:
+            json_body = {"stock_list": get_recommendation[0][users_connections[session['user_id']]['user']]}
             stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-            socketio.emit('recommendation', stock_invest_list[0])
+            socketio.emit('recommendation', stock_invest_list[0], room=request.sid)
     except Exception as e:
         print(e)
 

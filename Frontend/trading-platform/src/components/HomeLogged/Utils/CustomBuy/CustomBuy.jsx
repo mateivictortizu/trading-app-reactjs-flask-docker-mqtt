@@ -63,6 +63,47 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
         setQtyAutobuyValue(event.target.value);
     };
 
+    function autobuy_invested() {
+        fetch(GATEWAY_HOST + "/autobuy", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                stock_symbol: stock_symbol,
+                cantitate: qtyAutobuyValue,
+                price: priceAutobuyValue
+            }),
+        }).then((data) => {
+            if (data.status === 200) {
+                data.json().then(() => {
+                    handleCloseBuy();
+                    setMessageAlert(["You placed a pending buy order with "+value+" shares of "+stock_symbol,"success"])
+                });
+
+            }
+            else if (data.status === 403) {
+                handleCloseBuy();
+                setMessageAlert(["AutoBuy failed","error"])
+                removeCookie("jwt");
+                removeCookie("session");
+                navigate('/');
+            }
+            else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                data.json().then(() => {
+                    setMessageAlert(["AutoBuy failed","error"])
+                    console.log('Error');
+                });
+            } else {
+                setMessageAlert(["AutoBuy failed","error"])
+                console.log('Error');
+            }
+        }
+        )
+        handleCloseBuy();
+    }
+
     function buy_invested() {
         if (value > 0) {
             if (price * value <= valueAccount) {
@@ -109,11 +150,6 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                 console.log("Not money");
             }
         }
-    };
-
-    function autobuy_invested() {
-        console.log('Autobuy');
-        handleCloseBuy();
     };
 
     return (

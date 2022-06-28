@@ -12,4 +12,4 @@ def recommendation_system():
     before_checking_result = before_request_function(request)
     if before_checking_result[1] == 403:
         return before_checking_result
-    return recommendation_processor(recommendation_client, {'user': 'matteovkt@gmail.com'})
+    return recommendation_processor(recommendation_client, {'user': users_connections[session['user_id']]['user']})

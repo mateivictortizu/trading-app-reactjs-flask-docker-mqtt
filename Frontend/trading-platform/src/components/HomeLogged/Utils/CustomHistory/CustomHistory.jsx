@@ -41,8 +41,8 @@ export function CustomHistory({ openHistory, setOpenHistory, Transition, stock_s
                                     <TableRow key={row.stock_symbol + row.date_of_buy}>
                                         <TableCell align="center"><Typography style={{color:'white'}}>{row.stock_symbol}</Typography></TableCell>
                                         <TableCell align="center"><Typography style={{color:(row.action_type==='BUY')?'#2AAA8A':'#7F0000'}}>{row.action_type}</Typography></TableCell>
-                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.price}</Typography></TableCell>
-                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.cantitate}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:'white'}}>${row.price}</Typography></TableCell>
+                                        <TableCell align="center"><Typography style={{color:'white'}}>{row.cantitate} shares</Typography></TableCell>
                                         <TableCell align="center"><Typography style={{color:'white'}}>{row.date_of_buy}</Typography></TableCell>
                                     </TableRow>
                                 ))}

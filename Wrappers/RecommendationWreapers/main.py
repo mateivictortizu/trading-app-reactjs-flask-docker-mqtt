@@ -4,7 +4,7 @@ from urllib import parse
 import requests
 import pika
 
-URL = 'http://'+os.environ.get('RECOMMENDATION_MICROSERVICE', 'http://127.0.0.1:5006/')+'/'
+URL = 'http://'+os.environ.get('RECOMMENDATION_MICROSERVICE', '127.0.0.1:5006')+'/'
 RABBIT_MQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 
 

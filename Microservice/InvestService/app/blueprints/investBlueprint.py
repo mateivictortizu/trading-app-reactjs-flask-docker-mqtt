@@ -3,8 +3,8 @@ from flask_json_schema import JsonValidationError
 from sqlalchemy.exc import DatabaseError
 
 from app.DAO.investDAO import buy_investDAO, sell_investDAO, get_stock_invest_by_userDAO, get_invest_by_userDAO, \
-    get_usersDAO, get_user_sumarryDAO
-from app.database.models import Invest
+    get_usersDAO, get_user_sumarryDAO, sell_autoinvestDAO, buy_autoinvestDAO, delete_investDAO
+from app.database.models import Invest, AutoInvest
 
 investBP = Blueprint('investBlueprint', __name__)
 
@@ -174,3 +174,74 @@ def get_detailed_stock_invest():
         stock_dict.pop(i)
     print(stock_dict)
     return stock_dict, 200
+
+
+@investBP.route('/autobuy', methods=['POST'])
+def autobuy():
+    json_body = request.json
+    print(json_body)
+    user = json_body['user']
+    stock_symbol = json_body['stock_symbol']
+    cantitate = float(json_body['cantitate'])
+    price = float(json_body['price'])
+    try:
+        buy_autoinvestDAO(user, stock_symbol, cantitate, price)
+        return jsonify({"message": "AutoBuy Completed"}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "AutoBuy Fail"}), 400
+
+
+@investBP.route('/autosell', methods=['POST'])
+def autosell():
+    json_body = request.json
+    user = json_body['user']
+    stock_symbol = json_body['stock_symbol']
+    cantitate = float(json_body['cantitate'])
+    price = float(json_body['price'])
+    try:
+        sell_autoinvestDAO(user, stock_symbol, cantitate, price)
+        return jsonify({"message": "AutoSell Completed"}), 200
+    except Exception as e:
+        return jsonify({"message": "AutoSell Fail"}), 400
+
+
+@investBP.route('/remove-autoinvest', methods=['DELETE'])
+def remove_autoinvest():
+    json_body = request.json
+    id_invest = json_body['id_invest']
+    try:
+        delete_investDAO(id_invest)
+        return jsonify({"message": "AutoInvest Removed"}), 200
+    except Exception as e:
+        return jsonify({"message": "AutoInvest Fail Removed"}), 400
+
+
+@investBP.route('/get-autoinvest-stock-user', methods=['POST'])
+def get_autoinvest_stock_user():
+    user = request.json['identifier']
+    stock_symbol = request.json['stock_symbol']
+    x = AutoInvest.get_stock_invest_by_user(user, stock_symbol)
+    stock_invest = []
+    for i in x:
+        stock_invest.append(
+            {"id": i.id, "stock_symbol": i.stock_symbol, "price": i.price, "cantitate": i.cantitate,
+             "action_type": i.action_type,
+             "date_of_autobuy": i.date_of_autobuy})
+    stock_invest = sorted(stock_invest, key=lambda i: i['date_of_autobuy'])
+    return jsonify({"message": stock_invest}), 200
+
+
+@investBP.route('/get-all-autoinvests')
+def get_all_autoinvests():
+    all_invest = AutoInvest.get_all()
+    all_invest_list = {}
+    for i in all_invest:
+        if i.stock_symbol not in all_invest_list:
+            all_invest_list[i.stock_symbol] = []
+            all_invest_list[i.stock_symbol].append(
+                {"id": i.id, "user": i.user, "action_type": i.action_type, "cantitate": i.cantitate, "price": i.price})
+        else:
+            all_invest_list[i.stock_symbol].append(
+                {"id": i.id, "user": i.user, "action_type": i.action_type, "cantitate": i.cantitate, "price": i.price})
+    return jsonify({"message": all_invest_list}), 200

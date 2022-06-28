@@ -45,6 +45,10 @@ get_history_stock_user_client = None
 get_all_history_user_client = None
 get_value_of_account_client = None
 get_user_detailed_invests_client = None
+autobuy_client = None
+autosell_client = None
+get_autoinvest_stock_user_client = None
+remove_autoinvest_client = None
 
 
 def before_request_function(request_value):

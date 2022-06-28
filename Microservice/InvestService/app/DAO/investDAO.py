@@ -1,4 +1,4 @@
-from app.database.models import Invest
+from app.database.models import Invest, AutoInvest
 
 
 def buy_investDAO(user, stock_symbol, cantitate, price):
@@ -62,3 +62,15 @@ def get_usersDAO():
     for i in users:
         users_invest[i[0]] = get_user_sumarryDAO(i[0])
     return users_invest
+
+
+def buy_autoinvestDAO(user, stock_symbol, cantitate, price):
+    AutoInvest.buy_autoinvest(user, stock_symbol, cantitate, price)
+
+
+def sell_autoinvestDAO(user, stock_symbol, cantitate, price):
+    AutoInvest.sell_autoinvest(user, stock_symbol, cantitate, price)
+
+
+def delete_investDAO(id_invest):
+    AutoInvest.remove_autoinvest(id_invest)

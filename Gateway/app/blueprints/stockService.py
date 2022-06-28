@@ -89,7 +89,8 @@ def add_watchlist():
     add_response = add_watchlist_processor(add_watchlist_client, request_temp)
     get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
                                                      {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']})
+    socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']},
+                  room=users_connections[session['user_id']]['socket'])
 
     watchlist_list = []
     for i in get_all_stock[0]['list']:
@@ -97,7 +98,7 @@ def add_watchlist():
             watchlist_list.append(i['stock_symbol'])
     json_body = {"stock_list": watchlist_list}
     stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-    socketio.emit('stock_wishlist', stock_wishlist[0])
+    socketio.emit('stock_wishlist', stock_wishlist[0], room=users_connections[session['user_id']]['socket'])
     return add_response
 
 
@@ -112,12 +113,15 @@ def remove_watchlist():
     remove_response = remove_watchlist_processor(remove_watchlist_client, request_temp)
     get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
                                                      {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']})
+    socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']},
+                  room=users_connections[session['user_id']]['socket'])
+
     watchlist_list = []
     for i in get_all_stock[0]['list']:
         if i['watchlist'] is True:
             watchlist_list.append(i['stock_symbol'])
     json_body = {"stock_list": watchlist_list}
     stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
-    socketio.emit('stock_wishlist', stock_wishlist[0])
+    socketio.emit('stock_wishlist', stock_wishlist[0], room=users_connections[session['user_id']]['socket'])
+
     return remove_response

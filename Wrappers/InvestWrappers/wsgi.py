@@ -4,7 +4,7 @@ from urllib import parse
 import requests
 import pika
 
-URL = 'http://'+os.environ.get('INVEST_MICROSERVICE', 'http://127.0.0.1:5005/')+'/'
+URL = 'http://' + os.environ.get('INVEST_MICROSERVICE', '127.0.0.1:5005') + '/'
 RABBIT_MQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 
 
@@ -184,6 +184,94 @@ def on_detailed_user(ch, method, props, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
+def on_request_autobuy(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.post(parse.urljoin(URL, "autobuy"), json=json_body)
+    response = {}
+    if r.status_code == 200 or r.status_code == 201 or r.status_code == 401:
+        json_obj = json.loads(r.content)
+        response = json_obj
+    else:
+        try:
+            response = json.loads(r.content)
+        except Exception:
+            response["message"] = "AutoBuy fails"
+    response["code"] = r.status_code
+    response = json.dumps(response)
+
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+def on_request_autosell(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.post(parse.urljoin(URL, "autosell"), json=json_body)
+    response = {}
+    if r.status_code == 200 or r.status_code == 201 or r.status_code == 401:
+        json_obj = json.loads(r.content)
+        response = json_obj
+    else:
+        try:
+            response = json.loads(r.content)
+        except Exception:
+            response["message"] = "AutoSell fails"
+    response["code"] = r.status_code
+    response = json.dumps(response)
+
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=response)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+def on_request_remove_autoinvest(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.delete(parse.urljoin(URL, "remove-autoinvest"), json=json_body)
+    response = {}
+    if r.status_code == 200 or r.status_code == 201 or r.status_code == 401:
+        json_obj = json.loads(r.content)
+        response = json_obj
+    else:
+        try:
+            response = json.loads(r.content)
+        except Exception:
+            response["message"] = "Remove AutoInvest fails"
+    response["code"] = r.status_code
+    response = json.dumps(response)
+
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=response)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+def on_request_pending_autoinvest(ch, method, props, body):
+    json_body = json.loads(body)
+    r = requests.post(parse.urljoin(URL, "get-autoinvest-stock-user"), json=json_body)
+    response = {}
+    if r.status_code == 200 or r.status_code == 201 or r.status_code == 401:
+        json_obj = json.loads(r.content)
+        response = json_obj
+    else:
+        try:
+            response = json.loads(r.content)
+        except Exception:
+            response["message"] = "Remove AutoInvest fails"
+    response["code"] = r.status_code
+    response = json.dumps(response)
+
+    ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id=props.correlation_id),
+                     body=response)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
 def start():
     print('Invest RabbitMQ Server start...')
     connection = pika.BlockingConnection(
@@ -199,6 +287,10 @@ def start():
     channel.queue_declare(queue='get_all_history_by_user')
     channel.queue_declare(queue='get_value_of_account')
     channel.queue_declare(queue='get-detailed-user-invest')
+    channel.queue_declare(queue='autobuy_queue')
+    channel.queue_declare(queue='autosell_queue')
+    channel.queue_declare(queue='remove_autoinvest_queue')
+    channel.queue_declare(queue='pending_autoinvest')
 
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue='buy_queue', on_message_callback=on_request_buy)
@@ -209,6 +301,10 @@ def start():
     channel.basic_consume(queue='get_all_history_by_user', on_message_callback=on_all_history_user)
     channel.basic_consume(queue='get_value_of_account', on_message_callback=on_value_of_account)
     channel.basic_consume(queue='get-detailed-user-invest', on_message_callback=on_detailed_user)
+    channel.basic_consume(queue='autobuy_queue', on_message_callback=on_request_autobuy)
+    channel.basic_consume(queue='autosell_queue', on_message_callback=on_request_autosell)
+    channel.basic_consume(queue='remove_autoinvest_queue', on_message_callback=on_request_remove_autoinvest)
+    channel.basic_consume(queue='pending_autoinvest', on_message_callback=on_request_pending_autoinvest)
 
     try:
         channel.start_consuming()
