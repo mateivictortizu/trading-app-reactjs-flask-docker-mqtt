@@ -52,13 +52,10 @@ def join_connect():
         before_request_function(request)
         users_connections[session['user_id']]['socket'] = request.sid
         json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}
-
         stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
         socketio.emit('stock_popular', stock_popular_list[0], room=request.sid)
-
         get_funds_value = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
         socketio.emit('get_funds', {'value': get_funds_value[0]['value']}, room=request.sid)
-
         get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
                                                          {'user': users_connections[session['user_id']]['user']})
         socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']}, room=request.sid)

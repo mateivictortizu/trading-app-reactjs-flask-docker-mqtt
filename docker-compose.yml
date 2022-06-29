@@ -231,6 +231,8 @@ services:
     environment:
       - STOCK_HOST=nginxstock:5001
       - STOCK_PROTOCOL=http
+      - INVEST_HOST=nginxinvest:5005
+      - INVEST_PROTOCOL=http
     depends_on:
       - nginxstock
     networks:
@@ -318,9 +320,22 @@ services:
       - RABBIT_MQ_STOCKS=rabbitmq
       - RABBIT_MQ_USER=rabbitmq
     ports:
-      - "5000:5000"
+      - "5000"
     networks:
       - network
+      
+  nginxgateway:
+      image: nginx:latest
+      volumes:
+          - ./Gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./Gateway/cert.pem:/etc/nginx/cert.pem
+          - ./Gateway/key.pem:/etc/nginx/key.pem
+      depends_on:
+          - gateway
+      ports:
+          - "5000:5000"
+      networks:
+        - network
       
 networks:
   network:

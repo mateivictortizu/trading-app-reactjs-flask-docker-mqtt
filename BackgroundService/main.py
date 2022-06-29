@@ -30,7 +30,7 @@ def invest_autobuy():
                     if pending_invest['action_type'] == 'BUY':
                         if sp['price'] <= pending_invest['price']:
                             json_body = {"cantitate": pending_invest['cantitate'],
-                                         "price": pending_invest['price'],
+                                         "price": sp['price'],
                                          "user": pending_invest['user'],
                                          "stock_symbol": sp['stock_symbol']}
                             result_post = requests.post('{}://{}/buy'.format(invest_protocol, invest_host),
@@ -42,7 +42,7 @@ def invest_autobuy():
                         if sp['price'] >= pending_invest['price']:
                             json_body = {"cantitate": pending_invest['cantitate'],
                                          "price": pending_invest['price'],
-                                         "user": pending_invest['user'],
+                                         "user": sp['price'],
                                          "stock_symbol": sp['stock_symbol']}
                             result_post = requests.post('{}://{}/sell'.format(invest_protocol, invest_host),
                                                         verify=False, json=json_body)

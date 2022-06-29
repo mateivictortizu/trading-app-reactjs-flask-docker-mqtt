@@ -19,7 +19,8 @@ def add_money():
     request_body['user'] = users_connections[session['user_id']]['user']
     add_money_value = add_money_processor(add_money_client, request_body)
     value_after_add = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
-    socketio.emit('get_funds', {'value': value_after_add[0]['value']},room=users_connections[session['user_id']]['socket'])
+    socketio.emit('get_funds', {'value': value_after_add[0]['value']},
+                  room=users_connections[session['user_id']]['socket'])
     return add_money_value
 
 
