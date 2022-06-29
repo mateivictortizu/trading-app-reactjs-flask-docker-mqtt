@@ -17,7 +17,7 @@ export function CustomWithdrawMoney({ openWithdraw, setOpenWithdraw, setOpenDepo
     };
 
     function withdraw() {
-        fetch(GATEWAY_HOST + "//withdraw-money", {
+        fetch(GATEWAY_HOST + "/withdraw-money", {
             method: "POST",
             credentials: 'include',
             headers: {

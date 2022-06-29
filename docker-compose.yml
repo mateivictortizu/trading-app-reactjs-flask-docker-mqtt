@@ -233,6 +233,8 @@ services:
       - STOCK_PROTOCOL=http
       - INVEST_HOST=nginxinvest:5005
       - INVEST_PROTOCOL=http
+      - GATEWAY_HOST=nginxgateway:5000
+      - GATEWAY_PROTOCOL=http
     depends_on:
       - nginxstock
     networks:
@@ -335,7 +337,7 @@ services:
       ports:
           - "5000:5000"
       networks:
-        - network
+        - network    
       
 networks:
   network:

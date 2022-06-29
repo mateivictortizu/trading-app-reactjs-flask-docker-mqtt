@@ -16,14 +16,15 @@ app = Flask(__name__)
 
 app.config['CORS_EXPOSE_HEADERS'] = 'Authorization'
 app.config['CORS_ALLOW_HEADERS'] = ['Content-Type', 'Access-Control-Allow-Credentials']
-app.config['CORS_ORIGINS'] = ['http://localhost:3000', 'http://localhost:8000']
+app.config['CORS_ORIGINS'] = ['http://localhost:3000', 'http://localhost:8000', 'http://localhost:3000', 'http'
+                                                                                                         '://localhost:8000','https://localhost:3000', 'https://localhost:8000']
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = 'filesystem'
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 Session(app)
 cors = CORS(app, supports_credentials=True)
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000', 'http://localhost:8000'])
+socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000', 'http://localhost:8000','https://localhost:3000', 'https://localhost:8000'])
 
 from app.blueprints.fundsService import funds
 from app.blueprints.stockService import stock

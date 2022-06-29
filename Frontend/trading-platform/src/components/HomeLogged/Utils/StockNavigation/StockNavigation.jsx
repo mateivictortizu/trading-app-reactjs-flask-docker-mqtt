@@ -93,7 +93,8 @@ export default function StockNavigation({ buttonStockClicked, setButtonStockClic
         }
         else {
             return(
-                <div><Typography>No recommendation for you</Typography></div>
+                <Typography style={{ position: 'absolute', marginTop: '300px', marginLeft: '800px', fontSize: '20px', fontWeight: 'bold' }}>No recommendation for you</Typography>
+
             )
         }
 
