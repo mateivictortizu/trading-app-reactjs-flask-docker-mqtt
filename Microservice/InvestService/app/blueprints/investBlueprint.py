@@ -22,7 +22,6 @@ def database_error():
 @investBP.route('/buy', methods=['POST'])
 def buy():
     json_body = request.json
-    print(json_body)
     user = json_body['user']
     stock_symbol = json_body['stock_symbol']
     cantitate = float(json_body['cantitate'])
@@ -172,14 +171,12 @@ def get_detailed_stock_invest():
             stock_dict[i]['price'] = stock_dict[i]['price'] / total_cty[i]
     for i in list_to_pop:
         stock_dict.pop(i)
-    print(stock_dict)
     return stock_dict, 200
 
 
 @investBP.route('/autobuy', methods=['POST'])
 def autobuy():
     json_body = request.json
-    print(json_body)
     user = json_body['user']
     stock_symbol = json_body['stock_symbol']
     cantitate = float(json_body['cantitate'])
