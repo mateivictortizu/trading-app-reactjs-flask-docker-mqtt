@@ -8,6 +8,7 @@ import { Oval } from 'react-loader-spinner';
 import { CustomForgotPassword } from "../CustomForgotPassword/CustomForgotPassword";
 import { CustomOTP } from "../CustomOTP/CustomOTP";
 import { useCookies } from 'react-cookie';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 
 export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenRegister }) {
 
@@ -38,7 +39,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
         setAllErrorsLoginFalse();
         if (checkFields(identifierLogin, passwordLogin)) {
             setLoginState(false);
-            fetch("http://127.0.0.1:5000/login", {
+            fetch(GATEWAY_HOST+"/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

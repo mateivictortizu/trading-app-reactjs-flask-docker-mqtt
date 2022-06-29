@@ -69,5 +69,4 @@ def before_request_function(request_value):
                 users_connections[session['user_id']] = {'user': value[0]['user'], 'type_user': value[0]['type_user']}
             else:
                 session.pop('user_id', None)
-    print(users_connections)
     return jsonify({'message': 'JWT Ok'}), 200

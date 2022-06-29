@@ -1,7 +1,8 @@
 import React from "react";
 import './CustomForgotPassword.css';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { checkIsEmpty } from "../../../../Utils/Extra/Validator"
+import { checkIsEmpty } from "../../../../Utils/Extra/Validator";
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 
 export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword, Transition }) {
 
@@ -38,7 +39,7 @@ export function CustomForgotPassword({ openForgotPassword, setOpenForgotPassword
     const handleSendForgotPassword = () => {
         setErrorIdentifierForgotPassword(false);
         if (checkIsEmpty(identifierForgotPassword)) {
-            fetch("http://127.0.0.1:5000/request-change-password", {
+            fetch(GATEWAY_HOST+"/request-change-password", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

@@ -46,18 +46,12 @@ def get_list_stock_price():
 
 @stock.route('/update-price', methods=['POST'])
 def update_price():
-    before_checking_result = before_request_function(request)
-    if before_checking_result[1] == 403:
-        return before_checking_result
-    return update_price_processor(update_price_client, request.json)
+    return update_price_processor(update_price_client, {})
 
 
 @stock.route('/update-stock', methods=['POST'])
 def update_stock():
-    before_checking_result = before_request_function(request)
-    if before_checking_result[1] == 403:
-        return before_checking_result
-    return update_stock_processor(update_stock_client, request.json)
+    return update_stock_processor(update_stock_client, {})
 
 
 @stock.route('/get-all-stocks', methods=['GET'])

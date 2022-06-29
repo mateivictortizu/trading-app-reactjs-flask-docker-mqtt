@@ -3,6 +3,7 @@ import './CustomOTP.css';
 import { Dialog, DialogTitle, TextField, DialogContent, Grid, Button, DialogActions, Link } from "@mui/material";
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 
 export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
 
@@ -11,7 +12,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     const navigate = useNavigate();
 
     function resendOTP() {
-        fetch("http://127.0.0.1:5000/resend-otp", {
+        fetch(GATEWAY_HOST+"/resend-otp", {
             method: "POST",
             credentials:'include',
             headers: {
@@ -36,7 +37,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     };
 
     function validateOTP() {
-        fetch("http://127.0.0.1:5000/validate-otp", {
+        fetch(GATEWAY_HOST+"/validate-otp", {
             method: "POST",
             credentials:'include',
             headers: {

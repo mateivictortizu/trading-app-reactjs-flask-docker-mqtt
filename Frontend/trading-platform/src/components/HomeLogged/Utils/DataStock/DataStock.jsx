@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 
-export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, invested, setInvested, valueAccount }) {
+export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, pendingInvest, setPendingInvest, invested, setInvested, valueAccount }) {
     const [stockInfo, setStockInfo] = React.useState(undefined);
     const [period, setPeriod] = React.useState('1D');
     const [openBuy, setOpenBuy] = React.useState(false);
@@ -30,7 +30,6 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
     const [history, setHistory] = React.useState([]);
-    const [pendingInvest, setPendingInvest] = React.useState([]);
 
 
     function handleOpenBuy() {

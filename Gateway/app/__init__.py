@@ -46,6 +46,58 @@ def before_request():
     print(str(request.method) + str(request.path))
 
 
+@app.route('/update-price-clients')
+def update_price_clients():
+    json_body = {"stock_list": ["AAPL", "MSFT", "AMZN", "YUM", "NVDA", "F"]}
+    stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+    for i in users_connections:
+        if 'socket' in users_connections[i] and 'user' in users_connections[i]:
+            socketio.emit('stock_popular', stock_popular_list[0], room=users_connections[i]['socket'])
+            get_funds_value = get_funds_processor(get_funds_client,
+                                                  {'user': users_connections[i]['user']})
+            socketio.emit('get_funds', {'value': get_funds_value[0]['value']}, room=users_connections[i]['socket'])
+            get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
+                                                             {'user': users_connections[i]['user']})
+            socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']}, room=users_connections[i]['socket'])
+
+            watchlist_list = []
+            for j in get_all_stock[0]['list']:
+                if j['watchlist'] is True:
+                    watchlist_list.append(j['stock_symbol'])
+            json_body = {"stock_list": watchlist_list}
+            stock_wishlist = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+            socketio.emit('stock_wishlist', stock_wishlist[0], room=users_connections[i]['socket'])
+
+            stock_invest = get_invest_by_user_processor(get_invest, json_body={
+                'identifier': users_connections[i]['user']})
+            json_body = {"stock_list": stock_invest[0]['stock_list']}
+            stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+            socketio.emit('stock_invest', stock_invest_list[0], room=users_connections[i]['socket'])
+
+            value_of_account = get_value_of_account_processor(get_value_of_account_client,
+                                                              json_body={
+                                                                  'identifier': users_connections[i]['user']})
+            socketio.emit('get_invest_value_of_account', value_of_account[0]['message'], room=users_connections[i]['socket'])
+
+            value_of_account = get_value_of_account_processor(get_value_of_account_client,
+                                                              json_body={
+                                                                  'identifier': users_connections[i]['user']})
+            socketio.emit('get_invest_value_of_account', value_of_account[0]['message'], room=users_connections[i]['socket'])
+
+            user_detailed_invests = get_user_detailed_invests_processor(get_user_detailed_invests_client,
+                                                                        json_body={'identifier': users_connections[i]['user']})
+            socketio.emit('detailed_user_invests', user_detailed_invests[0], room=users_connections[i]['socket'])
+
+            get_recommendation = recommendation_processor(recommendation_client,
+                                                          json_body={
+                                                              'identifier': users_connections[i]['user']})
+            if users_connections[i]['user'] in get_recommendation[0]:
+                json_body = {"stock_list": get_recommendation[0][users_connections[i]['user']]}
+                stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+                socketio.emit('recommendation', stock_invest_list[0], room=users_connections[i]['socket'])
+    return 'Ok', 200
+
+
 @socketio.on('connect')
 def join_connect():
     try:

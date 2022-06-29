@@ -4,6 +4,9 @@ import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 
+gateway_host = os.getenv('GATEWAY_HOST', '127.0.0.1:5000')
+gateway_protocol = os.getenv('GATEWAY_PROTOCOL', 'http')
+
 stock_host = os.getenv('STOCK_HOST', '127.0.0.1:5001')
 stock_protocol = os.getenv('STOCK_PROTOCOL', 'http')
 
@@ -12,11 +15,15 @@ invest_protocol = os.getenv('INVEST_PROTOCOL', 'http')
 
 
 def update_price():
-    requests.post('{}://{}/update-price'.format(stock_protocol, stock_host), verify=False)
+    x = requests.post('{}://{}/update-price'.format(gateway_protocol, gateway_host), verify=False)
+    if x.status_code == 200:
+        time.sleep(20)
+        invest_autobuy()
+        requests.get('{}://{}/update-price-clients'.format(gateway_protocol, gateway_host), verify=False)
 
 
 def update_stocks():
-    requests.post('{}://{}/update-stock'.format(stock_protocol, stock_host), verify=False)
+    requests.post('{}://{}/update-stock'.format(gateway_protocol, gateway_host), verify=False)
 
 
 def invest_autobuy():
@@ -41,8 +48,8 @@ def invest_autobuy():
                     else:
                         if sp['price'] >= pending_invest['price']:
                             json_body = {"cantitate": pending_invest['cantitate'],
-                                         "price": pending_invest['price'],
-                                         "user": sp['price'],
+                                         "price": sp['price'],
+                                         "user": pending_invest['user'],
                                          "stock_symbol": sp['stock_symbol']}
                             result_post = requests.post('{}://{}/sell'.format(invest_protocol, invest_host),
                                                         verify=False, json=json_body)
@@ -55,9 +62,8 @@ if __name__ == "__main__":
 
     scheduler = BackgroundScheduler()
     scheduler.configure(timezone=utc)
-    scheduler.add_job(update_price, 'interval', seconds=20)
+    scheduler.add_job(update_price, 'interval', seconds=45)
     scheduler.add_job(update_stocks, 'interval', days=1)
-    scheduler.add_job(invest_autobuy, 'interval', seconds=20)
     scheduler.start()
 
     try:

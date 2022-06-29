@@ -12,7 +12,7 @@ import {
 } from '../../../../Utils/Extra/Validator';
 import ReactCountryFlag from "react-country-flag";
 import './CustomRegister.css';
-import { USER_HOST } from "../../../../Utils/Extra/Hosts";
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 
 export function CustomRegister({ openRegister, Transition, setOpenRegister, setMessageRegister, handleClickOpenRegisterComplete }) {
 
@@ -216,7 +216,7 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
     const handleSendRegister = () => {
         if (checkFields(usernameRegister, passwordRegister, emailRegister, nameRegister, surnameRegister, addressRegister, nationality, country, phoneCountryRegister, phoneRegister, dateRegister)) {
             var dateBirthRegister = dateRegister.toLocaleDateString("en-US", { year: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { month: 'numeric' }) + "-" + dateRegister.toLocaleDateString("en-US", { day: 'numeric' });
-            fetch("http://" + USER_HOST + "/register", {
+            fetch(GATEWAY_HOST+"/register", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

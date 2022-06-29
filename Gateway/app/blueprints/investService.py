@@ -238,7 +238,8 @@ def remove_autoinvest():
     request_temp = dict()
     request_temp['id_invest'] = request.json['id_invest']
     request_temp['identifier'] = users_connections[session['user_id']]['user']
-    return remove_autoinvest_processor(remove_autoinvest_client, request_temp)
+    result_remove = remove_autoinvest_processor(remove_autoinvest_client, request_temp)
+    return result_remove
 
 
 @invest.route('/get-autoinvest-stock-user', methods=['POST'])

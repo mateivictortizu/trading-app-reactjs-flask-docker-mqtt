@@ -18,6 +18,7 @@ const HomeLogged = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const [cookiesJWT, setCookieJWT, removeCookieJWT] = useCookies(['jwt']);
+    const [pendingInvest, setPendingInvest] = React.useState([]);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');
     const [buttonHomeClicked, setButtonHomeClicked] = React.useState('popular');
@@ -34,6 +35,7 @@ const HomeLogged = () => {
     const [invest,setInvest] = React.useState([]);
     const [valueInvest, setValueInvest]=React.useState(0);
     const [recommendationValue, setRecommendationValue]=React.useState([]);
+    var check=0;
 
 React.useEffect(()=>{
     const socket = socketIOClient(GATEWAY_HOST,{ withCredentials: true});
@@ -41,16 +43,24 @@ React.useEffect(()=>{
         setDatasPopular(data['message']);
         if(buttonHomeClicked==='popular')
         {
-            setButtonStockClicked(data['message'][0]['stock_symbol']);
-            setPriceClicked(data['message'][0]['price']);
+            if(check===0)
+            {   
+                check=check+1;
+                setButtonStockClicked(data['message'][0]['stock_symbol']);
+                setPriceClicked(data['message'][0]['price']);
+            }
         }
     });
     socket.on("stock_wishlist",(data) => {
         setDatas(data['message']);
         if(buttonHomeClicked==='mywatchlist')
         {
-            setButtonStockClicked(data['message'][0]['stock_symbol']);
-            setPriceClicked(data['message'][0]['price']);
+            if(check===0)
+            {   
+                check=check+1;
+                setButtonStockClicked(data['message'][0]['stock_symbol']);
+                setPriceClicked(data['message'][0]['price']);
+            }
         }
     });
     socket.on("stock_invest",(data) => {
@@ -149,6 +159,8 @@ else {
                                     invested = {invest}
                                     setInvested={setInvest}
                                     valueAccount={valueAccount}
+                                    pendingInvest={pendingInvest} 
+                                    setPendingInvest={setPendingInvest}
                                 />
                             </Grid>
                         </div>
@@ -177,6 +189,8 @@ else {
                                     invested = {invest}
                                     setInvested={setInvest}
                                     valueAccount={valueAccount}
+                                    pendingInvest={pendingInvest} 
+                                    setPendingInvest={setPendingInvest}
                                 />
                             </Grid>
                         </div>
