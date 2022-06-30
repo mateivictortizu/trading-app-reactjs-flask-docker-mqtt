@@ -7,12 +7,13 @@ from app.RabbitMQProcessor.InvestRabbitMQProcessor import buy_processor, sell_pr
     get_stock_invest_by_user_processor, get_invest_by_user_processor, get_history_stock_user_processor, \
     get_all_history_user_processor, get_value_of_account_processor, get_user_detailed_invests_processor, \
     get_autoinvest_stock_user_processor, remove_autoinvest_processor, autobuy_processor, autosell_processor
+from app.RabbitMQProcessor.RecommendationRabbitMQProcessor import recommendation_processor
 from app.RabbitMQProcessor.StockRabbitMQProcessor import get_list_stock_price_processor
 from app.blueprints import get_funds_client, buy, sell, get_stock, get_invest, add_money_after_sell_client, \
     withdraw_money_after_buy_client, before_request_function, users_connections, get_list_stock_price_client, \
     get_history_stock_user_client, get_all_history_user_client, get_value_of_account_client, \
     get_user_detailed_invests_client, get_autoinvest_stock_user_client, remove_autoinvest_client, autobuy_client, \
-    autosell_client
+    autosell_client, recommendation_client
 
 invest = Blueprint('invest', __name__)
 
@@ -71,6 +72,13 @@ def buy_invested():
                                                                         'user']})
         socketio.emit('detailed_user_invests', user_detailed_invests[0],
                       room=users_connections[session['user_id']]['socket'])
+        get_recommendation = recommendation_processor(recommendation_client,
+                                                      json_body={
+                                                          'identifier': users_connections[session['user_id']]['user']})
+        if users_connections[session['user_id']]['user'] in get_recommendation[0]:
+            json_body = {"stock_list": get_recommendation[0][users_connections[session['user_id']]['user']]}
+            stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+            socketio.emit('recommendation', stock_invest_list[0], room=users_connections[session['user_id']]['socket'])
         return buy_result
     else:
         return jsonify({"message": "Not enough funds"}), 400
@@ -120,9 +128,18 @@ def sell_invested():
         socketio.emit('get_invest_value_of_account', value_of_account[0]['message'],
                       room=users_connections[session['user_id']]['socket'])
         user_detailed_invests = get_user_detailed_invests_processor(get_user_detailed_invests_client,
-                                                                    json_body={'identifier': 'matteovkt@gmail.com'}, )
+                                                                    json_body={'identifier': users_connections[
+                                                                        session['user_id']][
+                                                                        'user']}, )
         socketio.emit('detailed_user_invests', user_detailed_invests[0],
                       room=users_connections[session['user_id']]['socket'])
+        get_recommendation = recommendation_processor(recommendation_client,
+                                                      json_body={
+                                                          'identifier': users_connections[session['user_id']]['user']})
+        if users_connections[session['user_id']]['user'] in get_recommendation[0]:
+            json_body = {"stock_list": get_recommendation[0][users_connections[session['user_id']]['user']]}
+            stock_invest_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
+            socketio.emit('recommendation', stock_invest_list[0], room=users_connections[session['user_id']]['socket'])
         return sell_result
     else:
         return jsonify({'message': 'Add money error'}), 400

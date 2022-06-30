@@ -15,6 +15,12 @@ def on_ban(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -31,6 +37,12 @@ def on_verify_user(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -47,6 +59,12 @@ def on_check_token(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -63,6 +81,12 @@ def on_register(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -79,6 +103,12 @@ def on_login(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     if "Authorization" in r.headers:
         response["Authorization"] = r.headers["Authorization"]
     response["code"] = r.status_code
@@ -97,6 +127,12 @@ def on_validate_account(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -113,6 +149,12 @@ def on_resend_validate_account(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -129,6 +171,12 @@ def on_validate_otp(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     if "Authorization" in r.headers:
         response["Authorization"] = r.headers["Authorization"]
     response["code"] = r.status_code
@@ -147,6 +195,12 @@ def on_resend_otp(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -163,6 +217,12 @@ def on_logout(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -179,6 +239,12 @@ def on_change_password(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -195,6 +261,12 @@ def on_request_change_password(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -211,6 +283,12 @@ def on_reset_pass(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',
@@ -227,6 +305,12 @@ def on_set_new_pass(ch, method, props, body):
     if r.status_code not in range(300, 509):
         json_obj = json.loads(r.content)
         response = json_obj
+    else:
+        try:
+            json_obj = json.loads(r.content)
+            response = json_obj
+        except Exception as e:
+            print(e)
     response["code"] = r.status_code
     response = json.dumps(response)
     ch.basic_publish(exchange='',

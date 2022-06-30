@@ -108,10 +108,14 @@ def join_connect():
         stock_popular_list = get_list_stock_price_processor(get_list_stock_price_client, json_body=json_body)
         socketio.emit('stock_popular', stock_popular_list[0], room=request.sid)
         get_funds_value = get_funds_processor(get_funds_client, {'user': users_connections[session['user_id']]['user']})
-        socketio.emit('get_funds', {'value': get_funds_value[0]['value']}, room=request.sid)
+        if get_funds_value[1] in range (400,600):
+            socketio.emit('get_funds', {'value': 0}, room=request.sid)
+        else:
+            socketio.emit('get_funds', {'value': get_funds_value[0]['value']}, room=request.sid)
         get_all_stock = get_all_stocks_by_user_processor(get_all_stocks_by_user_client,
                                                          {'user': users_connections[session['user_id']]['user']})
         socketio.emit('get_all_stocks', {'value': get_all_stock[0]['list']}, room=request.sid)
+
 
         watchlist_list = []
         for i in get_all_stock[0]['list']:

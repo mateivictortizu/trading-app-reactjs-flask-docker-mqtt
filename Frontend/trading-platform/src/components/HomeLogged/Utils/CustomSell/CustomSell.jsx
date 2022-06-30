@@ -17,8 +17,8 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
     const [errorSell, setErrorSell] = React.useState("");
     const [checked, setChecked] = React.useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
-    const [messageAlert, setMessageAlert]=React.useState([]);
-    
+    const [messageAlert, setMessageAlert] = React.useState([]);
+
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
@@ -41,6 +41,8 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
     function handleCloseSell() {
         setOpenSell(false);
         setValue(0.0);
+        setPriceAutosellValue(0.0);
+        setQtyAutosellValue(0.0);
         setErrorSell("");
     };
 
@@ -78,32 +80,38 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
             }).then((data) => {
                 if (data.status === 200) {
                     data.json().then(() => {
+                        var no_shares = value;
                         handleCloseSell();
-                        setMessageAlert(["You sell "+value+" shares of "+stock_symbol,"success"])
+                        setOpenAlert(true);
+                        setMessageAlert(["You sell " + no_shares + " shares of " + stock_symbol, "success"])
                     });
 
                 }
                 else if (data.status === 403) {
                     handleCloseSell();
-                    setMessageAlert(["Sell failed","error"])
+                    setOpenAlert(true);
+                    setMessageAlert(["Sell failed", "error"])
                     removeCookie("jwt");
                     removeCookie("session");
                     navigate('/');
                 }
                 else if (data.status === 404 || data.status === 400 | data.status === 401) {
                     data.json().then(() => {
-                        setMessageAlert(["Sell failed","error"])
+                        setOpenAlert(true);
+                        setMessageAlert(["Sell failed", "error"])
                         console.log('Error');
                     });
                 } else {
-                    setMessageAlert(["Sell failed","error"])
+                    setOpenAlert(true);
+                    setMessageAlert(["Sell failed", "error"])
                     console.log('Error');
                 }
             }
             )
         }
         else {
-            setMessageAlert(["Quantity is wrong","error"])
+            setOpenAlert(true);
+            setMessageAlert(["Quantity is wrong", "error"])
         }
     };
 
@@ -123,24 +131,28 @@ export function CustomSell({ openSell, setOpenSell, Transition, stockName, price
             if (data.status === 200) {
                 data.json().then(() => {
                     handleCloseSell();
-                    setMessageAlert(["You placed a pending sell order with "+value+" shares of "+stock_symbol,"success"])
+                    setOpenAlert(true);
+                    setMessageAlert(["You placed a pending sell order with " + qtyAutosellValue + " shares of " + stock_symbol, "success"])
                 });
 
             }
             else if (data.status === 403) {
                 handleCloseSell();
-                setMessageAlert(["AutoSell failed","error"])
+                setOpenAlert(true);
+                setMessageAlert(["AutoSell failed", "error"])
                 removeCookie("jwt");
                 removeCookie("session");
                 navigate('/');
             }
             else if (data.status === 404 || data.status === 400 | data.status === 401) {
                 data.json().then(() => {
-                    setMessageAlert(["AutoSell failed","error"])
+                    setOpenAlert(true);
+                    setMessageAlert(["AutoSell failed", "error"])
                     console.log('Error');
                 });
             } else {
-                setMessageAlert(["Sell failed","error"])
+                setOpenAlert(true);
+                setMessageAlert(["Sell failed", "error"])
                 console.log('Error');
             }
         }

@@ -38,10 +38,11 @@ def register():
     date_of_birth_str = request.json['date_of_birth']
     date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d')
     country = request.json['country']
-
+    hostname=request.json['hostname']
+    port=request.json['port']
     return registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address,
                        nationality,
-                       phone, date_of_birth, country)
+                       phone, date_of_birth, country, hostname, port)
 
 
 @userBP.route('/login', methods=['POST'])

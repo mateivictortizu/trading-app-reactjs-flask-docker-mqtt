@@ -16,9 +16,10 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
     const [errorBuy, setErrorBuy] = React.useState("");
+    const [errorQtyAutoBuy, setErrorQtyAutoBuy] = React.useState("");
     const [checked, setChecked] = React.useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
-    const [messageAlert, setMessageAlert]=React.useState([]);
+    const [messageAlert, setMessageAlert] = React.useState([]);
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
@@ -42,6 +43,7 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
         setValue(0.0);
         setPriceAutobuyValue(0.0);
         setQtyAutobuyValue(0.0);
+        setErrorQtyAutoBuy("");
         setErrorBuy("");
     };
 
@@ -57,50 +59,70 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
 
     const handlePriceAutobuyValueChange = (event) => {
         setPriceAutobuyValue(event.target.value);
+        if (event.target.value * qtyAutobuyValue <= valueAccount) {
+            setErrorQtyAutoBuy("");
+        }
+        else {
+            setErrorQtyAutoBuy("Bad Price");
+        }
     };
 
     const handleQtyAutobuyValueChange = (event) => {
         setQtyAutobuyValue(event.target.value);
+        if (event.target.value * priceAutobuyValue <= valueAccount) {
+            setErrorQtyAutoBuy("");
+        }
+        else {
+            setErrorQtyAutoBuy("Bad Quantity");
+        }
     };
 
     function autobuy_invested() {
-        fetch(GATEWAY_HOST + "/autobuy", {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                stock_symbol: stock_symbol,
-                cantitate: qtyAutobuyValue,
-                price: priceAutobuyValue
-            }),
-        }).then((data) => {
-            if (data.status === 200) {
-                data.json().then(() => {
-                    handleCloseBuy();
-                    setMessageAlert(["You placed a pending buy order with "+value+" shares of "+stock_symbol,"success"])
-                });
+        if (qtyAutobuyValue * priceAutobuyValue <= valueAccount) {
+            fetch(GATEWAY_HOST + "/autobuy", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    stock_symbol: stock_symbol,
+                    cantitate: qtyAutobuyValue,
+                    price: priceAutobuyValue
+                }),
+            }).then((data) => {
+                if (data.status === 200) {
+                    data.json().then(() => {
+                        setMessageAlert(["You placed a pending buy order with " + qtyAutobuyValue + " shares of " + stock_symbol, "success"])
+                        setOpenAlert(true);
+                        handleCloseBuy();
+                    });
 
-            }
-            else if (data.status === 403) {
-                handleCloseBuy();
-                setMessageAlert(["AutoBuy failed","error"])
-                removeCookie("jwt");
-                removeCookie("session");
-                navigate('/');
-            }
-            else if (data.status === 404 || data.status === 400 | data.status === 401) {
-                data.json().then(() => {
-                    setMessageAlert(["AutoBuy failed","error"])
+                }
+                else if (data.status === 403) {
+                    setOpenAlert(true);
+                    setMessageAlert(["AutoBuy failed", "error"])
+                    handleCloseBuy();
+                    removeCookie("jwt");
+                    removeCookie("session");
+                    navigate('/');
+                }
+                else if (data.status === 404 || data.status === 400 | data.status === 401) {
+                    data.json().then(() => {
+                        setOpenAlert(true);
+                        setMessageAlert(["AutoBuy failed", "error"])
+                        console.log('Error');
+                    });
+                } else {
+                    setOpenAlert(true);
+                    setMessageAlert(["AutoBuy failed", "error"])
                     console.log('Error');
-                });
-            } else {
-                setMessageAlert(["AutoBuy failed","error"])
-                console.log('Error');
+                }
             }
+            )
         }
-        )
+        setOpenAlert(true);
+        setMessageAlert(["You don't have enought money to place this order", "error"])
         handleCloseBuy();
     }
 
@@ -121,15 +143,17 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                 }).then((data) => {
                     if (data.status === 200) {
                         data.json().then(() => {
-                            handleCloseBuy();
+                            var no_shares = value;
+                            setMessageAlert(["You buy " + no_shares + " shares of " + stock_symbol, "success"])
                             setOpenAlert(true);
-                            setMessageAlert(["You buy "+value+" shares of "+stock_symbol,"success"])
+                            handleCloseBuy();
                         });
 
                     }
                     else if (data.status === 403) {
                         setErrorBuy("Not enought money");
-                        setMessageAlert(["Buy fail","error"])
+                        setOpenAlert(true);
+                        setMessageAlert(["Buy fail", "error"])
                         handleCloseBuy();
                         removeCookie("jwt");
                         removeCookie("session");
@@ -232,7 +256,7 @@ export function CustomBuy({ openBuy, setOpenBuy, Transition, stockName, price, l
                                     />
                                 </Grid>
                             </Grid>
-                            <Button id='buttonBuy' onClick={autobuy_invested}>AUTOBUY</Button>
+                            <Button id='buttonBuy' disabled={(errorQtyAutoBuy !== "")} onClick={autobuy_invested}>AUTOBUY</Button>
                         </div>}
                 </DialogContent>
             </Dialog>

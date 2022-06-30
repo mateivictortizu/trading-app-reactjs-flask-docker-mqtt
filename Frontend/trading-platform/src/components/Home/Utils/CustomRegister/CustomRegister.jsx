@@ -165,12 +165,12 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
         }
 
         if (!checkIsValidName(nameRegister)) {
-            setErrorNameRegisterMessage("");
+            setErrorNameRegisterMessage("Name error");
             result = false;
         }
 
         if (!checkIsValidSurname(surnameRegister)) {
-            setErrorSurnameRegisterMessage("");
+            setErrorSurnameRegisterMessage("Surname error");
             result = false;
         }
 
@@ -232,6 +232,8 @@ export function CustomRegister({ openRegister, Transition, setOpenRegister, setM
                     phone: phoneRegister,
                     date_of_birth: dateBirthRegister,
                     country: country,
+                    hostname: window.location.hostname,
+                    port:window.location.port
                 }),
             })
                 .then((data) => {

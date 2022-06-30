@@ -16,6 +16,7 @@ export default function CustomInvested({ buttonStockClicked, setButtonStockClick
         for (const i in dataForInvest) {
             current_value = current_value + dataUserInvest[dataForInvest[i]['stock_symbol']]['cantitate'] * dataForInvest[i]['price'];
         }
+        console.log(dataForInvest);
         return (
             <div>
                 <div id='customInvested'>

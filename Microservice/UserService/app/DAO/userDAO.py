@@ -17,8 +17,7 @@ def send_email(current_app, mail, to, subject, message_html):
 
 
 def registerDAO(executor, request, current_app, db, mail, username, password, email, name, surname, address,
-                nationality,
-                phone, date_of_birth, country):
+                nationality, phone, date_of_birth, country, hostname, port):
     email = email.lower()
     username = username.lower()
     if Validator.email_check(email) is False:
@@ -43,14 +42,17 @@ def registerDAO(executor, request, current_app, db, mail, username, password, em
 
     if User.check_if_username_exists(username):
         db.session.remove()
+        print('Username exists')
         return jsonify({'error': 'User already exists'}), 409
 
     if User.check_if_email_exists(email):
         db.session.remove()
+        print('Email exists')
         return jsonify({'error': 'Email already exists'}), 409
 
     if User.check_if_phone_exists(phone):
         db.session.remove()
+        print('Phone exists')
         return jsonify({'error': 'Phone already exists'}), 409
 
     user = User(username=username, password=password, email=email, name=name, surname=surname, address=address,
@@ -58,7 +60,7 @@ def registerDAO(executor, request, current_app, db, mail, username, password, em
 
     User.add_to_user(user)
     try:
-        message_html = "<h3> Your activation link is <h3>" + request.host_url + 'validate-account/' + \
+        message_html = "<h3> Your activation link is <h3>" + hostname+':'+port+'/' + 'validate-account/' + \
                        MyConfirmation.generate_confirmation_token(email=user.email,
                                                                   secret=current_app.config['JWT_SECRET_KEY'],
                                                                   security_pass=current_app.config['JWT_SECRET_KEY'])

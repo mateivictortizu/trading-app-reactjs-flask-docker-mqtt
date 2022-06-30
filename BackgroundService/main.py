@@ -13,6 +13,9 @@ stock_protocol = os.getenv('STOCK_PROTOCOL', 'http')
 invest_host = os.getenv('INVEST_HOST', '127.0.0.1:5005')
 invest_protocol = os.getenv('INVEST_PROTOCOL', 'http')
 
+funds_host = os.getenv('FUNDS_HOST', '127.0.0.1:5002')
+funds_protocol = os.getenv('FUNDS_PROTOCOL', 'http')
+
 
 def update_price():
     x = requests.post('{}://{}/update-price'.format(gateway_protocol, gateway_host), verify=False)
@@ -36,15 +39,28 @@ def invest_autobuy():
                 for pending_invest in all_invests[sp['stock_symbol']]:
                     if pending_invest['action_type'] == 'BUY':
                         if sp['price'] <= pending_invest['price']:
-                            json_body = {"cantitate": pending_invest['cantitate'],
-                                         "price": sp['price'],
-                                         "user": pending_invest['user'],
-                                         "stock_symbol": sp['stock_symbol']}
-                            result_post = requests.post('{}://{}/buy'.format(invest_protocol, invest_host),
-                                                        verify=False, json=json_body)
-                            if result_post.status_code == 200:
-                                requests.delete('{}://{}/remove-autoinvest'.format(invest_protocol, invest_host),
-                                                verify=False, json={'id_invest': pending_invest['id']})
+                            user_funds = requests.get(
+                                '{}://{}/get-funds/{}'.format(funds_protocol, funds_host, pending_invest['user']),
+                                verify=False)
+                            print(user_funds.status_code)
+                            if user_funds.status_code == 200:
+                                if user_funds.json()['value'] >= sp['price'] * pending_invest['cantitate']:
+                                    json_modify_money = {
+                                        'user': pending_invest['user'],
+                                        'value': sp['price'] * pending_invest['cantitate']
+                                    }
+                                    requests.post('{}://{}/withdraw-money-after-buy'.format(funds_protocol, funds_host),
+                                                  json=json_modify_money, verify=False)
+
+                                    json_body = {"cantitate": pending_invest['cantitate'],
+                                                 "price": sp['price'],
+                                                 "user": pending_invest['user'],
+                                                 "stock_symbol": sp['stock_symbol']}
+                                    result_post = requests.post('{}://{}/buy'.format(invest_protocol, invest_host),
+                                                                verify=False, json=json_body)
+                                    requests.delete(
+                                            '{}://{}/remove-autoinvest'.format(invest_protocol, invest_host),
+                                            verify=False, json={'id_invest': pending_invest['id']})
                     else:
                         if sp['price'] >= pending_invest['price']:
                             json_body = {"cantitate": pending_invest['cantitate'],

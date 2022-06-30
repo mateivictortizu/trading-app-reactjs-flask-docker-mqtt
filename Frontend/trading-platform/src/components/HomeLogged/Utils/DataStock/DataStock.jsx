@@ -110,7 +110,6 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
         })
             .then((data) => {
                 setShowApp(true);
-                console.log('BAAAAAAAAAAAAAAAAAAAAAAAAAAD');
                 if (data.status === 403) {
                     removeCookie("jwt");
                     removeCookie("session");

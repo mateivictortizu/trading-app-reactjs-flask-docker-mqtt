@@ -39,7 +39,7 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
             });
     }
 
-    if (responseCode === 201) {
+    if (responseCode === 200) {
         return (
             <div className="main-div">
                 <div id="firstDivValidation">
@@ -53,7 +53,8 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
                         id="typographyValidation"
                     >
 
-                        <CheckCircleOutlineIcon id="iconCheck" style={{ color: "green" }}></CheckCircleOutlineIcon>
+
+                        <CheckCircleOutlineIcon id="iconCheck" style={{ color: "green", marginTop:'50px' }}></CheckCircleOutlineIcon>
                         <br></br>
                         {messageResponse}
 
@@ -77,9 +78,6 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
                         Please tell your friend about the our platform - we are always looking to attract new members.
 
                     </Typography>
-                </div>
-                <div id="thirdDivValidation">
-                    <Button id="buttonValidation" onClick={ResendValidateAccountFuncton}>Continue</Button>
                 </div>
             </div>);
 
