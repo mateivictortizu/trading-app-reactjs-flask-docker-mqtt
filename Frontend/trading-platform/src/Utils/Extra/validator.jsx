@@ -83,7 +83,7 @@ export function checkIsValidSurname(fieldSurname) {
 }
 
 export function checkIsEmpty(field) {
-    if (field.length == 0) {
+    if (field.length === 0) {
         return false;
     }
     return true;

@@ -7,11 +7,11 @@ import "./Validation.css"
 import { useParams } from 'react-router-dom';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { USER_HOST } from "../../Utils/Extra/Hosts";
+import {GATEWAY_HOST} from '../../Utils/Extra/Hosts';
 
 function ConditionalRenderingValidation({ responseCode, messageResponse }) {
     function ResendValidateAccountFuncton() {
-        fetch("http://" + USER_HOST + "/resend-validate-account", {
+        fetch(GATEWAY_HOST + "/resend-validate-account", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ function ConditionalRenderingValidation({ responseCode, messageResponse }) {
 const Validation = () => {
 
     function ValidateAccountFuncton() {
-        fetch("http://" + USER_HOST + "/validate-account/" + id, {
+        fetch(GATEWAY_HOST + "/validate-account/" + id, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ const Validation = () => {
     let { id } = useParams();
     const [messageResponse, setMessageResponse] = React.useState("");
     const [codeResponse, setCodeResponse] = React.useState("");
-    if (messageResponse == "" && codeResponse === "") {
+    if (messageResponse === "" && codeResponse === "") {
         ValidateAccountFuncton();
     }
     return (

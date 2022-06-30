@@ -6,6 +6,7 @@ import './ChangePass.css';
 import Footer from "../../Utils/Footer/Footer";
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import {GATEWAY_HOST} from '../../Utils/Extra/Hosts';
 
 
 const ChangePass = () => {
@@ -33,7 +34,7 @@ const ChangePass = () => {
             navigate('/home');
         }
         else {
-            fetch("http://127.0.0.1:5000" + window.location.pathname, {
+            fetch(GATEWAY_HOST + window.location.pathname, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -62,7 +63,7 @@ const ChangePass = () => {
     };
 
     function clickReset() {
-        fetch("http://127.0.0.1:5000/set-new-pass", {
+        fetch(GATEWAY_HOST+"/set-new-pass", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

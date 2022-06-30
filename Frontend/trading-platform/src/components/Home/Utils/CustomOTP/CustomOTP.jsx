@@ -23,7 +23,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
             }),
         })
             .then((data) => {
-                if (data.status == 200) {
+                if (data.status === 200) {
                     data.json().then((message) => {
                         console.log(message);
                     })
@@ -49,7 +49,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
             }),
         })
             .then((data) => {
-                if (data.status == 200) {
+                if (data.status === 200) {
                     handleCloseOTP();
                     removeCookie("jwt_otp");
                     navigate('/home');

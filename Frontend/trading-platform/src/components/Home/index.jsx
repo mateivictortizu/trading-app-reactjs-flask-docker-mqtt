@@ -7,19 +7,10 @@ import "./Home.css"
 import InfoIcon from '@mui/icons-material/Info';
 import { Grid } from '@mui/material';
 import FadeIn from 'react-fade-in';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
     document.title = "Invest"
-    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (cookies.jwt) {
-            navigate('/home');
-        }
-    });
-
     return (
         <div className="main-div">
             <UnauthentichatedHeader></UnauthentichatedHeader>

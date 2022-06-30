@@ -1,6 +1,5 @@
 import './CustomAppBarLogged.css';
 import React from "react";
-import { useCookies } from 'react-cookie';
 import { Button, Stack, Toolbar, Box, AppBar, Typography } from '@mui/material';
 import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
@@ -11,7 +10,6 @@ import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenSettings, handleClickOpenHistory, accountValue, investValue }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
-    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
     const navigate = useNavigate();
     var data = {
         datasets: [
@@ -47,12 +45,9 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
             method: "DELETE",
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': cookies.jwt,
+                'Content-Type': 'application/json'
             },
         });
-        removeCookie('jwt');
-        removeCookie('session');
         navigate('/');
     }
 

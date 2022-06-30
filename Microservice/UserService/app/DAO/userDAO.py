@@ -197,7 +197,6 @@ def validate_otpDAO(current_app, db, otp_jwt, code):
                                                 jwt_secret=current_app.config['JWT_SECRET_KEY'])
             token = Token(token=jwt_token)
             Token.add_to_token(token)
-            print(token)
             OTP.delete_all_otp_from_identifier(user.username)
             OTPToken.delete_otp_token(otp_jwt)
             response = flask.Response(content_type='application/json')
