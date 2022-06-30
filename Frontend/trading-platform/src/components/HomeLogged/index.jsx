@@ -35,7 +35,9 @@ const HomeLogged = () => {
     const [invest,setInvest] = React.useState([]);
     const [valueInvest, setValueInvest]=React.useState(0);
     const [recommendationValue, setRecommendationValue]=React.useState([]);
+    const [showApp,setShowApp] = React.useState(true);
     var check=0;
+
 
 React.useEffect(()=>{
     const socket = socketIOClient(GATEWAY_HOST,{ withCredentials: true});
@@ -65,6 +67,7 @@ React.useEffect(()=>{
     });
     socket.on("stock_invest",(data) => {
         setDatasInvest(data['message']);
+
     });
     socket.on("invest_on", (data)=>{
         setInvest(data);
@@ -88,14 +91,15 @@ React.useEffect(()=>{
     });
 
     socket.on("detailed_user_invests",(data) => {
-        setdataUserInvest(data); 
+        setdataUserInvest(data);
+
     });
     socket.on("recommendation",(data) => {
         setRecommendationValue(data['message']);
     });
 },[])
 
-if (datasPopular.length === 0) {
+if (datasPopular.length === 0 || showApp === false) {
     return (
         <div>
             <Loading />
@@ -161,6 +165,7 @@ else {
                                     valueAccount={valueAccount}
                                     pendingInvest={pendingInvest} 
                                     setPendingInvest={setPendingInvest}
+                                    setShowApp={setShowApp}
                                 />
                             </Grid>
                         </div>
@@ -191,6 +196,7 @@ else {
                                     valueAccount={valueAccount}
                                     pendingInvest={pendingInvest} 
                                     setPendingInvest={setPendingInvest}
+                                    setShowApp={setShowApp}
                                 />
                             </Grid>
                         </div>

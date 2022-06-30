@@ -133,6 +133,8 @@ def get_stock_invest_by_user():
     before_checking_result = before_request_function(request)
     if before_checking_result[1] == 403:
         return before_checking_result
+    if 'socket' not in users_connections[session['user_id']]:
+        return 'Socket missing', 500
     request_temp = dict()
     request_temp['stock_symbol'] = request.json['stock_symbol']
     request_temp['identifier'] = users_connections[session['user_id']]['user']

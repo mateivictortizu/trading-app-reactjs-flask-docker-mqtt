@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 
-export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData, pendingInvest, setPendingInvest, invested, setInvested, valueAccount }) {
+export default function DataStock({ buttonStockClicked, priceClicked, Transition, statisticData, setStatisticData,setShowApp, pendingInvest, setPendingInvest, invested, setInvested, valueAccount }) {
     const [stockInfo, setStockInfo] = React.useState(undefined);
     const [period, setPeriod] = React.useState('1D');
     const [openBuy, setOpenBuy] = React.useState(false);
@@ -58,6 +58,9 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
                     removeCookie("jwt");
                     removeCookie("session");
                     navigate('/');
+                }
+                else {
+                    window.location.reload(false);
                 }
             });
         setOpenHistory(true);
@@ -106,10 +109,18 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
             })
         })
             .then((data) => {
+                setShowApp(true);
+                console.log('BAAAAAAAAAAAAAAAAAAAAAAAAAAD');
                 if (data.status === 403) {
                     removeCookie("jwt");
                     removeCookie("session");
                     navigate('/');
+                }
+                else if(data.status===500)
+                {
+                    window.location.reload(false);
+                    setShowApp(false);
+
                 }
             });
     };

@@ -1,0 +1,1 @@
+python FundsWrappers/wsgi.py && python InvestWrappers/wsgi.py && python RecommendationWreapers/main.py && python StockWrappers/wsgi.py && python UserWrappers/wsgi.py 
