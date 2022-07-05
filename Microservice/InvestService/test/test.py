@@ -1,5 +1,6 @@
 import os
 import shutil
+import unittest
 from unittest import TestCase
 
 from flask_migrate import upgrade, migrate, init
@@ -176,3 +177,7 @@ class InvestTest(TestCase):
         with flask_app.test_client() as test_client:
             response = test_client.get('/get-all-autoinvests')
             assert response.status_code == 200
+
+
+if __name__ == '__main__':
+    unittest.main()

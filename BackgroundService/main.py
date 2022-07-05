@@ -21,7 +21,7 @@ def update_price():
     x = requests.post('{}://{}/update-price'.format(gateway_protocol, gateway_host), verify=False)
     if x.status_code == 200:
         time.sleep(20)
-        invest_autobuy()
+        invest()
         requests.get('{}://{}/update-price-clients'.format(gateway_protocol, gateway_host), verify=False)
 
 
@@ -29,7 +29,7 @@ def update_stocks():
     requests.post('{}://{}/update-stock'.format(gateway_protocol, gateway_host), verify=False)
 
 
-def invest_autobuy():
+def invest():
     stock_prices = requests.get('{}://{}/get-all-stocks'.format(stock_protocol, stock_host), verify=False)
     all_invests = requests.get('{}://{}/get-all-autoinvests'.format(invest_protocol, invest_host), verify=False)
     if stock_prices.status_code == 200 and all_invests.status_code == 200:

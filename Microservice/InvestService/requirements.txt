@@ -12,3 +12,4 @@ flask_cors
 mysqlclient
 pika~=1.2.1
 gunicorn
+coverage
