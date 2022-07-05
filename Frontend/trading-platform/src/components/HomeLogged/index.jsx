@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Header from "./Utils/Header/Header"
 import './HomeLogged.css';
 import Navigation from './Utils/Navigation/Navigation';
@@ -6,18 +6,14 @@ import HomeNavigation from './Utils/HomeNavigation/HomeNavigation';
 import { Grid } from '@mui/material';
 import StockNavigation from './Utils/StockNavigation/StockNavigation';
 import DataStock from './Utils/DataStock/DataStock';
-import { useCookies } from 'react-cookie';
 import Loading from '../Loading';
 import CustomInvested from './Utils/CustomInvested/CustomInvested';
 import CustomTable from './Utils/CustomTable/CustomTable';
 import socketIOClient from "socket.io-client";
-import Cookies from 'js-cookie';
 import {GATEWAY_HOST} from '../../Utils/Extra/Hosts';
 
 const HomeLogged = () => {
 
-    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
-    const [cookiesJWT, setCookieJWT, removeCookieJWT] = useCookies(['jwt']);
     const [pendingInvest, setPendingInvest] = React.useState([]);
     document.title = 'Your Dashbord'
     const [buttonClicked, setButtonClicked] = React.useState('home');

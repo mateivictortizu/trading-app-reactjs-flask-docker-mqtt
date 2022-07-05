@@ -31,13 +31,16 @@ class Fund(db.Model):
 
     @staticmethod
     def withdraw_money(user, value):
+        ok = 0
         search_fund = Fund.query.filter_by(user=user).first()
         if search_fund is None:
             return False
         else:
             if (float(search_fund.value) - float(value)) >= 0:
+                ok = 1
                 search_fund.value = float(search_fund.value) - float(value)
             db.session.commit()
+        return ok
 
     @staticmethod
     def add_money_after_sell(user, value):
@@ -52,13 +55,16 @@ class Fund(db.Model):
 
     @staticmethod
     def withdraw_money_after_buy(user, value):
+        ok = 0
         search_fund = Fund.query.filter_by(user=user).first()
         if search_fund is None:
             return False
         else:
             if (float(search_fund.value) - float(value)) >= 0:
+                ok = 1
                 search_fund.value = float(search_fund.value) - float(value)
             db.session.commit()
+        return ok
 
     @staticmethod
     def get_value_of_user(user):

@@ -3,6 +3,8 @@ import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/mate
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export function CustomWithdrawMoney({ openWithdraw, setOpenWithdraw, setOpenDeposit, Transition }) {
 
@@ -10,23 +12,63 @@ export function CustomWithdrawMoney({ openWithdraw, setOpenWithdraw, setOpenDepo
     const [iban, setIban] = React.useState('');
     const [bank, setBank] = React.useState('');
     const [swift, setSwift] = React.useState('');
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [messageAlert, setMessageAlert] = React.useState([]);
+
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     function handleCloseWithdraw() {
+        setSuma(0);
+        setIban('');
+        setBank('');
+        setSwift('');
         setOpenWithdraw(false);
 
     };
 
     function withdraw() {
-        fetch(GATEWAY_HOST + "/withdraw-money", {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                value: parseFloat(suma),
-            }),
-        }).then(handleCloseWithdraw());
+        if(suma>0 && iban.length>=15 && iban.length<=34 && swift.length>0)
+        {
+            fetch(GATEWAY_HOST + "/withdraw-money", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    value: parseFloat(suma),
+                }),
+            }).then((data) => {
+                if (data.status === 200) {
+                    handleCloseWithdraw();
+                }
+                else if (data.status === 401) {
+                    setMessageAlert(['You have not enough money to withdraw this sum', "error"])
+                    setOpenAlert(true);
+                }
+                else {
+                    setMessageAlert(['Withdraw failed', "error"])
+                    setOpenAlert(true);
+                }
+            }
+            );
+        }
+        else
+        {
+            setMessageAlert(['Data errors', "error"])
+            setOpenAlert(true);
+        }
     };
 
     function back() {
@@ -77,6 +119,14 @@ export function CustomWithdrawMoney({ openWithdraw, setOpenWithdraw, setOpenDepo
                     </IconButton>
                 </DialogTitle>
                 <DialogContent style={{ width: '99%' }}>
+                    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}>
+                        <Alert onClose={handleCloseAlert} severity={messageAlert[1]} sx={{ width: '100%' }} >
+                            {messageAlert[0]}
+                        </Alert>
+                    </Snackbar>
                     <div style={{ textAlign: 'center', borderRadius: '10px', marginTop: '20px', backgroundColor: '#E8E8E8' }}>
                         <TextField
                             autoFocus

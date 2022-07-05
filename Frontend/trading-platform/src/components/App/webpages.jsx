@@ -4,7 +4,6 @@ import HomeLogged from "../HomeLogged";
 import Validation from '../Validation';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ChangePass from '../ChangePass';
-import Test from './test';
 
 export function Webpages() {
   return (
@@ -14,7 +13,6 @@ export function Webpages() {
         <Route exact path="/home" element={<HomeLogged />} />
         <Route exact path="/validate-account/:id" element={<Validation />} />
         <Route exact path="/reset-pass/:token" element={<ChangePass />} />
-        <Route exact path="/test" element={<Test/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,8 @@
 import React from "react";
 import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/material';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 
 export function CustomSettings({ openSettings, setOpenSettings, Transition }) {
@@ -11,9 +13,24 @@ export function CustomSettings({ openSettings, setOpenSettings, Transition }) {
         setRepeatNewPassword('');
     };
 
-    const [oldPassword, setOldPassword]=React.useState('');
-    const [newPassword, setNewPassword]=React.useState('');
-    const [repeatNewPassword, setRepeatNewPassword]=React.useState('');
+    const [oldPassword, setOldPassword] = React.useState('');
+    const [newPassword, setNewPassword] = React.useState('');
+    const [repeatNewPassword, setRepeatNewPassword] = React.useState('');
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [messageAlert, setMessageAlert] = React.useState([]);
+
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     const handleChangeOldPassword = (event) => {
         setOldPassword(event.target.value);
@@ -35,7 +52,7 @@ export function CustomSettings({ openSettings, setOpenSettings, Transition }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                password:oldPassword,
+                password: oldPassword,
                 new_password: newPassword
             }),
         }).then((data) => {
@@ -46,18 +63,20 @@ export function CustomSettings({ openSettings, setOpenSettings, Transition }) {
 
             }
             else if (data.status === 403) {
-                handleCloseSettings();
+                setMessageAlert(['Change password error', "error"])
+                setOpenAlert(true);
             }
             else if (data.status === 404 || data.status === 400 | data.status === 401) {
                 data.json().then(() => {
-                    handleCloseSettings();
+                    setMessageAlert(['Change password error', "error"])
+                    setOpenAlert(true);
                 });
             } else {
-                handleCloseSettings();
+                setMessageAlert(['Change password error', "error"])
+                setOpenAlert(true);
             }
         }
         );
-        console.log("Change Password")
     }
 
     return (
@@ -76,6 +95,14 @@ export function CustomSettings({ openSettings, setOpenSettings, Transition }) {
                 <DialogTitle style={{ backgroundColor: '#E8E8E8', textAlign: 'center' }}> Settings
                 </DialogTitle>
                 <DialogContent style={{ width: '99%' }}>
+                    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}>
+                        <Alert onClose={handleCloseAlert} severity={messageAlert[1]} sx={{ width: '100%' }} >
+                            {messageAlert[0]}
+                        </Alert>
+                    </Snackbar>
                     <div style={{ textAlign: 'center', borderRadius: '10px', marginTop: '20px', backgroundColor: '#E8E8E8' }}>
 
                         <TextField

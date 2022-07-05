@@ -3,7 +3,9 @@ import React from "react";
 import { Dialog, DialogTitle, TextField, Button, DialogContent } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {GATEWAY_HOST} from '../../../../Utils/Extra/Hosts';
+import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transition }) {
 
@@ -12,6 +14,21 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
     const [expiry, setExpiry] = React.useState("");
     const [cvc, setCvc] = React.useState("");
     const [cardName, setCardName] = React.useState("");
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [messageAlert, setMessageAlert] = React.useState([]);
+
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
 
     function handleCloseCard() {
@@ -24,17 +41,32 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
     };
 
     function pay() {
-        if (cvc.length === 3 && sumAdd>0 && expiry.length>0 && cardName.length>0 && cardNumber.length>0) {
-            fetch(GATEWAY_HOST+"/add-money", {
+        if (cvc.length === 3 && sumAdd > 0 && expiry.length > 0 && cardName.length > 0 && cardNumber.length > 0) {
+            fetch(GATEWAY_HOST + "/add-money", {
                 method: "POST",
-                credentials:'include',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     value: parseInt(sumAdd),
                 }),
-            }).then(handleCloseCard());
+            }).then((data) => {
+                if (data.status === 200) {
+                    handleCloseCard()
+                }
+                else {
+                    setMessageAlert(['Deposit funds failed', "error"])
+                    setOpenAlert(true);
+                    handleCloseCard()
+                }
+            }
+            );
+        }
+        else
+        {
+            setMessageAlert(['Data is incorect', "error"])
+            setOpenAlert(true);
         }
     };
 
@@ -112,6 +144,14 @@ export function CustomCardDialog({ openCard, setOpenCard, setOpenDeposit, Transi
                     </IconButton>
                 </DialogTitle>
                 <DialogContent style={{ width: '99%' }}>
+                    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}>
+                        <Alert onClose={handleCloseAlert} severity={messageAlert[1]} sx={{ width: '100%' }} >
+                            {messageAlert[0]}
+                        </Alert>
+                    </Snackbar>
                     <div style={{ textAlign: 'center', borderRadius: '10px', marginTop: '20px', backgroundColor: '#E8E8E8' }}>
                         <TextField
                             autoFocus

@@ -4,17 +4,34 @@ import { Dialog, DialogTitle, TextField, DialogContent, Grid, Button, DialogActi
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
 
     const [OTP, setOTP] = React.useState("");
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
     const navigate = useNavigate();
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [messageAlert, setMessageAlert] = React.useState([]);
+
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     function resendOTP() {
-        fetch(GATEWAY_HOST+"/resend-otp", {
+        fetch(GATEWAY_HOST + "/resend-otp", {
             method: "POST",
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -24,11 +41,11 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
         })
             .then((data) => {
                 if (data.status === 200) {
-                    data.json().then((message) => {
-                        console.log(message);
-                    })
+                        setMessageAlert(['New OTP sent', "success"])
+                        setOpenAlert(true);
+                    }
                 }
-            })
+            )
     };
 
     function handleCloseOTP() {
@@ -37,9 +54,9 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     };
 
     function validateOTP() {
-        fetch(GATEWAY_HOST+"/validate-otp", {
+        fetch(GATEWAY_HOST + "/validate-otp", {
             method: "POST",
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -56,9 +73,10 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
 
                 }
                 else {
-                    data.json().then((message) => {
-                        console.log(message);
-                    })
+                    {
+                        setMessageAlert(["OTP error", "error"])
+                        setOpenAlert(true);
+                    }
                 }
 
             })
@@ -67,6 +85,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
     const handleChangeOTP = (event) => {
         setOTP(event.target.value);
     };
+
 
     return (
         <div>
@@ -96,6 +115,14 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
                         direction="row">
                         <Grid item><Link id="linkOTP" onClick={resendOTP}>Resend OTP</Link></Grid>
                     </Grid>
+                    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}>
+                        <Alert onClose={handleCloseAlert} severity={messageAlert[1]} sx={{ width: '100%' }} >
+                            {messageAlert[0]}
+                        </Alert>
+                    </Snackbar>
                 </DialogContent>
                 <DialogActions>
                     <Button id="buttonOTP" fullWidth onClick={validateOTP}>Send OTP</Button>

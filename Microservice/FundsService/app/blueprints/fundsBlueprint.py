@@ -34,8 +34,11 @@ def withdraw_money():
     try:
         user = request.json['user']
         value = request.json['value']
-        withdrawFundsDAO(user, value)
-        return jsonify({'message': 'Funds withdraw'}), 200
+        result_code = withdrawFundsDAO(user, value)
+        if result_code == 1:
+            return jsonify({'message': 'Funds withdraw'}), 200
+        else:
+            return jsonify({'message': 'Funds not withdraw'}), 401
     except Exception as e:
         print(e)
         return jsonify({'message': 'Funds did not added'}), 500
@@ -70,8 +73,11 @@ def withdraw_money_after_buy():
     try:
         user = request.json['user']
         value = request.json['value']
-        withdrawFundsAfterBuyDAO(user, value)
-        return jsonify({'message': 'Funds modified after buy'}), 200
+        result_code = withdrawFundsAfterBuyDAO(user, value)
+        if result_code == 1:
+            return jsonify({'message': 'Funds modified after buy'}), 200
+        else:
+            return jsonify({'message': 'Funds not modified after buy'}), 401
     except Exception as e:
         print(e)
         return jsonify({'message': 'Funds did not modified after buy'}), 500
