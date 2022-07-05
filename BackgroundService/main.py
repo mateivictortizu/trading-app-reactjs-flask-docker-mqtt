@@ -58,7 +58,8 @@ def invest():
                                                  "stock_symbol": sp['stock_symbol']}
                                     result_post = requests.post('{}://{}/buy'.format(invest_protocol, invest_host),
                                                                 verify=False, json=json_body)
-                                    requests.delete(
+                                    if result_post.status_code == 200:
+                                        requests.delete(
                                             '{}://{}/remove-autoinvest'.format(invest_protocol, invest_host),
                                             verify=False, json={'id_invest': pending_invest['id']})
                     else:
@@ -67,11 +68,25 @@ def invest():
                                          "price": sp['price'],
                                          "user": pending_invest['user'],
                                          "stock_symbol": sp['stock_symbol']}
-                            result_post = requests.post('{}://{}/sell'.format(invest_protocol, invest_host),
-                                                        verify=False, json=json_body)
-                            if result_post.status_code == 200:
-                                requests.delete('{}://{}/remove-autoinvest'.format(invest_protocol, invest_host),
-                                                verify=False, json={'id_invest': pending_invest['id']})
+                            json_quantity = {
+                                "identifier": pending_invest['user'],
+                                "stock_symbol": sp['stock_symbol']}
+                            check_quantity_request = requests.post(
+                                '{}://{}/get-stock-invest-by-user'.format(invest_protocol, invest_host),
+                                verify=False, json=json_quantity)
+                            if check_quantity_request.status_code == 200 and check_quantity_request.json()[
+                                'cantitate'] >= pending_invest['cantitate']:
+                                result_post = requests.post('{}://{}/sell'.format(invest_protocol, invest_host),
+                                                            verify=False, json=json_body)
+                                if result_post.status_code == 200:
+                                    json_modify_money = {
+                                        'user': pending_invest['user'],
+                                        'value': sp['price'] * pending_invest['cantitate']
+                                    }
+                                    requests.post('{}://{}/add-money-after-sell'.format(funds_protocol, funds_host),
+                                                  json=json_modify_money, verify=False)
+                                    requests.delete('{}://{}/remove-autoinvest'.format(invest_protocol, invest_host),
+                                                    verify=False, json={'id_invest': pending_invest['id']})
 
 
 if __name__ == "__main__":

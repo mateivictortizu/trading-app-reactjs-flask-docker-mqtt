@@ -234,7 +234,7 @@ services:
       - INVEST_HOST=nginxinvest:5005
       - INVEST_PROTOCOL=http
       - GATEWAY_HOST=nginxgateway:5000
-      - GATEWAY_PROTOCOL=http
+      - GATEWAY_PROTOCOL=https
       - FUNDS_HOST=nginxfunds:5002
       - FUNDS_PROTOCOL=http
     depends_on:
