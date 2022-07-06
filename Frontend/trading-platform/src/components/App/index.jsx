@@ -1,9 +1,12 @@
 import React from "react";
 import { Webpages } from "./webpages";
+import { CookiesProvider } from 'react-cookie';
 
 function App() {
   return (
-    <Webpages></Webpages>
+    <CookiesProvider>
+      <Webpages></Webpages>
+    </CookiesProvider>
   );
 }
 

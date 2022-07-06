@@ -69,6 +69,7 @@ export function CustomOTP({ openOTP, setOpenOTP, Transition }) {
                 if (data.status === 200) {
                     handleCloseOTP();
                     removeCookie("jwt_otp");
+                    setCookie("logged", "Yes");
                     navigate('/home');
 
                 }

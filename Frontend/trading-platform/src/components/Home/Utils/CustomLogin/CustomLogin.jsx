@@ -59,6 +59,7 @@ export function CustomLogin({ openLogin, setOpenLogin, Transition, handleOpenReg
                             }
                             else {
                                 setCookie("jwt", message["Authorization"]);
+                                setCookie("logged", "Yes");
                                 setOk(1);
                             }
                             setLoginState(true);

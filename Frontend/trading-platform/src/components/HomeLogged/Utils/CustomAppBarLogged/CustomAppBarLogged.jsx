@@ -5,12 +5,15 @@ import { CustomMenuStats } from '../CustomMenuStats/CustomMenuStats';
 import { CustomMenuUser } from '../CustomMenuUser/CustomMenuUser';
 import { useNavigate } from 'react-router-dom';
 import { GATEWAY_HOST } from '../../../../Utils/Extra/Hosts';
+import { useCookies } from 'react-cookie';
 
 
 export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenManageFunds, handleClickOpenSettings, handleClickOpenHistory, accountValue, investValue }) {
     const [anchorUser, setAnchorUser] = React.useState(null);
     const [anchorAccountStats, setAnchorAccountStats] = React.useState(null);
     const navigate = useNavigate();
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_otp']);
+    
     var data = {
         datasets: [
             {
@@ -48,6 +51,7 @@ export function CustomAppBarLogged({ handleClickOpenDeposit, handleClickOpenMana
                 'Content-Type': 'application/json'
             },
         });
+        removeCookie("logged");
         navigate('/');
     }
 

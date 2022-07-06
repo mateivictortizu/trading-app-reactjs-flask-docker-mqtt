@@ -7,10 +7,20 @@ import "./Home.css"
 import InfoIcon from '@mui/icons-material/Info';
 import { Grid } from '@mui/material';
 import FadeIn from 'react-fade-in';
+import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
     document.title = "Invest"
+    const navigate = useNavigate();
+
+    const cookies = new Cookies();
+    useEffect(() => {
+        if (cookies.get('logged') === "Yes") {
+            navigate('/home');
+        }
+    });
     return (
         <div className="main-div">
             <UnauthentichatedHeader></UnauthentichatedHeader>

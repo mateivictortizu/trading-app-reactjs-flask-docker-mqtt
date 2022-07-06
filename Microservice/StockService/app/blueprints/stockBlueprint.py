@@ -34,7 +34,8 @@ def general_exception_error(e):
 @stockBP.route('/add-stock', methods=['POST'])
 def add_stock():
     symbol_stock = request.json['stock_symbol']
-    executor.submit(addStockDAO, symbol_stock)
+    addStockDAO(symbol_stock)
+    #executor.submit(addStockDAO, symbol_stock)
     return jsonify({'message': 'Stock was added to db'}), 200
 
 

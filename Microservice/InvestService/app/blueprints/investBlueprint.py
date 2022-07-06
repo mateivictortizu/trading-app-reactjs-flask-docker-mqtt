@@ -132,46 +132,59 @@ def get_all_history_user():
 def get_value_of_user_account():
     user = request.json['identifier']
     x = Invest.get_history_invest_by_user(user)
-    price = 0
+    price_invest = {}
     for i in x:
-        if i.action_type == 'BUY':
-            price = price + i.price * i.cantitate
+        if i.stock_symbol not in price_invest:
+            price_invest[i.stock_symbol] = {}
+            price_invest[i.stock_symbol]['price'] = i.price
+            if i.action_type == 'BUY':
+                price_invest[i.stock_symbol]['quantity'] = i.cantitate
+            else:
+                price_invest[i.stock_symbol]['quantity'] = -i.cantitate
         else:
-            price = price - i.price * i.cantitate
-    return jsonify({"message": price}), 200
+            if i.action_type == 'BUY':
+                price_invest[i.stock_symbol]['price'] = (price_invest[i.stock_symbol]['price'] *
+                                                         price_invest[i.stock_symbol][
+                                                             'quantity'] + i.price * i.cantitate) / (
+                                                                i.cantitate + price_invest[i.stock_symbol]['quantity'])
+                price_invest[i.stock_symbol]['quantity'] = price_invest[i.stock_symbol]['quantity'] + i.cantitate
+            else:
+                price_invest[i.stock_symbol]['quantity'] = price_invest[i.stock_symbol]['quantity'] - i.cantitate
+    total_value = 0
+    print(price_invest)
+    for i in price_invest:
+        if price_invest[i]['quantity'] > 0:
+            total_value = total_value + price_invest[i]['quantity'] * price_invest[i]['price']
+    return jsonify({"message": total_value}), 200
 
 
 @investBP.route('/get-detailed-stock-invest', methods=['GET'])
 def get_detailed_stock_invest():
     user = request.json['identifier']
     x = Invest.get_history_invest_by_user(user)
-    stock_dict = {}
-    total_cty = {}
+    price_invest = {}
     for i in x:
-        if i.action_type == 'BUY':
-            if i.stock_symbol in stock_dict and "cantitate" in stock_dict[i.stock_symbol] and \
-                    "price" in stock_dict[i.stock_symbol]:
-                stock_dict[i.stock_symbol] = {"cantitate": stock_dict[i.stock_symbol]["cantitate"] + i.cantitate,
-                                              "price": stock_dict[i.stock_symbol]["price"] + i.price * i.cantitate}
-                total_cty[i.stock_symbol] = total_cty[i.stock_symbol] + i.cantitate
+        if i.stock_symbol not in price_invest:
+            price_invest[i.stock_symbol] = {}
+            price_invest[i.stock_symbol]['price'] = i.price
+            if i.action_type == 'BUY':
+                price_invest[i.stock_symbol]['cantitate'] = i.cantitate
             else:
-                stock_dict[i.stock_symbol] = {"cantitate": i.cantitate, "price": i.price * i.cantitate}
-                total_cty[i.stock_symbol] = i.cantitate
+                price_invest[i.stock_symbol]['cantitate'] = -i.cantitate
         else:
-            if i.stock_symbol in stock_dict and "cantitate" in stock_dict[i.stock_symbol] and \
-                    "price" in stock_dict[i.stock_symbol]:
-                stock_dict[i.stock_symbol] = {"cantitate": stock_dict[i.stock_symbol]["cantitate"] - i.cantitate,
-                                              "price": stock_dict[i.stock_symbol]["price"]}
 
-    list_to_pop = []
-    for i in stock_dict:
-        if stock_dict[i]['cantitate'] == 0:
-            list_to_pop.append(i)
-        else:
-            stock_dict[i]['price'] = stock_dict[i]['price'] / total_cty[i]
-    for i in list_to_pop:
-        stock_dict.pop(i)
-    return stock_dict, 200
+            if i.action_type == 'BUY':
+                price_invest[i.stock_symbol]['price'] = (price_invest[i.stock_symbol]['price'] *
+                                                         price_invest[i.stock_symbol][
+                                                             'cantitate'] + i.price * i.cantitate) / (
+                                                                i.cantitate + price_invest[i.stock_symbol]['cantitate'])
+                price_invest[i.stock_symbol]['cantitate'] = price_invest[i.stock_symbol]['cantitate'] + i.cantitate
+            else:
+                price_invest[i.stock_symbol]['cantitate'] = price_invest[i.stock_symbol]['cantitate'] - i.cantitate
+    for i in list(price_invest):
+        if price_invest[i]['cantitate'] <= 0:
+            price_invest.pop(i)
+    return price_invest, 200
 
 
 @investBP.route('/autobuy', methods=['POST'])

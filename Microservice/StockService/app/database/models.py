@@ -44,47 +44,74 @@ class Stock(db.Model):
 
     def __init__(self, stock_symbol):
         self.stock_symbol = stock_symbol.upper()
-        search_stock = yf.Ticker(self.stock_symbol)
-        if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
-            self.company_name = search_stock.info['longName']
-        else:
-            return
-        if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info['longBusinessSummary'] is not None:
-            self.longBuisnessSummary = search_stock.info['longBusinessSummary']
-        else:
-            return
-        if self.stock_symbol in data_logo:
-            self.logo = data_logo[self.stock_symbol]
-        else:
-            if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-                self.logo = search_stock.info['logo_url']
+        if self.stock_symbol != 'TUIASI':
+            search_stock = yf.Ticker(self.stock_symbol)
+            if 'longName' in search_stock.info.keys() and search_stock.info['longName'] is not None:
+                self.company_name = search_stock.info['longName']
             else:
                 return
-        self.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
-            else None
-        if 'sector' in search_stock.info.keys() and search_stock.info['sector'] is not None:
-            self.sector = search_stock.info['sector']
-        else:
-            return
-        if 'industry' in search_stock.info.keys() and search_stock.info['industry'] is not None:
-            self.industry = search_stock.info['industry']
-        else:
-            return
-        if 'market' in search_stock.info.keys() and search_stock.info['market'] is not None:
-            self.market_name = search_stock.info['market']
-        else:
-            return
-        if 'financialCurrency' in search_stock.info.keys() and search_stock.info['financialCurrency'] is not None:
-            self.currency = search_stock.info['financialCurrency']
-        else:
-            return
-        self.isin = search_stock.isin
+            if 'longBusinessSummary' in search_stock.info.keys() and search_stock.info[
+                'longBusinessSummary'] is not None:
+                self.longBuisnessSummary = search_stock.info['longBusinessSummary']
+            else:
+                return
+            if self.stock_symbol in data_logo:
+                self.logo = data_logo[self.stock_symbol]
+            else:
+                if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+                    self.logo = search_stock.info['logo_url']
+                else:
+                    return
+            self.employees = search_stock.info['fullTimeEmployees'] if 'fullTimeEmployees' in search_stock.info.keys() \
+                else None
+            if 'sector' in search_stock.info.keys() and search_stock.info['sector'] is not None:
+                self.sector = search_stock.info['sector']
+            else:
+                return
+            if 'industry' in search_stock.info.keys() and search_stock.info['industry'] is not None:
+                self.industry = search_stock.info['industry']
+            else:
+                return
+            if 'market' in search_stock.info.keys() and search_stock.info['market'] is not None:
+                self.market_name = search_stock.info['market']
+            else:
+                return
+            if 'financialCurrency' in search_stock.info.keys() and search_stock.info['financialCurrency'] is not None:
+                self.currency = search_stock.info['financialCurrency']
+            else:
+                return
+            self.isin = search_stock.isin
 
-        self.one_day = json.dumps(stock_data(search_stock, '1d', '30m', 'Close'))
-        self.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Close'))
-        self.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Close'))
-        self.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Close'))
-        self.max = json.dumps(stock_data(search_stock, 'max', '3mo', 'Close'))
+            self.one_day = json.dumps(stock_data(search_stock, '1d', '30m', 'Close'))
+            self.one_month = json.dumps(stock_data(search_stock, '1mo', '1d', 'Close'))
+            self.three_month = json.dumps(stock_data(search_stock, '3mo', '1d', 'Close'))
+            self.six_month = json.dumps(stock_data(search_stock, '6mo', '5d', 'Close'))
+            self.max = json.dumps(stock_data(search_stock, 'max', '3mo', 'Close'))
+        else:
+            self.stock_symbol = 'TUIASI'
+            self.company_name = 'Universitatea Tehnica Gheorghe Asachi'
+            self.logo = 'https://www.tuiasi.ro/wp-content/uploads/2019/03/stema-universitatii-tuiasi-1.png'
+            self.longBuisnessSummary = 'Universitatea Tehnica „Gheorghe Asachi” din Iasi este o institutie de ' \
+                                       'invatamant superior din Iasi, Romania, infiintata in anul 1937. In 2011, ' \
+                                       'a fost clasificata in prima categorie din Romania, cea a universitatilor de ' \
+                                       'cercetare avansata si educatie.'
+            self.sector = 'Education'
+            self.employees = None
+            self.industry = 'Education'
+            self.market_name = 'RO'
+            self.currency = 'USD'
+            self.isin = '221294356'
+            self.one_day = json.dumps([{"x": "06-07-2022 09:30", "y": 142.82}, {"x": "06-07-2022 10:00", "y": 142.76},
+                                       {"x": "06-07-2022 10:30", "y": 142.23}, {"x": "06-07-2022 11:00", "y": 141.54},
+                                       {"x": "06-07-2022 11:30", "y": 141.71},
+                                       {"x": "06-07-2022 12:00", "y": 141.93}, {"x": "06-07-2022 12:30", "y": 141.9},
+                                       {"x": "06-07-2022 13:00", "y": 142.18}, {"x": "06-07-2022 13:30", "y": 142.44},
+                                       {"x": "06-07-2022 14:00", "y": 143.05}, {"x": "06-07-2022 14:30", "y": 143.62},
+                                       {"x": "06-07-2022 15:00", "y": 143.88}, {"x": "06-07-2022 15:30", "y": 143.96}])
+            self.one_month = None
+            self.three_month = None
+            self.six_month = None
+            self.max = None
 
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'employees': self.employees,
@@ -119,42 +146,53 @@ class Price(db.Model):
 
     def __init__(self, stock_symbol):
         self.stock_symbol = stock_symbol.upper()
-        try:
-            search_stock = yf.Ticker(self.stock_symbol)
-        except Exception:
-            return
-        if 'shortName' in search_stock.info.keys() and search_stock.info['shortName'] is not None:
-            self.company_name = re.split(' Corporation|,|Group ', search_stock.info['shortName'])[0]
-        else:
-            return
-        if self.stock_symbol in data_logo:
-            self.logo = data_logo[self.stock_symbol]
-        else:
-            if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
-                self.logo = search_stock.info['logo_url']
+        if self.stock_symbol != "TUIASI":
+            try:
+                search_stock = yf.Ticker(self.stock_symbol)
+            except Exception:
+                return
+            if 'shortName' in search_stock.info.keys() and search_stock.info['shortName'] is not None:
+                self.company_name = re.split(' Corporation|,|Group ', search_stock.info['shortName'])[0]
             else:
                 return
-        if 'currentPrice' in search_stock.info.keys() and search_stock.info['currentPrice'] is not None:
-            self.price = search_stock.info['currentPrice']
+            if self.stock_symbol in data_logo:
+                self.logo = data_logo[self.stock_symbol]
+            else:
+                if 'logo_url' in search_stock.info.keys() and search_stock.info['logo_url'] is not None:
+                    self.logo = search_stock.info['logo_url']
+                else:
+                    return
+            if 'currentPrice' in search_stock.info.keys() and search_stock.info['currentPrice'] is not None:
+                self.price = search_stock.info['currentPrice']
+            else:
+                return
+            if 'recommendationKey' in search_stock.info.keys() and search_stock.info['recommendationKey'] is not None:
+                self.recommendation = search_stock.info['recommendationKey']
+            if 'targetLowPrice' in search_stock.info.keys() and search_stock.info['targetLowPrice'] is not None:
+                self.targetLow = search_stock.info['targetLowPrice']
+            if 'targetMeanPrice' in search_stock.info.keys() and search_stock.info['targetMeanPrice'] is not None:
+                self.targetMean = search_stock.info['targetMeanPrice']
+            else:
+                return
+            if 'targetHighPrice' in search_stock.info.keys() and search_stock.info['targetHighPrice'] is not None:
+                self.targetHigh = search_stock.info['targetHighPrice']
+            else:
+                return
+            if 'recommendationMean' in search_stock.info.keys() and search_stock.info['recommendationMean'] is not None:
+                self.recommendationMean = search_stock.info['recommendationMean']
+            else:
+                return
+            self.lastModify = datetime.utcnow()
         else:
-            return
-        if 'recommendationKey' in search_stock.info.keys() and search_stock.info['recommendationKey'] is not None:
-            self.recommendation = search_stock.info['recommendationKey']
-        if 'targetLowPrice' in search_stock.info.keys() and search_stock.info['targetLowPrice'] is not None:
-            self.targetLow = search_stock.info['targetLowPrice']
-        if 'targetMeanPrice' in search_stock.info.keys() and search_stock.info['targetMeanPrice'] is not None:
-            self.targetMean = search_stock.info['targetMeanPrice']
-        else:
-            return
-        if 'targetHighPrice' in search_stock.info.keys() and search_stock.info['targetHighPrice'] is not None:
-            self.targetHigh = search_stock.info['targetHighPrice']
-        else:
-            return
-        if 'recommendationMean' in search_stock.info.keys() and search_stock.info['recommendationMean'] is not None:
-            self.recommendationMean = search_stock.info['recommendationMean']
-        else:
-            return
-        self.lastModify = datetime.utcnow()
+            self.price = 100
+            self.logo = 'https://www.tuiasi.ro/wp-content/uploads/2019/03/stema-universitatii-tuiasi-1.png'
+            self.lastModify = datetime.utcnow()
+            self.company_name = 'TUIASI'
+            self.recommendation = 'BUY'
+            self.targetLow = 98
+            self.targetMean = 100
+            self.targetHigh = 105
+            self.recommendationMean = 102
 
     def to_json(self):
         return {'stock_symbol': self.stock_symbol, 'company_name': self.company_name, 'price': self.price,

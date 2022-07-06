@@ -50,7 +50,6 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
             .then((data) => {
                 if (data.status === 200) {
                     data.json().then((message) => {
-                        console.log(message);
                         setHistory(message['message']);
                     });
                 }
@@ -80,7 +79,6 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
             .then((data) => {
                 if (data.status === 200) {
                     data.json().then((message) => {
-                        console.log(message);
                         setPendingInvest(message['message']);
                     });
                 }
@@ -127,7 +125,7 @@ export default function DataStock({ buttonStockClicked, priceClicked, Transition
     useEffect(() => {
         setInvested(0);
         setStockInfo(undefined);
-        if (buttonStockClicked !== null) {
+        if (buttonStockClicked !== null && buttonStockClicked!==undefined) {
             fetch(GATEWAY_HOST + "/get-stock-info/" + buttonStockClicked, {
                 method: "GET",
                 credentials: 'include',

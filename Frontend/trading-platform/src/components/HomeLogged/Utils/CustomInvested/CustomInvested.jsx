@@ -9,14 +9,13 @@ export default function CustomInvested({ buttonStockClicked, setButtonStockClick
         setButtonStockClicked(key);
         setPriceClicked(price);
     }
-
+    
     var current_value = 0;
 
     if (dataForInvest.length !== 0) {
         for (const i in dataForInvest) {
             current_value = current_value + dataUserInvest[dataForInvest[i]['stock_symbol']]['cantitate'] * dataForInvest[i]['price'];
         }
-        console.log(dataForInvest);
         return (
             <div>
                 <div id='customInvested'>

@@ -16,14 +16,13 @@ def get_stock_invest_by_userDAO(user, stock_symbol):
     cantitate = 0.0
     for i in list_of_invest:
         if i.action_type == "BUY":
-            average = average + i.cantitate * i.price
-            no_of_buy = no_of_buy + i.cantitate
+            average = (average * cantitate + i.cantitate * i.price) / (cantitate + i.cantitate)
             cantitate = cantitate + i.cantitate
         else:
             cantitate = cantitate - i.cantitate
 
     if cantitate > 0:
-        average = average / round(no_of_buy, 3)
+        average = average
         return [round(cantitate, 2), round(average, 2)]
     else:
         return None
