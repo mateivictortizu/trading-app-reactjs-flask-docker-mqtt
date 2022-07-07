@@ -12,48 +12,48 @@ export default function Navigation({ buttonClicked, setButtonClicked, dataForInv
         setButtonClicked('home');
         if(buttonHomeClicked==='mywatchlist')
         {
-            if (datas.length != 0) {
+            if (datas.length !== 0) {
                 setButtonStockClicked(datas[0]['stock_symbol']);
                 setPriceClicked(datas[0]['price'])
             }
             else {
-                setButtonStockClicked(undefined);
-                setPriceClicked(undefined);
+                setButtonStockClicked(null);
+                setPriceClicked(null);
             }
         }
         if(buttonHomeClicked==='popular')
         {
-            if (datasPopular.length != 0) {
+            if (datasPopular.length !== 0) {
                 setButtonStockClicked(datasPopular[0]['stock_symbol']);
                 setPriceClicked(datasPopular[0]['price'])
             }
             else {
-                setButtonStockClicked(undefined);
-                setPriceClicked(undefined);
+                setButtonStockClicked(null);
+                setPriceClicked(null);
             }
         }
         if(buttonHomeClicked==='recommended')
         {
-            if (datasRecommendation.length != 0) {
+            if (datasRecommendation.length !== 0) {
                 setButtonStockClicked(datasRecommendation[0]['stock_symbol']);
                 setPriceClicked(datasRecommendation[0]['price'])
             }
             else {
-                setButtonStockClicked(undefined);
-                setPriceClicked(undefined);
+                setButtonStockClicked(null);
+                setPriceClicked(null);
             }
         }
     }
 
     function clickPie() {
         setButtonClicked('pie');
-        if (dataForInvest.length != 0) {
+        if (dataForInvest.length !== 0) {
             setButtonStockClicked(dataForInvest[0]['stock_symbol']);
             setPriceClicked(dataForInvest[0]['price'])
         }
         else {
-            setButtonStockClicked(undefined);
-            setPriceClicked(undefined);
+            setButtonStockClicked(null);
+            setPriceClicked(null);
         }
     }
 

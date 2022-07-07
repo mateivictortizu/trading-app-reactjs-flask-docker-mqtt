@@ -4,9 +4,10 @@ import { Button, Typography } from "@mui/material";
 
 export default function StockNavigation({ buttonStockClicked, setButtonStockClicked, priceClicked, setPriceClicked, data, datasPopular, datasRecommendation, buttonHomeClicked }) {
 
-    function clickButton(key, price) {
+    function clickButton(key, price, updown) {
         setButtonStockClicked(key);
         setPriceClicked(price);
+        console.log(updown);
     }
 
     if (buttonHomeClicked === 'mywatchlist') {
@@ -16,15 +17,15 @@ export default function StockNavigation({ buttonStockClicked, setButtonStockClic
                     <div id="firstDivNavigationStock">
                         {data.map(item =>
                         (
-                            <Button key={item.stock_symbol} onClick={() => clickButton(item.stock_symbol, item.price)} id={(buttonStockClicked === item.stock_symbol) ? 'buttonClickedNavigationStockLogged' : 'buttonNavigationStockLogged'}>
+                            <Button key={item.stock_symbol} onClick={() => clickButton(item.stock_symbol, item.price, item.updown)} id={(buttonStockClicked === item.stock_symbol) ? 'buttonClickedNavigationStockLogged' : 'buttonNavigationStockLogged'}>
                                 <img id='imgNavigationStockLogged' src={item.logo} alt={item.stock_symbol} ></img>
                                 <Typography id='nameStockNavigation'>
                                     {item.company_name}
                                 </Typography>
-                                <Typography style={{ position: 'absolute', right: '50px', color: '#2AAA8A', fontSize: '25px' }}>
+                                <Typography style={{ position: 'absolute', right: '50px', color: (item.updown === true)?'#2AAA8A':'#7F0000', fontSize: '25px' }}>
                                     {parseInt(item.price)}
                                 </Typography>
-                                <Typography style={{ color: '#2AAA8A', position: 'absolute', fontSize: '15px', right: '20px', bottom: '20px' }}>
+                                <Typography style={{ color: (item.updown === true)?'#2AAA8A':'#7F0000', position: 'absolute', fontSize: '15px', right: '20px', bottom: '20px' }}>
                                     .{Number((item.price - parseInt(item.price))).toFixed(2).toString().split(".")[1]}$
                                 </Typography>
                             </Button>
