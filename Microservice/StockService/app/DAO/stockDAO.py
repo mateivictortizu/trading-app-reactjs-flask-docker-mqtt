@@ -208,7 +208,12 @@ def updatePriceAsync(stock_symbol, date):
             Session = sessionmaker(bind=engine)
             session = Session()
             price = session.query(Price).filter_by(stock_symbol=stock_symbol).first()
-            price.price = random.randrange(90, 100)
+            rand_value = random.randrange(90, 100)
+            if rand_value >= price.price:
+                price.updown = True
+            else:
+                price.updown = False
+            price.price = rand_value
             session.commit()
             session.close()
     except Exception as e:
