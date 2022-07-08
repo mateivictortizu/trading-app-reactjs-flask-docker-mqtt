@@ -6,8 +6,8 @@ import numpy as np
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-URL = os.getenv('STOCK_HOST', 'http://127.0.0.1:5001')
-URL2 = os.getenv('STOCK_INVEST', 'http://127.0.0.1:5005')
+URL = 'http://'+os.getenv('STOCK_HOST', '127.0.0.1:5001')+ '/'
+URL2 = 'http://'+os.getenv('STOCK_INVEST', '127.0.0.1:5005')+ '/'
 
 
 def RecommandationSystems():
